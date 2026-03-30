@@ -5,6 +5,14 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EN7BN9F6PV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EN7BN9F6PV');
+    </script>
     <title>Ocean Falls Technology Corp — Infrastructure & Strategic Technology</title>
     <meta name="description"
         content="Ocean Falls Technology Corp is a British Columbia-based company focused on power-backed infrastructure, compute, and strategic technology development in and around Ocean Falls, BC." />
@@ -188,11 +196,23 @@
                         Ocean Falls Technology Corp is focused on infrastructure, compute, and next-phase strategic
                         development in and around Ocean Falls, British Columbia.
                     </p>
-                    <div class="flex gap-4">
-                        <a href="#contact"
-                            class="bg-primary text-on-primary px-10 py-5 font-label font-semibold uppercase tracking-widest text-sm hover:opacity-90 transition-opacity">
-                            Strategic Inquiries
-                        </a>
+                    <div class="flex gap-4 items-center">
+                        <button id="hero-voice-btn"
+                            class="bg-primary text-on-primary px-10 py-5 font-label font-semibold uppercase tracking-widest text-sm hover:bg-on-background transition-colors flex items-center gap-4 group relative overflow-hidden">
+                            <div class="relative flex items-center justify-center w-10 h-10 bg-white/20 shadow-[0_0_15px_rgba(70,95,136,0.4)] group-hover:shadow-[0_0_25px_rgba(70,95,136,0.6)] transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.733.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                                </svg>
+                            </div>
+                            <span id="hero-voice-text" class="relative z-10 font-bold">Speak With Us</span>
+                        </button>
+                    </div>
+
+                    <!-- Hidden Voice Widget -->
+                    <div id="voice-widget-container" class="hidden">
+                        <script src="https://widgets.leadconnectorhq.com/loader.js"
+                            data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+                            data-widget-id="69ca70ec13ad141e4225408e"></script>
                     </div>
                 </div>
             </div>
@@ -401,6 +421,178 @@
         </div>
     </footer>
     <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+
+    <!-- Custom Chat Trigger Button -->
+    <button id="custom-chat-trigger"
+        class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-primary hover:bg-on-background transition-all duration-300 shadow-lg hover:shadow-xl group opacity-0 pointer-events-none scale-90 translate-y-4"
+        aria-label="Open chat">
+        <svg class="w-6 h-6 text-on-primary transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        </svg>
+    </button>
+
+    <!-- Conversation Chat Widget -->
+    <script src="https://widgets.leadconnectorhq.com/loader.js"
+        data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+        data-widget-id="69ca6f8dd0f49b840df595b0"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const customChatBtn = document.getElementById('custom-chat-trigger');
+            let chatBound = false;
+
+            const bindChatWidget = setInterval(() => {
+                const widgets = document.querySelectorAll('chat-widget');
+                widgets.forEach(widget => {
+                    // Only bind the conversation widget (not the voice widget)
+                    const widgetId = widget.getAttribute('widget-id') || widget.getAttribute('data-widget-id') || '';
+                    if (widgetId === '69ca70ec13ad141e4225408e') return; // skip voice widget
+
+                    if (widget.shadowRoot && !chatBound) {
+                        const chatBubbleBtn = widget.shadowRoot.querySelector('#lc_text-widget--btn, .lc_text-widget--bubble');
+                        if (chatBubbleBtn) {
+                            // Inject Ocean Falls design system into shadow DOM
+                            if (!widget.shadowRoot.querySelector('#of-widget-style')) {
+                                const style = document.createElement('style');
+                                style.id = 'of-widget-style';
+                                style.textContent = `
+                                    /* Hide default bubble — replaced by custom trigger */
+                                    #lc_text-widget--btn, .lc_text-widget--bubble {
+                                        opacity: 0 !important;
+                                        pointer-events: none !important;
+                                        transform: scale(0) !important;
+                                    }
+                                    /* Chat window */
+                                    #lc_text-widget--box, .lc_text-widget--box {
+                                        border: 1px solid rgba(167, 180, 186, 0.3) !important;
+                                        border-radius: 0px !important;
+                                        box-shadow: 0 8px 32px rgba(40, 52, 57, 0.15) !important;
+                                        overflow: hidden !important;
+                                        font-family: 'Public Sans', 'Inter', sans-serif !important;
+                                    }
+                                    /* Header */
+                                    .lc_text-widget_heading--root {
+                                        background: #283439 !important;
+                                        border-bottom: 1px solid rgba(167, 180, 186, 0.15) !important;
+                                        border-radius: 0px !important;
+                                    }
+                                    .lc_text-widget_heading--root * {
+                                        color: #f7fafc !important;
+                                    }
+                                    /* Messages area */
+                                    .lc_text-widget_messages--root {
+                                        background: #f7fafc !important;
+                                    }
+                                    /* Agent branding */
+                                    .lc_text-widget--agency-branding {
+                                        background-color: #eff4f7 !important;
+                                        border-top: 1px solid rgba(167, 180, 186, 0.15) !important;
+                                        color: #546166 !important;
+                                    }
+                                    .lc_text-widget--agency-branding a {
+                                        color: #465f88 !important;
+                                    }
+                                    /* Input area */
+                                    .lc_text-widget_input--root {
+                                        background: #eff4f7 !important;
+                                        border-top: 1px solid rgba(167, 180, 186, 0.15) !important;
+                                    }
+                                    /* Send button */
+                                    .lc_text-widget_input--btn {
+                                        background: #465f88 !important;
+                                        border-radius: 0px !important;
+                                    }
+                                `;
+                                widget.shadowRoot.appendChild(style);
+                            }
+                            customChatBtn.onclick = (e) => { e.preventDefault(); chatBubbleBtn.click(); };
+                            requestAnimationFrame(() => {
+                                customChatBtn.classList.remove('opacity-0', 'pointer-events-none', 'scale-90', 'translate-y-4');
+                            });
+                            chatBound = true;
+                            clearInterval(bindChatWidget);
+                        }
+                    }
+                });
+            }, 500);
+        });
+
+        // --- Voice Widget Trigger ---
+        document.getElementById('hero-voice-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            const btnText = document.getElementById('hero-voice-text');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Connecting...';
+
+            let attempts = 0;
+            const maxAttempts = 20;
+
+            const tryClickWidget = setInterval(() => {
+                attempts++;
+                const voiceContainer = document.getElementById('voice-widget-container');
+                if (!voiceContainer) return;
+
+                const widgets = voiceContainer.querySelectorAll('chat-widget');
+                let voiceWidgetFound = false;
+
+                // Try to find phone icon first
+                widgets.forEach(widget => {
+                    if (widget.shadowRoot && !voiceWidgetFound) {
+                        const phoneIcon = widget.shadowRoot.querySelector('.lc_text-widget--phone-icon, [aria-label="Select to start the voice call"]');
+                        if (phoneIcon) {
+                            phoneIcon.click();
+                            voiceWidgetFound = true;
+                        }
+                    }
+                });
+
+                // Fallback: try any clickable element in the voice widget
+                if (!voiceWidgetFound) {
+                    widgets.forEach(widget => {
+                        if (widget.shadowRoot && !voiceWidgetFound) {
+                            const anyClickable = widget.shadowRoot.querySelector('.lc_text-widget--bubble, #lc_text-widget--btn, .lc_text-widget--embedded, .widget-open-icon');
+                            if (anyClickable) {
+                                anyClickable.click();
+                                voiceWidgetFound = true;
+                            }
+                        }
+                    });
+                }
+
+                // Also search globally if not found in container
+                if (!voiceWidgetFound) {
+                    const allWidgets = document.querySelectorAll('chat-widget');
+                    allWidgets.forEach(widget => {
+                        if (widget.shadowRoot && !voiceWidgetFound) {
+                            // Skip the conversation chat widget
+                            if (widget.shadowRoot.querySelector('#of-widget-style')) return;
+                            const phoneIcon = widget.shadowRoot.querySelector('.lc_text-widget--phone-icon, [aria-label="Select to start the voice call"]');
+                            if (phoneIcon) {
+                                phoneIcon.click();
+                                voiceWidgetFound = true;
+                            } else {
+                                const anyClickable = widget.shadowRoot.querySelector('.lc_text-widget--bubble, #lc_text-widget--btn, .lc_text-widget--embedded');
+                                if (anyClickable) {
+                                    anyClickable.click();
+                                    voiceWidgetFound = true;
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if (voiceWidgetFound) {
+                    clearInterval(tryClickWidget);
+                    setTimeout(() => { btnText.innerText = originalText; }, 1000);
+                }
+                if (attempts >= maxAttempts && !voiceWidgetFound) {
+                    clearInterval(tryClickWidget);
+                    btnText.innerText = 'Try Again';
+                    setTimeout(() => { btnText.innerText = originalText; }, 2000);
+                }
+            }, 500);
+        });
+    </script>
 </body>
 
 </html>
