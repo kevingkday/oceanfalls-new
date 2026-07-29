@@ -189,10 +189,10 @@
         <!-- Hero Section -->
         <section class="relative h-[870px] flex items-end overflow-hidden bg-black">
             <div class="absolute inset-0 z-0">
-                <img class="w-full h-full object-cover filter grayscale contrast-125 opacity-40"
+                <img class="w-full h-full object-cover filter grayscale contrast-125 opacity-55"
                     alt="Hydroelectric dam infrastructure in a rugged coastal mountain landscape"
                     src="https://assets.cdn.filesafe.space/ywq6v44Bb1XMDOmNDPQ5/media/69ca614d65fcfb88ecdcd7ed.jpg" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/40"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/50 to-black/30"></div>
             </div>
             <div class="relative z-10 w-full px-12 pb-24 grid grid-cols-12 gap-8">
                 <div class="col-span-12 md:col-span-8 lg:col-span-7">
@@ -208,13 +208,13 @@
                         secure specialized insurance tools to deploy faster.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-                        <a id="btn-captive-access" href="#contact"
+                        <a id="btn-captive-access" href="https://captive8.ai/programs/data-centres" target="_blank" rel="noopener noreferrer"
                             class="bg-primary text-on-primary px-8 py-5 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors text-center shadow-lg hover:shadow-xl duration-300">
-                            Apply for Captive Program Access
+                            Apply for Captive Program
                         </a>
                         <a id="btn-evaluate-site" href="#contact"
                             class="border border-white/30 text-white px-8 py-5 font-label font-semibold uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-colors text-center duration-300">
-                            Evaluate a Site
+                            Contact Us for a Site Review
                         </a>
                     </div>
 
@@ -735,11 +735,6 @@
             const btnEvaluate = document.getElementById('btn-evaluate-site');
             const selectInterest = document.getElementById('contact-interest');
 
-            if (btnCaptive && selectInterest) {
-                btnCaptive.addEventListener('click', () => {
-                    selectInterest.value = 'captive-access';
-                });
-            }
             if (btnEvaluate && selectInterest) {
                 btnEvaluate.addEventListener('click', () => {
                     selectInterest.value = 'site-evaluation';
