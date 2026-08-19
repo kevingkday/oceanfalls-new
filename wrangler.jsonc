@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "oceanfalls-new",
   "compatibility_date": "2026-03-30",
+  "main": "index.js",
   "assets": {
     "directory": "."
   },
