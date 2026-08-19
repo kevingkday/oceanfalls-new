@@ -39,7 +39,7 @@ export async function onRequestPost(context) {
       WHERE id = ?
     `).bind(siteId).run();
     
-    // 3. Fetch detailed site data & assessment results to forward to GoHighLevel
+    // 3. Fetch detailed site data & assessment results to build the email report
     let siteDetails = null;
     try {
       siteDetails = await db.prepare(`
@@ -48,7 +48,7 @@ export async function onRequestPost(context) {
           p.firm_power_available_mw, p.max_potential_capacity_mw, p.power_type, p.delivered_cost_mwh,
           c.diverse_routes, c.fibre_available,
           d.zoning, d.data_centre_permitted,
-          r.classification, r.calculated_score
+          r.classification, r.calculated_score, r.confidence_level, r.key_strengths, r.verification_issues, r.potential_constraints, r.recommended_steps
         FROM sites s
         LEFT JOIN power_info p ON s.id = p.site_id
         LEFT JOIN connectivity_info c ON s.id = c.site_id
@@ -67,32 +67,109 @@ export async function onRequestPost(context) {
         const firstName = body.name ? body.name.split(" ")[0] : "";
         const lastName = body.name ? body.name.split(" ").slice(1).join(" ") : "";
         
+        // Parse results arrays
+        const strengths = JSON.parse(siteDetails.key_strengths || "[]");
+        const issues = JSON.parse(siteDetails.verification_issues || "[]");
+        const constraints = JSON.parse(siteDetails.potential_constraints || "[]");
+        const steps = JSON.parse(siteDetails.recommended_steps || "[]");
+
+        // Format HTML lists for email body
+        const strengthsHtml = strengths.map(s => `<li style="margin-bottom: 6px; list-style-type: none;">✔️ ${s}</li>`).join("");
+        const issuesHtml = issues.map(i => `<li style="margin-bottom: 6px; list-style-type: none;">🔍 ${i}</li>`).join("");
+        const constraintsHtml = constraints.map(c => `<li style="margin-bottom: 6px; list-style-type: none;">⚠️ ${c}</li>`).join("");
+        const stepsHtml = steps.map(s => `<li style="margin-bottom: 6px; list-style-type: none;">➔ ${s}</li>`).join("");
+
+        // Build premium, email-ready HTML body
+        const generatedBody = `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #283439; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 0px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+  <div style="background-color: #465f88; padding: 32px 24px; text-align: center; color: white;">
+    <h1 style="margin: 0; font-size: 26px; font-weight: bold; letter-spacing: -0.5px;">Ocean Falls Technology</h1>
+    <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Infrastructure Site Assessment</p>
+  </div>
+  
+  <div style="padding: 32px 24px; background-color: #ffffff;">
+    <p style="font-size: 16px; margin-top: 0;">Dear ${body.name || "Partner"},</p>
+    
+    <p>Thank you for submitting your site for assessment. We have successfully received your inquiry and our infrastructure team is currently conducting a detailed review of the property parameters.</p>
+    
+    <div style="background-color: #f7fafc; border-left: 4px solid #465f88; padding: 20px; margin: 24px 0; border-radius: 0px;">
+      <h3 style="margin-top: 0; margin-bottom: 12px; color: #465f88; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Preliminary Evaluation Result</h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <tr>
+          <td style="padding: 6px 0; font-weight: bold; width: 40%; color: #718096;">Property:</td>
+          <td style="padding: 6px 0; font-weight: 600; color: #2d3748;">${siteDetails.site_name || "Unspecified Property"}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 0; font-weight: bold; color: #718096;">Classification:</td>
+          <td style="padding: 6px 0; font-weight: bold; color: ${siteDetails.classification === 'Promising' ? '#2f855a' : siteDetails.classification === 'Conditional' ? '#c05621' : '#c53030'};">${siteDetails.classification}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 0; font-weight: bold; color: #718096;">Calculated Score:</td>
+          <td style="padding: 6px 0; font-weight: bold; color: #2d3748; font-size: 16px;">${siteDetails.calculated_score} / 100</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 0; font-weight: bold; color: #718096;">Confidence Rating:</td>
+          <td style="padding: 6px 0; color: #2d3748;">${siteDetails.confidence_level}</td>
+        </tr>
+      </table>
+    </div>
+
+    ${strengthsHtml ? `
+    <h4 style="color: #465f88; margin-top: 24px; margin-bottom: 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 6px; font-size: 15px;">✔️ Key Strengths</h4>
+    <ul style="margin-top: 0; padding-left: 0; font-size: 14px; line-height: 1.5;">
+      ${strengthsHtml}
+    </ul>
+    ` : ''}
+
+    ${issuesHtml ? `
+    <h4 style="color: #465f88; margin-top: 24px; margin-bottom: 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 6px; font-size: 15px;">🔍 Due Diligence & Unverified Items</h4>
+    <ul style="margin-top: 0; padding-left: 0; font-size: 14px; line-height: 1.5;">
+      ${issuesHtml}
+    </ul>
+    ` : ''}
+
+    ${constraintsHtml ? `
+    <h4 style="color: #c53030; margin-top: 24px; margin-bottom: 10px; border-bottom: 1px solid #fed7d7; padding-bottom: 6px; font-size: 15px;">⚠️ Potential Constraints</h4>
+    <ul style="margin-top: 0; padding-left: 0; font-size: 14px; line-height: 1.5; color: #9b2c2c;">
+      ${constraintsHtml}
+    </ul>
+    ` : ''}
+
+    ${stepsHtml ? `
+    <h4 style="color: #465f88; margin-top: 24px; margin-bottom: 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 6px; font-size: 15px;">➔ Recommended Next Steps</h4>
+    <ul style="margin-top: 0; padding-left: 0; font-size: 14px; line-height: 1.5;">
+      ${stepsHtml}
+    </ul>
+    ` : ''}
+
+    <p style="margin-top: 28px;">Our engineering team will contact you shortly to review these findings and outline any necessary due diligence steps.</p>
+    
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;" />
+    
+    <p style="font-size: 14px; color: #718096; margin-bottom: 0; line-height: 1.5;">
+      Best regards,<br>
+      <strong>Ocean Falls Technology Corp</strong><br>
+      Infrastructure Planning & Development Team
+    </p>
+  </div>
+  
+  <div style="text-align: center; padding: 20px; font-size: 11px; color: #a0aec0; background-color: #f7fafc; border-top: 1px solid #e2e8f0;">
+    This is an automated preliminary evaluation report. If you have questions, please reply directly or visit <a href="https://oceanfalls.com" style="color: #465f88; text-decoration: none; font-weight: bold;">oceanfalls.com</a>.
+  </div>
+</div>
+`;
+
+        // Map payload strictly to matches user's request sample
         const ghlPayload = {
+          company_name: body.company || "",
+          contact_name: body.name || "",
           first_name: firstName,
           last_name: lastName,
-          name: body.name || "",
           email: body.email || "",
           phone: body.phone || "",
-          companyName: body.company || "",
-          tags: ["Data Centre Assessment", siteDetails.classification || ""],
-          source: "Ocean Falls Site Assessment",
-          customFields: {
-            site_id: siteId,
-            property_name: siteDetails.site_name || "",
-            location: `${siteDetails.city || ""}, ${siteDetails.province_state || ""}, ${siteDetails.country || ""}`,
-            acreage: siteDetails.acreage || "",
-            classification: siteDetails.classification || "",
-            score: siteDetails.calculated_score || "",
-            firm_mw: siteDetails.firm_power_available_mw !== null ? siteDetails.firm_power_available_mw : "Unknown",
-            potential_mw: siteDetails.max_potential_capacity_mw !== null ? siteDetails.max_potential_capacity_mw : "Unknown",
-            power_type: siteDetails.power_type || "",
-            power_cost: siteDetails.delivered_cost_mwh !== null ? `$${siteDetails.delivered_cost_mwh}/MWh` : "Unknown",
-            diverse_routes: siteDetails.diverse_routes || "",
-            zoning: siteDetails.zoning || "",
-            dc_permitted: siteDetails.data_centre_permitted || "",
-            admin_link: `https://oceanfalls-new.kevin-c8e.workers.dev/admin?id=${siteId}`,
-            comments: body.comments || ""
-          }
+          source_url: `https://oceanfalls-new.kevin-c8e.workers.dev/site-assessment?id=${siteId}`,
+          generated_subject: `[Ocean Falls] Site Assessment Report: ${siteDetails.site_name || 'Property'}`,
+          generated_body: generatedBody
         };
 
         const postPromise = fetch(ghlUrl, {
@@ -113,7 +190,6 @@ export async function onRequestPost(context) {
         if (context.waitUntil) {
           context.waitUntil(postPromise);
         } else {
-          // Fallback if waitUntil is not injected (e.g. simple test calls)
           await postPromise;
         }
       } catch (ghlErr) {
