@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Internal Site Intelligence — Ocean Falls Technology Corp</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Public_Sans:wght@300;400;500&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#ccdde4",
+                        "on-primary-container": "#39527b",
+                        "surface": "#f7fafc",
+                        "on-tertiary-fixed": "#394355",
+                        "on-error": "#fff7f6",
+                        "primary-dim": "#3a537c",
+                        "background": "#f7fafc",
+                        "inverse-primary": "#aec7f7",
+                        "secondary-fixed": "#d8e3fa",
+                        "surface-container-low": "#eff4f7",
+                        "secondary": "#546073",
+                        "error-dim": "#4e0309",
+                        "on-surface-variant": "#546166",
+                        "outline": "#707d82",
+                        "tertiary-fixed-dim": "#d0daf0",
+                        "on-primary": "#f6f7ff",
+                        "surface-variant": "#d7e5eb",
+                        "secondary-fixed-dim": "#cad5ec",
+                        "primary": "#465f88",
+                        "on-tertiary-container": "#4b5568",
+                        "outline-variant": "#a7b4ba",
+                        "surface-tint": "#465f88",
+                        "primary-fixed-dim": "#c0d5ff",
+                        "on-background": "#283439",
+                        "on-primary-fixed": "#264067",
+                        "surface-bright": "#f7fafc",
+                        "primary-fixed": "#d6e3ff",
+                        "on-surface": "#283439",
+                        "on-primary-fixed-variant": "#435c85",
+                        "surface-container-highest": "#d7e5eb",
+                        "error-container": "#fe8983",
+                        "error": "#9f403d",
+                        "on-secondary-container": "#475265",
+                        "on-secondary": "#f8f8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#354052",
+                        "surface-container-high": "#dfeaef",
+                        "on-secondary-fixed-variant": "#515c6f",
+                        "surface-container": "#e7eff3",
+                        "on-error-container": "#752121",
+                        "secondary-container": "#d8e3fa",
+                        "inverse-surface": "#0b0f10",
+                        "secondary-dim": "#495467",
+                        "tertiary-dim": "#495366",
+                        "primary-container": "#d6e3ff",
+                        "inverse-on-surface": "#9a9d9f",
+                        "tertiary-container": "#dee8ff",
+                        "tertiary-fixed": "#dee8ff",
+                        "on-tertiary": "#f8f8ff",
+                        "tertiary": "#555f72",
+                        "on-tertiary-fixed-variant": "#555f72"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Public Sans"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f7fafc;
+            color: #283439;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+    <!-- Top Header -->
+    <header class="bg-[#283439] text-white px-12 py-5 flex justify-between items-center w-full">
+        <div class="flex items-center gap-3">
+            <span class="font-headline font-bold text-lg tracking-tighter">Ocean Falls</span>
+            <span class="bg-primary/20 text-primary-fixed-dim border border-primary/30 px-2 py-0.5 text-[10px] font-label font-semibold uppercase tracking-wider">Site Intelligence</span>
+        </div>
+        <div id="logout-container" class="hidden">
+            <button onclick="handleLogout()" class="border border-white/20 hover:bg-white/10 px-4 py-2 font-label font-semibold uppercase tracking-wider text-xs transition-colors">
+                Sign Out
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-grow p-12 max-w-full">
+        
+        <!-- LOGIN PANEL -->
+        <div id="login-panel" class="max-w-md mx-auto my-20 bg-surface-container-low border border-outline-variant/15 p-10 shadow-sm space-y-6">
+            <div class="text-center">
+                <span class="material-symbols-outlined text-4xl text-primary mb-3 block">lock</span>
+                <h2 class="font-headline font-bold text-2xl text-on-background">Staff Access Required</h2>
+                <p class="font-body text-xs text-on-surface-variant leading-relaxed mt-1">
+                    Enter password to view submitted properties and lead data.
+                </p>
+            </div>
+            
+            <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label for="admin-password" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Password</label>
+                    <input type="password" id="admin-password" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors" placeholder="••••••••" />
+                </div>
+                <div id="login-error" class="hidden text-xs text-error font-body">Incorrect password. Please try again.</div>
+                <button type="submit" class="w-full bg-primary text-on-primary py-3 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors duration-300">
+                    Sign In
+                </button>
+            </form>
+        </div>
+
+        <!-- DASHBOARD PANEL (Hidden until login) -->
+        <div id="dashboard-panel" class="hidden space-y-8">
+            
+            <!-- Welcome Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/15 pb-6">
+                <div>
+                    <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Prospective Sites Database</h1>
+                    <p class="font-body text-sm text-on-surface-variant mt-1">Manage and evaluate submissions for AI, HPC, and data-centre development.</p>
+                </div>
+                <div>
+                    <button onclick="exportCSV()" class="bg-primary text-on-primary px-5 py-3 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">download</span> Export Filtered to CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEARCH, FILTERS & SORTING -->
+            <div class="bg-surface-container-low border border-outline-variant/15 p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+                
+                <!-- Search -->
+                <div class="md:col-span-2">
+                    <label for="filter-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Search sites, city, or contact</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined text-sm absolute left-3 top-3.5 text-on-surface-variant">search</span>
+                        <input type="text" id="filter-search" oninput="triggerSearch()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River, Prince George, Kevin..." />
+                    </div>
+                </div>
+
+                <!-- Sort By -->
+                <div>
+                    <label for="filter-sort-by" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Sort By</label>
+                    <select id="filter-sort-by" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="created_at" selected>Submission Date (Newest)</option>
+                        <option value="firm_power_available_mw">Firm Power Available</option>
+                        <option value="max_potential_capacity_mw">Potential Power Capacity</option>
+                        <option value="name">Property Name</option>
+                        <option value="calculated_score">Calculated Suitability Score</option>
+                    </select>
+                </div>
+
+                <!-- Classification Filter -->
+                <div>
+                    <label for="filter-classification" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Classification</label>
+                    <select id="filter-classification" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="" selected>All Classifications</option>
+                        <option value="Promising">Promising</option>
+                        <option value="Conditional">Conditional</option>
+                        <option value="Significant Due Diligence Required">Significant Due Diligence Required</option>
+                        <option value="Unlikely Based on Current Information">Unlikely</option>
+                    </select>
+                </div>
+
+                <!-- Country Filter -->
+                <div>
+                    <label for="filter-country" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Country</label>
+                    <select id="filter-country" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="" selected>All Countries</option>
+                        <!-- Injected by JS -->
+                    </select>
+                </div>
+
+                <!-- Province/State Filter -->
+                <div>
+                    <label for="filter-prov" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Province / State</label>
+                    <select id="filter-prov" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="" selected>All Provinces/States</option>
+                        <!-- Injected by JS -->
+                    </select>
+                </div>
+
+                <!-- Opportunity Type Filter -->
+                <div>
+                    <label for="filter-opportunity" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Opportunity Type</label>
+                    <select id="filter-opportunity" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="" selected>All Objectives</option>
+                        <option value="Sell the property">Sell the property</option>
+                        <option value="Lease the property">Lease the property</option>
+                        <option value="Find a data-centre developer/operator">Find developer/operator</option>
+                        <option value="Find an infrastructure partner">Find infra partner</option>
+                        <option value="Develop the site directly">Develop directly</option>
+                        <option value="Attract economic development">Attract economic development</option>
+                        <option value="Market available power">Market available power</option>
+                        <option value="Convert an existing industrial site">Convert industrial site</option>
+                        <option value="Convert an existing crypto/data-centre site">Convert crypto/DC site</option>
+                        <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate site only</option>
+                    </select>
+                </div>
+
+                <!-- Min Power (Firm / Potential) -->
+                <div>
+                    <label for="filter-min-firm" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Min Firm Power (MW)</label>
+                    <select id="filter-min-firm" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                        <option value="" selected>Any MW</option>
+                        <option value="1">1+ MW</option>
+                        <option value="5">5+ MW</option>
+                        <option value="20">20+ MW</option>
+                        <option value="50">50+ MW</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- SITE LIST TABLE -->
+            <div class="bg-surface-container-low border border-outline-variant/15 overflow-x-auto shadow-sm">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container border-b border-outline-variant/20 font-label font-bold text-[10px] uppercase tracking-wider text-primary">
+                            <th class="py-4 px-6">ID</th>
+                            <th class="py-4 px-6">Property Name</th>
+                            <th class="py-4 px-6">Location</th>
+                            <th class="py-4 px-6">Classification</th>
+                            <th class="py-4 px-6 text-center">Score</th>
+                            <th class="py-4 px-6 text-center">Firm MW</th>
+                            <th class="py-4 px-6 text-center">Potential MW</th>
+                            <th class="py-4 px-6">Contact &amp; Company</th>
+                            <th class="py-4 px-6">Lead Status</th>
+                            <th class="py-4 px-6">Submitted Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sites-tbody" class="divide-y divide-outline-variant/10">
+                        <!-- Injected by JS -->
+                    </tbody>
+                </table>
+                <div id="no-sites-message" class="hidden p-12 text-center text-on-surface-variant font-body">
+                    <span class="material-symbols-outlined text-4xl block mb-2 text-outline-variant">info</span>
+                    No submitted sites match the active filter criteria.
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- DETAILED MODAL VIEW -->
+    <div id="detail-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex justify-end hidden">
+        <div class="w-full max-w-4xl bg-surface-container-lowest h-full border-l border-outline-variant/20 shadow-2xl flex flex-col overflow-hidden animate-slide-in">
+            
+            <!-- Modal Header -->
+            <div class="bg-[#283439] text-white p-8 flex justify-between items-start">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-xs uppercase font-label font-bold tracking-wider text-primary-fixed-dim" id="modal-site-id">Site ID: #0</span>
+                        <span id="modal-confidential-badge" class="bg-red-900/40 text-red-300 border border-red-800 px-2 py-0.5 text-[9px] font-label font-semibold uppercase tracking-wider hidden">Confidential</span>
+                    </div>
+                    <h2 class="font-headline font-extrabold text-2xl tracking-tight" id="modal-title">Property Name</h2>
+                    <p class="font-body text-xs text-surface-dim mt-1" id="modal-location">City, Province, Country</p>
+                </div>
+                <button onclick="closeModal()" class="text-surface-dim hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="flex-grow overflow-y-auto p-8 space-y-10 font-body text-sm text-on-surface">
+                
+                <!-- Internal Staff Section -->
+                <div class="bg-surface p-6 border border-outline-variant/20 grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                    <div class="md:col-span-1 space-y-4">
+                        <h3 class="font-headline font-bold text-xs uppercase tracking-wider text-primary">Lead Operations</h3>
+                        <div>
+                            <label for="modal-status-select" class="block text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant mb-1">Lead Status</label>
+                            <select id="modal-status-select" class="w-full bg-surface-container-lowest border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                                <option value="New">New</option>
+                                <option value="Reviewing">Reviewing</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="Qualified">Qualified</option>
+                                <option value="Due Diligence">Due Diligence</option>
+                                <option value="Partner Discussion">Partner Discussion</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Not Suitable">Not Suitable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <input type="checkbox" id="modal-confidential-check" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                            <label for="modal-confidential-check" class="text-xs font-label font-semibold text-on-surface-variant select-none">Mark Site as Confidential</label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 space-y-2">
+                        <label for="modal-notes-area" class="block text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant">Internal Notes &amp; Audit Trail</label>
+                        <textarea id="modal-notes-area" rows="5" class="w-full bg-surface-container-lowest border border-outline-variant/30 p-3 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="Append staff reviews, phone notes, or next actions here..."></textarea>
+                        <div class="text-right">
+                            <button onclick="saveSiteDetails()" class="bg-primary text-on-primary px-5 py-2.5 font-label font-semibold uppercase tracking-widest text-[10px] hover:bg-on-background transition-colors">
+                                Save Internal Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lead Contact Info -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Submitter Contact Information</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Name</span>
+                            <span class="font-semibold" id="detail-contact-name">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Company</span>
+                            <span class="font-semibold" id="detail-contact-company">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Email</span>
+                            <a class="text-primary hover:underline font-semibold" id="detail-contact-email" href="#">-</a>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Phone</span>
+                            <a class="text-primary hover:underline font-semibold" id="detail-contact-phone" href="#">-</a>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Relationship to Property</span>
+                            <span id="detail-contact-relation">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Pref. Contact Method</span>
+                            <span id="detail-contact-method">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Additional Comments</span>
+                            <span class="italic text-xs text-on-surface-variant" id="detail-contact-comments">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculated Assessment Result -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">System Assessment Summary</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-surface p-5 border border-outline-variant/15 text-center">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Classification</span>
+                            <span class="font-headline font-extrabold text-lg" id="detail-result-class">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Suitability Score</span>
+                            <span class="font-headline font-bold text-lg text-on-background" id="detail-result-score">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Confidence</span>
+                            <span class="font-headline font-semibold text-base text-primary" id="detail-result-confidence">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Specifications -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Property Specifications</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Acreage</span>
+                            <span id="detail-prop-acreage">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Current Use</span>
+                            <span id="detail-prop-use">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Address</span>
+                            <span id="detail-prop-address">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Existing Structures</span>
+                            <span id="detail-prop-structures">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">High-Load Assets</span>
+                            <span id="detail-prop-electrical">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Power Grid Details -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Power Grid Details</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Existing Active MW</span>
+                            <span id="detail-power-existing">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Firm Available MW</span>
+                            <span id="detail-power-firm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Potential Add MW</span>
+                            <span id="detail-power-add">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Theoretical Max MW</span>
+                            <span id="detail-power-max">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Power Type</span>
+                            <span id="detail-power-type">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Utility Provider</span>
+                            <span id="detail-power-utility">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Grid Connection</span>
+                            <span id="detail-power-grid">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Substation Location</span>
+                            <span id="detail-power-substation">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Transmission Lines?</span>
+                            <span id="detail-power-transmission">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Voltage KV</span>
+                            <span id="detail-power-voltage">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Interconnection Timeline</span>
+                            <span id="detail-power-timeline">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Delivered Cost ($/MWh)</span>
+                            <span id="detail-power-cost">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Primary Generation</span>
+                            <span id="detail-power-generation">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Low Carbon / Renew %</span>
+                            <span id="detail-power-renew">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Long-term PPA?</span>
+                            <span id="detail-power-ppa">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Remaining PPA Term</span>
+                            <span id="detail-power-ppa-term">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Curtailment Restrictions</span>
+                            <span id="detail-power-restrictions">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Grid Constraints</span>
+                            <span id="detail-power-constraints">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fibre Connectivity -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Fibre Connectivity</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Fibre at Boundary</span>
+                            <span id="detail-fibre-avail">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Diverse Routes</span>
+                            <span id="detail-fibre-routes">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Distance to Trunk</span>
+                            <span id="detail-fibre-distance">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Latency Limitations</span>
+                            <span id="detail-fibre-latency">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Fibre Providers</span>
+                            <span id="detail-fibre-providers">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">On-Site Telecom Infra</span>
+                            <span id="detail-fibre-telecom">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permitting & Environment -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Zoning &amp; Environmental Feasibility</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Current Zoning</span>
+                            <span id="detail-zone-class">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">DC Permitted?</span>
+                            <span id="detail-zone-permitted">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Permitting Complexity</span>
+                            <span id="detail-zone-complexity">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Site Access / Roads</span>
+                            <span id="detail-zone-access">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Environmental Approvals</span>
+                            <span id="detail-zone-approvals">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Environmental Restrictions</span>
+                            <span id="detail-zone-restrictions">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Flood Exposure</span>
+                            <span id="detail-hazard-flood">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Wildfire Exposure</span>
+                            <span id="detail-hazard-wildfire">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Seismic Exposure</span>
+                            <span id="detail-hazard-seismic">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Other Natural Hazards</span>
+                            <span id="detail-hazard-other">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Airport/Port Proximity</span>
+                            <span id="detail-zone-ports">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Construction Constraints</span>
+                            <span id="detail-zone-construction">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Water & Supporting Infrastructure -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Water &amp; Infrastructure</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Water Availability</span>
+                            <span id="detail-water-avail">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Air-Cooled Compatible?</span>
+                            <span id="detail-water-air">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Municipal Water?</span>
+                            <span id="detail-water-municipal">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Industrial Supply?</span>
+                            <span id="detail-water-industrial">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Wastewater Access</span>
+                            <span id="detail-water-sewer">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Natural Gas On-Site?</span>
+                            <span id="detail-water-gas">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Distance to Pipeline</span>
+                            <span id="detail-water-gas-dist">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Other Industrial Services</span>
+                            <span id="detail-water-services">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Stakeholders -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Community &amp; Stakeholder Environment</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">General Attitude</span>
+                            <span id="detail-comm-attitude">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">First Nations Consult Req.</span>
+                            <span id="detail-comm-indigenous-req">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">History of Protests?</span>
+                            <span id="detail-comm-protests">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Active Litigation?</span>
+                            <span id="detail-comm-litigation">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Municipal Gov. Support</span>
+                            <span id="detail-comm-muni-support">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Economic Dev Support</span>
+                            <span id="detail-comm-ecdev">-</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">First Nations Relationship</span>
+                            <span id="detail-comm-indigenous-rel">-</span>
+                        </div>
+                        <div class="col-span-4">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Other Stakeholder Concerns</span>
+                            <span id="detail-comm-concerns">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submitter Goals -->
+                <div class="space-y-4">
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Project Strategy &amp; Goals</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="col-span-2">
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Primary Objective</span>
+                            <span id="detail-goal-objective">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Target Project MW</span>
+                            <span id="detail-goal-mw">-</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Workload Types</span>
+                            <span id="detail-goal-types">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin JavaScript Logic -->
+    <script>
+        let searchTimeout = null;
+        let activeSiteId = null;
+
+        // Check auth on load
+        async function checkAuth() {
+            try {
+                const response = await fetch("/api/admin/login");
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    showDashboard();
+                } else {
+                    showLogin();
+                }
+            } catch (err) {
+                console.error(err);
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById("login-panel").classList.remove("hidden");
+            document.getElementById("dashboard-panel").classList.add("hidden");
+            document.getElementById("logout-container").classList.add("hidden");
+        }
+
+        function showDashboard() {
+            document.getElementById("login-panel").classList.add("hidden");
+            document.getElementById("dashboard-panel").classList.remove("hidden");
+            document.getElementById("logout-container").classList.remove("hidden");
+            fetchFiltersAndSites();
+        }
+
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+            const password = document.getElementById("admin-password").value;
+            const errEl = document.getElementById("login-error");
+            errEl.classList.add("hidden");
+
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showDashboard();
+                } else {
+                    errEl.innerText = data.message || "Incorrect password.";
+                    errEl.classList.remove("hidden");
+                }
+            } catch (err) {
+                console.error(err);
+                errEl.innerText = "Connection error. Please try again.";
+                errEl.classList.remove("hidden");
+            }
+        }
+
+        async function handleLogout() {
+            // Expire cookie by setting in the past
+            document.cookie = "of_admin_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+            showLogin();
+        }
+
+        function triggerSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                fetchSites();
+            }, 300);
+        }
+
+        // Fetch sites list and load filter options (Countries and Provinces dynamically)
+        async function fetchFiltersAndSites() {
+            await fetchSites();
+            
+            // Build dynamic filters based on table rows
+            const rows = Array.from(document.querySelectorAll("#sites-tbody tr"));
+            const countries = new Set();
+            const states = new Set();
+            
+            rows.forEach(tr => {
+                const country = tr.getAttribute("data-country");
+                const state = tr.getAttribute("data-state");
+                if (country) countries.add(country);
+                if (state) states.add(state);
+            });
+
+            // Populate Country selector
+            const countrySelect = document.getElementById("filter-country");
+            const selectedCountry = countrySelect.value;
+            countrySelect.innerHTML = `<option value="">All Countries</option>`;
+            Array.from(countries).sort().forEach(c => {
+                countrySelect.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+            countrySelect.value = selectedCountry;
+
+            // Populate Province selector
+            const provSelect = document.getElementById("filter-prov");
+            const selectedProv = provSelect.value;
+            provSelect.innerHTML = `<option value="">All Provinces/States</option>`;
+            Array.from(states).sort().forEach(s => {
+                provSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            provSelect.value = selectedProv;
+        }
+
+        async function fetchSites() {
+            const q = document.getElementById("filter-search").value;
+            const sortBy = document.getElementById("filter-sort-by").value;
+            const classification = document.getElementById("filter-classification").value;
+            const country = document.getElementById("filter-country") ? document.getElementById("filter-country").value : "";
+            const prov = document.getElementById("filter-prov") ? document.getElementById("filter-prov").value : "";
+            const opp = document.getElementById("filter-opportunity").value;
+            const minFirm = document.getElementById("filter-min-firm").value;
+            
+            let url = `/api/admin/sites?q=${encodeURIComponent(q)}&sort_by=${sortBy}`;
+            if (classification) url += `&classification=${encodeURIComponent(classification)}`;
+            if (country) url += `&country=${encodeURIComponent(country)}`;
+            if (prov) url += `&province_state=${encodeURIComponent(prov)}`;
+            if (opp) url += `&opportunity_type=${encodeURIComponent(opp)}`;
+            if (minFirm) url += `&min_firm_mw=${encodeURIComponent(minFirm)}&min_potential_mw=${encodeURIComponent(minFirm)}`;
+
+            try {
+                const response = await fetch(url);
+                if (response.status === 401) {
+                    showLogin();
+                    return;
+                }
+                
+                const data = await response.json();
+                if (data.success) {
+                    renderTable(data.sites);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderTable(sites) {
+            const tbody = document.getElementById("sites-tbody");
+            tbody.innerHTML = "";
+            
+            if (sites.length === 0) {
+                document.getElementById("no-sites-message").classList.remove("hidden");
+                return;
+            }
+            
+            document.getElementById("no-sites-message").classList.add("hidden");
+            
+            sites.forEach(site => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-surface-container cursor-pointer transition-colors duration-200 border-b border-outline-variant/10";
+                tr.setAttribute("data-country", site.country || "");
+                tr.setAttribute("data-state", site.province_state || "");
+                
+                // Click to view modal
+                tr.onclick = () => openSiteDetail(site.id);
+                
+                // Color classification
+                let classBadge = "text-on-surface-variant font-semibold";
+                if (site.classification === "Promising") {
+                    classBadge = "text-emerald-700 font-bold";
+                } else if (site.classification === "Conditional") {
+                    classBadge = "text-amber-600 font-semibold";
+                } else if (site.classification === "Unlikely Based on Current Information") {
+                    classBadge = "text-red-700 font-semibold";
+                }
+
+                // Lead status colors
+                let statusBadgeColor = "bg-surface-container-high text-on-surface-variant";
+                if (site.lead_status === "New") statusBadgeColor = "bg-primary/10 text-primary border border-primary/20";
+                else if (site.lead_status === "Qualified" || site.lead_status === "Due Diligence") statusBadgeColor = "bg-emerald-100 text-emerald-800";
+                else if (site.lead_status === "Closed" || site.lead_status === "Not Suitable") statusBadgeColor = "bg-red-100 text-red-800";
+                else if (site.lead_status === "Reviewing" || site.lead_status === "Contacted") statusBadgeColor = "bg-blue-100 text-blue-800";
+
+                const dateStr = site.created_at ? new Date(site.created_at).toLocaleDateString() : "-";
+                const isConf = site.is_confidential === 1 ? `<span class="bg-red-100 text-red-800 text-[8px] font-bold px-1.5 py-0.5 rounded-none ml-2 uppercase">CONF</span>` : "";
+
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-semibold">${site.id}</td>
+                    <td class="py-4 px-6 font-bold flex items-center">${site.name || "Unnamed"}${isConf}</td>
+                    <td class="py-4 px-6 text-on-surface-variant">${site.city || "-"}, ${site.province_state || "-"}, ${site.country || "-"}</td>
+                    <td class="py-4 px-6"><span class="${classBadge}">${site.classification || "Pending"}</span></td>
+                    <td class="py-4 px-6 text-center font-bold text-on-background">${site.calculated_score || "0"}</td>
+                    <td class="py-4 px-6 text-center">${site.firm_power_available_mw !== null ? site.firm_power_available_mw : "Unknown"}</td>
+                    <td class="py-4 px-6 text-center">${site.max_potential_capacity_mw !== null ? site.max_potential_capacity_mw : "Unknown"}</td>
+                    <td class="py-4 px-6">
+                        <div class="font-semibold">${site.contact_name || "-"}</div>
+                        <div class="text-[10px] text-on-surface-variant">${site.contact_company || "-"}</div>
+                    </td>
+                    <td class="py-4 px-6">
+                        <span class="inline-block px-2.5 py-1 text-[9px] font-label font-bold uppercase tracking-wider ${statusBadgeColor}">
+                            ${site.lead_status || "New"}
+                        </span>
+                    </td>
+                    <td class="py-4 px-6 text-on-surface-variant">${dateStr}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function openSiteDetail(id) {
+            activeSiteId = id;
+            try {
+                const response = await fetch(`/api/admin/sites?id=${id}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    populateModal(data.site);
+                    document.getElementById("detail-modal").classList.remove("hidden");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Could not load site details.");
+            }
+        }
+
+        function populateModal(s) {
+            // Title & ID
+            document.getElementById("modal-site-id").innerText = `Site ID: #${s.id}`;
+            document.getElementById("modal-title").innerText = s.name || "Unnamed Property";
+            document.getElementById("modal-location").innerText = `${s.city || "-"}, ${s.province_state || "-"}, ${s.country || "-"}`;
+            
+            // Confidential badge
+            const confBadge = document.getElementById("modal-confidential-badge");
+            if (s.is_confidential === 1) {
+                confBadge.classList.remove("hidden");
+            } else {
+                confBadge.classList.add("hidden");
+            }
+            
+            // Edit status & Notes
+            document.getElementById("modal-status-select").value = s.lead_status || "New";
+            document.getElementById("modal-confidential-check").checked = s.is_confidential === 1;
+            document.getElementById("modal-notes-area").value = s.internal_notes || "";
+
+            // Contact details
+            document.getElementById("detail-contact-name").innerText = s.contact_name || "-";
+            document.getElementById("detail-contact-company").innerText = s.contact_company || "-";
+            
+            const emailLink = document.getElementById("detail-contact-email");
+            emailLink.innerText = s.contact_email || "-";
+            emailLink.href = s.contact_email ? `mailto:${s.contact_email}` : "#";
+
+            const phoneLink = document.getElementById("detail-contact-phone");
+            phoneLink.innerText = s.contact_phone || "-";
+            phoneLink.href = s.contact_phone ? `tel:${s.contact_phone}` : "#";
+
+            document.getElementById("detail-contact-relation").innerText = s.contact_relationship || "-";
+            document.getElementById("detail-contact-method").innerText = s.preferred_contact_method || "-";
+            document.getElementById("detail-contact-comments").innerText = s.contact_comments || "None";
+
+            // Calculations
+            document.getElementById("detail-result-class").innerText = s.classification || "-";
+            
+            const dClass = document.getElementById("detail-result-class");
+            dClass.className = "font-headline font-extrabold text-lg";
+            if (s.classification === "Promising") dClass.classList.add("text-emerald-700");
+            else if (s.classification === "Conditional") dClass.classList.add("text-amber-600");
+            else if (s.classification === "Unlikely Based on Current Information") dClass.classList.add("text-red-700");
+
+            document.getElementById("detail-result-score").innerText = `${s.calculated_score || "0"} / 100`;
+            document.getElementById("detail-result-confidence").innerText = `${s.confidence_level || "-"} Confidence`;
+
+            // Specs
+            document.getElementById("detail-prop-acreage").innerText = s.acreage !== null ? `${s.acreage} acres` : "-";
+            document.getElementById("detail-prop-use").innerText = s.current_use || "-";
+            document.getElementById("detail-prop-address").innerText = s.address || "-";
+            document.getElementById("detail-prop-structures").innerText = s.existing_infra || "None";
+            document.getElementById("detail-prop-electrical").innerText = s.existing_electrical_infra || "None";
+
+            // Power
+            document.getElementById("detail-power-existing").innerText = s.existing_capacity_mw !== null ? `${s.existing_capacity_mw} MW` : "-";
+            document.getElementById("detail-power-firm").innerText = s.firm_power_available_mw !== null ? `${s.firm_power_available_mw} MW` : "Unknown";
+            document.getElementById("detail-power-add").innerText = s.additional_power_mw !== null ? `${s.additional_power_mw} MW` : "Unknown";
+            document.getElementById("detail-power-max").innerText = s.max_potential_capacity_mw !== null ? `${s.max_potential_capacity_mw} MW` : "Unknown";
+            document.getElementById("detail-power-type").innerText = s.power_type || "-";
+            document.getElementById("detail-power-utility").innerText = s.utility_provider || "-";
+            document.getElementById("detail-power-grid").innerText = s.grid_status || "-";
+            document.getElementById("detail-power-substation").innerText = s.substation_on_near_site || "-";
+            document.getElementById("detail-power-transmission").innerText = s.transmission_infra || "-";
+            document.getElementById("detail-power-voltage").innerText = s.voltage_kv || "-";
+            document.getElementById("detail-power-timeline").innerText = s.time_to_capacity || "-";
+            document.getElementById("detail-power-cost").innerText = s.delivered_cost_mwh !== null ? `$${s.delivered_cost_mwh}/MWh` : "Unknown";
+            document.getElementById("detail-power-generation").innerText = s.generation_source || "-";
+            document.getElementById("detail-power-renew").innerText = s.renewable_pct !== null ? `${s.renewable_pct}%` : "-";
+            document.getElementById("detail-power-ppa").innerText = s.has_ppa || "-";
+            document.getElementById("detail-power-ppa-term").innerText = s.ppa_remaining_term || "-";
+            document.getElementById("detail-power-restrictions").innerText = s.demand_restrictions || "None";
+            document.getElementById("detail-power-constraints").innerText = s.other_constraints || "None";
+
+            // Fibre
+            document.getElementById("detail-fibre-avail").innerText = s.fibre_available || "-";
+            document.getElementById("detail-fibre-routes").innerText = s.diverse_routes || "-";
+            document.getElementById("detail-fibre-distance").innerText = s.distance_to_fibre || "-";
+            document.getElementById("detail-fibre-latency").innerText = s.latency_limitations || "None known";
+            document.getElementById("detail-fibre-providers").innerText = s.fibre_providers || "-";
+            document.getElementById("detail-fibre-telecom").innerText = s.telecom_infra || "None";
+
+            // Zoning
+            document.getElementById("detail-zone-class").innerText = s.zoning || "-";
+            document.getElementById("detail-zone-permitted").innerText = s.data_centre_permitted || "-";
+            document.getElementById("detail-zone-complexity").innerText = s.permitting_complexity || "-";
+            document.getElementById("detail-zone-access").innerText = s.site_access_roads || "-";
+            document.getElementById("detail-zone-approvals").innerText = s.environmental_approvals || "None";
+            document.getElementById("detail-zone-restrictions").innerText = s.environmental_restrictions || "None";
+            document.getElementById("detail-hazard-flood").innerText = s.flood_exposure || "-";
+            document.getElementById("detail-hazard-wildfire").innerText = s.wildfire_exposure || "-";
+            document.getElementById("detail-hazard-seismic").innerText = s.seismic_exposure || "-";
+            document.getElementById("detail-hazard-other").innerText = s.other_natural_hazards || "None";
+            document.getElementById("detail-zone-ports").innerText = s.proximity_airport_port || "-";
+            document.getElementById("detail-zone-construction").innerText = s.construction_logistics_constraints || "None";
+
+            // Water
+            document.getElementById("detail-water-avail").innerText = s.water_availability || "-";
+            document.getElementById("detail-water-air").innerText = s.air_cooled_compatible || "-";
+            document.getElementById("detail-water-municipal").innerText = s.municipal_water || "-";
+            document.getElementById("detail-water-industrial").innerText = s.industrial_water || "-";
+            document.getElementById("detail-water-sewer").innerText = s.sewer_access || "-";
+            document.getElementById("detail-water-gas").innerText = s.gas_availability || "-";
+            document.getElementById("detail-water-gas-dist").innerText = s.distance_to_gas_pipeline || "-";
+            document.getElementById("detail-water-services").innerText = s.existing_industrial_services || "None";
+
+            // Community
+            document.getElementById("detail-comm-attitude").innerText = s.community_attitude || "-";
+            document.getElementById("detail-comm-indigenous-req").innerText = s.indigenous_engagement_req || "-";
+            document.getElementById("detail-comm-protests").innerText = s.history_protests || "-";
+            document.getElementById("detail-comm-litigation").innerText = s.known_litigation || "-";
+            document.getElementById("detail-comm-muni-support").innerText = s.municipal_support || "-";
+            document.getElementById("detail-comm-ecdev").innerText = s.economic_dev_support || "-";
+            document.getElementById("detail-comm-indigenous-rel").innerText = s.indigenous_relationships || "-";
+            document.getElementById("detail-comm-concerns").innerText = s.other_stakeholder_concerns || "None";
+
+            // Goals
+            document.getElementById("detail-goal-objective").innerText = s.opportunity_type || "-";
+            document.getElementById("detail-goal-mw").innerText = s.target_size_mw !== null ? `${s.target_size_mw} MW` : "-";
+            document.getElementById("detail-goal-types").innerText = s.project_types ? s.project_types.join(", ") : "-";
+        }
+
+        async function saveSiteDetails() {
+            if (!activeSiteId) return;
+            
+            const payload = {
+                id: activeSiteId,
+                lead_status: document.getElementById("modal-status-select").value,
+                is_confidential: document.getElementById("modal-confidential-check").checked,
+                internal_notes: document.getElementById("modal-notes-area").value
+            };
+
+            try {
+                const response = await fetch("/api/admin/sites", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert("Site details successfully updated.");
+                    closeModal();
+                    fetchSites(); // refresh table
+                } else {
+                    alert("Failed to update site details: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connection error while saving changes.");
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("detail-modal").classList.add("hidden");
+            activeSiteId = null;
+        }
+
+        function exportCSV() {
+            const q = document.getElementById("filter-search").value;
+            const sortBy = document.getElementById("filter-sort-by").value;
+            const classification = document.getElementById("filter-classification").value;
+            const country = document.getElementById("filter-country") ? document.getElementById("filter-country").value : "";
+            const prov = document.getElementById("filter-prov") ? document.getElementById("filter-prov").value : "";
+            const opp = document.getElementById("filter-opportunity").value;
+            const minFirm = document.getElementById("filter-min-firm").value;
+            
+            let url = `/api/admin/sites?export=csv&q=${encodeURIComponent(q)}&sort_by=${sortBy}`;
+            if (classification) url += `&classification=${encodeURIComponent(classification)}`;
+            if (country) url += `&country=${encodeURIComponent(country)}`;
+            if (prov) url += `&province_state=${encodeURIComponent(prov)}`;
+            if (opp) url += `&opportunity_type=${encodeURIComponent(opp)}`;
+            if (minFirm) url += `&min_firm_mw=${encodeURIComponent(minFirm)}&min_potential_mw=${encodeURIComponent(minFirm)}`;
+
+            // Force download
+            window.location.href = url;
+        }
+
+        // Run Auth Check on start
+        checkAuth();
+    </script>
+</body>
+</html>

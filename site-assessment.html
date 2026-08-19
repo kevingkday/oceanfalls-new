@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Data Centre Site Assessment — Ocean Falls Technology Corp</title>
+    <meta name="description" content="Evaluate potential properties and sites for AI, HPC, and data centre infrastructure suitability." />
+    <link rel="canonical" href="https://oceanfalls.com/site-assessment" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Public_Sans:wght@300;400;500&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#ccdde4",
+                        "on-primary-container": "#39527b",
+                        "surface": "#f7fafc",
+                        "on-tertiary-fixed": "#394355",
+                        "on-error": "#fff7f6",
+                        "primary-dim": "#3a537c",
+                        "background": "#f7fafc",
+                        "inverse-primary": "#aec7f7",
+                        "secondary-fixed": "#d8e3fa",
+                        "surface-container-low": "#eff4f7",
+                        "secondary": "#546073",
+                        "error-dim": "#4e0309",
+                        "on-surface-variant": "#546166",
+                        "outline": "#707d82",
+                        "tertiary-fixed-dim": "#d0daf0",
+                        "on-primary": "#f6f7ff",
+                        "surface-variant": "#d7e5eb",
+                        "secondary-fixed-dim": "#cad5ec",
+                        "primary": "#465f88",
+                        "on-tertiary-container": "#4b5568",
+                        "outline-variant": "#a7b4ba",
+                        "surface-tint": "#465f88",
+                        "primary-fixed-dim": "#c0d5ff",
+                        "on-background": "#283439",
+                        "on-primary-fixed": "#264067",
+                        "surface-bright": "#f7fafc",
+                        "primary-fixed": "#d6e3ff",
+                        "on-surface": "#283439",
+                        "on-primary-fixed-variant": "#435c85",
+                        "surface-container-highest": "#d7e5eb",
+                        "error-container": "#fe8983",
+                        "error": "#9f403d",
+                        "on-secondary-container": "#475265",
+                        "on-secondary": "#f8f8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#354052",
+                        "surface-container-high": "#dfeaef",
+                        "on-secondary-fixed-variant": "#515c6f",
+                        "surface-container": "#e7eff3",
+                        "on-error-container": "#752121",
+                        "secondary-container": "#d8e3fa",
+                        "inverse-surface": "#0b0f10",
+                        "secondary-dim": "#495467",
+                        "tertiary-dim": "#495366",
+                        "primary-container": "#d6e3ff",
+                        "inverse-on-surface": "#9a9d9f",
+                        "tertiary-container": "#dee8ff",
+                        "tertiary-fixed": "#dee8ff",
+                        "on-tertiary": "#f8f8ff",
+                        "tertiary": "#555f72",
+                        "on-tertiary-fixed-variant": "#555f72"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Public Sans"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f7fafc;
+            color: #283439;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-surface/80 backdrop-blur-lg fixed w-full top-0 z-50">
+        <div class="flex justify-between items-center w-full px-12 py-6 max-w-full">
+            <a href="index.html" class="font-headline font-bold text-xl tracking-tighter text-on-background">
+                Ocean Falls
+            </a>
+            <div class="hidden md:flex items-center gap-10">
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="index.html#about">About</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="index.html#focus">Capabilities</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-primary border-b-2 border-primary pb-1 transition-colors duration-200"
+                    href="site-assessment.html">Site Assessment</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="index.html#risks">Risks</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="index.html#strategy">Approach</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="investors.html">Investors</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="index.html#contact">Contact</a>
+            </div>
+            <a href="index.html#contact"
+                class="bg-primary text-on-primary px-6 py-2 font-label font-semibold tracking-tight uppercase text-sm hover:opacity-90 transition-opacity">
+                Corporate Inquiries
+            </a>
+        </div>
+        <div class="bg-surface-dim h-[1px] w-full"></div>
+    </nav>
+
+    <main class="pt-[73px]">
+        <!-- Page Header -->
+        <section class="py-20 px-12 bg-surface border-b border-outline-variant/15">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="font-headline font-extrabold text-4xl md:text-5xl tracking-tighter text-on-background mb-4">
+                    Could This Property Support an AI Data Centre?
+                </h1>
+                <p class="font-body text-lg leading-relaxed text-on-surface-variant max-w-3xl">
+                    Submit basic information about a property, power source, or industrial site. Ocean Falls will evaluate the specifications across the key infrastructure, regulatory, and community gates that govern data centre development viability.
+                </p>
+                <div class="mt-4 text-xs font-label text-primary font-semibold uppercase tracking-wider flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">schedule</span> Takes approximately 5–10 minutes • Technical questions have "Not Sure" options
+                </div>
+            </div>
+        </section>
+
+        <!-- Assessment Wizard Container -->
+        <section class="py-16 px-6 md:px-12 bg-surface">
+            <div class="max-w-4xl mx-auto bg-surface-container-low border border-outline-variant/15 p-8 md:p-12 shadow-sm" id="wizard-box">
+                
+                <!-- Progress Indicator -->
+                <div class="mb-12">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-label text-xs font-bold uppercase tracking-wider text-primary" id="step-title">
+                            Step 1 of 7: Property Details
+                        </span>
+                        <span class="font-label text-xs font-bold text-on-surface-variant" id="step-percentage">
+                            14% Complete
+                        </span>
+                    </div>
+                    <div class="w-full bg-surface-container-high h-[4px]">
+                        <div class="bg-primary h-full transition-all duration-300" id="progress-bar" style="width: 14.3%;"></div>
+                    </div>
+                </div>
+
+                <!-- Wizard Form -->
+                <form id="assessment-form" onsubmit="handleAssessmentSubmit(event)" class="space-y-8">
+                    
+                    <!-- STEP 1: Property -->
+                    <div id="step-1" class="space-y-6">
+                        <h3 class="font-headline font-bold text-2xl border-b border-outline-variant/20 pb-2 mb-6">Property Profile</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="property_name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Property Name (optional)</label>
+                                <input type="text" id="property_name" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Fraser River Industrial Park" />
+                            </div>
+                            <div>
+                                <label for="ownership_status" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Your Relationship to Property *</label>
+                                <select id="ownership_status" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select status...</option>
+                                    <option value="I own the property">I own the property</option>
+                                    <option value="I represent the owner">I represent the owner</option>
+                                    <option value="Municipality/community">Municipality/community representative</option>
+                                    <option value="Utility/power provider">Utility/power provider</option>
+                                    <option value="Broker/advisor">Broker/advisor</option>
+                                    <option value="Developer/operator">Developer/operator</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="street_address" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Street Address or General Location *</label>
+                            <input type="text" id="street_address" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 100 Industrial Parkway, Section 4" />
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="city" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">City/Community *</label>
+                                <input type="text" id="city" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Prince George" />
+                            </div>
+                            <div>
+                                <label for="province_state" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Province / State *</label>
+                                <input type="text" id="province_state" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. BC" />
+                            </div>
+                            <div>
+                                <label for="country" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Country *</label>
+                                <input type="text" id="country" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Canada" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="acreage" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Approximate Acreage *</label>
+                                <input type="number" id="acreage" step="any" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 45" />
+                            </div>
+                            <div>
+                                <label for="current_property_use" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Current Property Use</label>
+                                <input type="text" id="current_property_use" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Agriculture / Light Industrial" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="existing_infra" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Buildings or Industrial Infrastructure</label>
+                                <input type="text" id="existing_infra" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Warehouse structure, concrete pad" />
+                            </div>
+                            <div>
+                                <label for="existing_electrical_infra" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Electrical, Crypto, or High-Load Assets</label>
+                                <input type="text" id="existing_electrical_infra" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 2MW mining shed on-site" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: Power -->
+                    <div id="step-2" class="hidden space-y-6">
+                        <div class="border-b border-outline-variant/20 pb-2 mb-6 flex justify-between items-end">
+                            <h3 class="font-headline font-bold text-2xl">Power Capacity &amp; Grid Connection</h3>
+                            <span class="text-xs text-primary font-bold uppercase tracking-wider">Primary Gate 1</span>
+                        </div>
+                        
+                        <div class="bg-primary/5 p-5 border border-primary/20 text-xs font-body text-on-surface-variant leading-relaxed mb-6">
+                            <strong>Note on Power vs. Site Viability:</strong> Speculative or "potential" power is evaluated separately from firm deliverable capacity. Grid availability must align with actual interconnection timelines.
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="existing_capacity_mw" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Active Capacity (MW)</label>
+                                <input type="text" id="existing_capacity_mw" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 2 or Unknown" />
+                            </div>
+                            <div>
+                                <label for="firm_power_available_mw" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Estimated Firm Power Available Now (MW) *</label>
+                                <select id="firm_power_available_mw" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select firm capacity...</option>
+                                    <option value="0">0 MW (None currently)</option>
+                                    <option value="1">1 - 4 MW</option>
+                                    <option value="5">5 - 19 MW</option>
+                                    <option value="20">20 - 49 MW</option>
+                                    <option value="50">50+ MW</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="additional_power_mw" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Additional Capacity Potentially Available (MW)</label>
+                                <select id="additional_power_mw" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="0" selected>0 MW</option>
+                                    <option value="10">10 - 29 MW</option>
+                                    <option value="30">30 - 99 MW</option>
+                                    <option value="100">100+ MW</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="max_potential_capacity_mw" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Maximum Theoretical Potential Capacity (MW)</label>
+                                <select id="max_potential_capacity_mw" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="0" selected>0 MW</option>
+                                    <option value="10">10 - 49 MW</option>
+                                    <option value="50">50 - 99 MW</option>
+                                    <option value="100">100+ MW</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="power_type" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Power Type / Reliability Profile *</label>
+                                <select id="power_type" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select power profile...</option>
+                                    <option value="Firm">Firm (Non-interruptible)</option>
+                                    <option value="Interruptible">Interruptible</option>
+                                    <option value="Curtailable">Curtailable</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="utility_provider" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Utility or Power Provider Name</label>
+                                <input type="text" id="utility_provider" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. BC Hydro, FortisBC" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="grid_status" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Grid Status &amp; Generation Connection *</label>
+                                <select id="grid_status" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select grid status...</option>
+                                    <option value="Grid-connected">Grid-connected (Standard Utility)</option>
+                                    <option value="Behind-the-meter generation">Behind-the-meter generation (On-site source)</option>
+                                    <option value="Direct connection to generation">Direct connection to generation asset</option>
+                                    <option value="Private-use network">Private-use microgrid</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="substation_on_near_site" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Substation Location *</label>
+                                <select id="substation_on_near_site" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select location...</option>
+                                    <option value="On site">On site</option>
+                                    <option value="Near site (< 1 km)">Near site (&lt; 1 km)</option>
+                                    <option value="Within regional distance (1 - 5 km)">Within regional distance (1 - 5 km)</option>
+                                    <option value="Distant (> 5 km)">Distant (&gt; 5 km)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="transmission_infra" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing High-Voltage Transmission on Property?</label>
+                                <select id="transmission_infra" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes">Yes (high-voltage lines cross property)</option>
+                                    <option value="No">No (adjacent/nearby only)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="voltage_kv" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Transmission Voltage (if known)</label>
+                                <input type="text" id="voltage_kv" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 69 kV, 138 kV, 230 kV or Unknown" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="time_to_capacity" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Expected Time to Obtain Additional Capacity *</label>
+                                <select id="time_to_capacity" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select timeline...</option>
+                                    <option value="< 1 year">&lt; 1 year (Capacity study completed)</option>
+                                    <option value="1-2 years">1 - 2 years</option>
+                                    <option value="2-5 years">2 - 5 years</option>
+                                    <option value="5+ years">5+ years</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="knows_cost" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Do you know the delivered electricity cost? *</label>
+                                <select id="knows_cost" required onchange="toggleCostField(this.value)" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="No" selected>No / Unknown</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="cost-field-container" class="hidden">
+                            <label for="delivered_cost_mwh" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Delivered Electricity Cost ($/MWh)</label>
+                            <input type="number" id="delivered_cost_mwh" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 55" />
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="generation_source" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Primary Generation Source *</label>
+                                <select id="generation_source" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select generation...</option>
+                                    <option value="Hydro">Hydroelectric</option>
+                                    <option value="Natural gas">Natural Gas</option>
+                                    <option value="Nuclear">Nuclear</option>
+                                    <option value="Wind">Wind</option>
+                                    <option value="Solar">Solar</option>
+                                    <option value="Mixed grid">Mixed Grid Profile</option>
+                                    <option value="Other">Other / Industrial cogeneration</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="renewable_pct" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Estimated % Renewable / Low-Carbon (if known)</label>
+                                <input type="number" id="renewable_pct" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 95" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="has_ppa" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing PPA or Long-Term Power Contract?</label>
+                                <select id="has_ppa" onchange="togglePpaFields(this.value)" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="No" selected>No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                            <div id="ppa-term-container" class="hidden">
+                                <label for="ppa_remaining_term" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Remaining Term of PPA (Years)</label>
+                                <input type="text" id="ppa_remaining_term" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 8 years" />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="demand_restrictions" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Known Curtailment or Demand Restrictions?</label>
+                                <input type="text" id="demand_restrictions" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Restricted in summer peaks, or None" />
+                            </div>
+                            <div>
+                                <label for="other_constraints" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Other Known Grid/System Constraints</label>
+                                <input type="text" id="other_constraints" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Local transformer capacity limit" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Connectivity -->
+                    <div id="step-3" class="hidden space-y-6">
+                        <div class="border-b border-outline-variant/20 pb-2 mb-6 flex justify-between items-end">
+                            <h3 class="font-headline font-bold text-2xl">Connectivity &amp; Fibre</h3>
+                            <span class="text-xs text-primary font-bold uppercase tracking-wider">Primary Gate 2</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fibre_available" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Fibre Available at Property Boundary? *</label>
+                                <select id="fibre_available" required onchange="toggleFibreFields(this.value)" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select fibre availability...</option>
+                                    <option value="Yes - on property">Yes (Active on-site)</option>
+                                    <option value="Yes">Yes (At boundary line)</option>
+                                    <option value="No">No</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div id="fibre-dist-container">
+                                <label for="distance_to_fibre" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Distance to Nearest Trunk Fibre Route</label>
+                                <select id="distance_to_fibre" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="On site" selected>On site / Adjacent</option>
+                                    <option value="< 1 km">&lt; 1 km</option>
+                                    <option value="1-5 km">1 - 5 km</option>
+                                    <option value="5-10 km">5 - 10 km</option>
+                                    <option value="> 10 km">&gt; 10 km</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="fibre-details-container" class="space-y-6">
+                            <div>
+                                <label for="fibre_providers" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Known Fibre Providers</label>
+                                <input type="text" id="fibre_providers" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Shaw, Telus, Rogers, Zayo" />
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="diverse_routes" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Number of Physically Diverse Fibre Routes *</label>
+                                    <select id="diverse_routes" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                        <option value="" disabled selected>Select routing diversity...</option>
+                                        <option value="None known">None known (Single route)</option>
+                                        <option value="One">One route</option>
+                                        <option value="Two">Two routes (Standard redundant)</option>
+                                        <option value="Three or more">Three or more (High diversity)</option>
+                                        <option value="Unknown">Unknown / Not Sure</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="latency_limitations" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Any Known Latency or Connectivity Limits?</label>
+                                    <input type="text" id="latency_limitations" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Remote rural backhaul limitations" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="telecom_infra" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Telecommunications Equipment on Site</label>
+                            <input type="text" id="telecom_infra" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Cellular mast, carrier cabinet, or None" />
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: Development -->
+                    <div id="step-4" class="hidden space-y-6">
+                        <div class="border-b border-outline-variant/20 pb-2 mb-6 flex justify-between items-end">
+                            <h3 class="font-headline font-bold text-2xl">Zoning &amp; Development Feasibility</h3>
+                            <span class="text-xs text-primary font-bold uppercase tracking-wider">Primary Gate 3</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="zoning" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Current Zoning Designation *</label>
+                                <input type="text" id="zoning" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Heavy Industrial M-2" />
+                            </div>
+                            <div>
+                                <label for="data_centre_permitted" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Is a data centre permitted under this zoning? *</label>
+                                <select id="data_centre_permitted" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select zoning status...</option>
+                                    <option value="permitted use">Permitted Use (Right-to-build)</option>
+                                    <option value="No zoning restriction">No zoning restriction</option>
+                                    <option value="discretionary approval">Discretionary approval / Development permit</option>
+                                    <option value="rezoning required">Rezoning required</option>
+                                    <option value="not permitted">Not permitted (Explicitly prohibited)</option>
+                                    <option value="unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="permitting_complexity" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Estimated Local Permitting Complexity *</label>
+                                <select id="permitting_complexity" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select complexity...</option>
+                                    <option value="Low complexity">Low complexity (Streamlined industrial path)</option>
+                                    <option value="Moderate complexity">Moderate complexity (Standard development review)</option>
+                                    <option value="High complexity">High complexity (Complex environmental/public steps)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="environmental_approvals" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Environmental Approvals / Assessments</label>
+                                <input type="text" id="environmental_approvals" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Stage 1 ESA completed in 2024" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="environmental_restrictions" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Known Environmental Restrictions or Protected Areas</label>
+                            <input type="text" id="environmental_restrictions" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Wetland buffer on eastern edge, stream boundary" />
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="flood_exposure" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Flood Risk Exposure *</label>
+                                <select id="flood_exposure" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select flood risk...</option>
+                                    <option value="None">None (Outside 500-year zone)</option>
+                                    <option value="Low">Low (100-500 year zone)</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High (Within 100-year floodplain)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="wildfire_exposure" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Wildfire Risk Exposure *</label>
+                                <select id="wildfire_exposure" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select wildfire risk...</option>
+                                    <option value="None">None</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High (High-density forest boundary)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="seismic_exposure" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Seismic Risk Exposure *</label>
+                                <select id="seismic_exposure" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select seismic risk...</option>
+                                    <option value="None">None / Negligible</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High (Known fault line region)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="other_natural_hazards" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Other Known Natural Hazards</label>
+                                <input type="text" id="other_natural_hazards" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Landslide risk, heavy snowfall loads" />
+                            </div>
+                            <div>
+                                <label for="site_access_roads" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Property Access / Roads</label>
+                                <select id="site_access_roads" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Paved all-weather road" selected>Paved all-weather road access</option>
+                                    <option value="Unpaved industrial road">Unpaved gravel road access</option>
+                                    <option value="No road access">No road access (Requires construction)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="proximity_airport_port" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Proximity to Commercial Airport or Sea Port</label>
+                                <input type="text" id="proximity_airport_port" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 45 min drive to regional airport" />
+                            </div>
+                            <div>
+                                <label for="construction_logistics_constraints" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Logistical or Construction Constraints</label>
+                                <input type="text" id="construction_logistics_constraints" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Weight limit on bridge, seasonal load limits" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: Water & Infrastructure -->
+                    <div id="step-5" class="hidden space-y-6">
+                        <h3 class="font-headline font-bold text-2xl border-b border-outline-variant/20 pb-2 mb-6">Water &amp; Supporting Infrastructure</h3>
+                        
+                        <div class="bg-primary/5 p-5 border border-primary/20 text-xs font-body text-on-surface-variant leading-relaxed mb-6">
+                            <strong>Note on Natural Gas:</strong> Natural gas is evaluated as a supporting or optional backing power infrastructure option. It is not a mandatory requirement for data centre development.
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="water_availability" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Local Water Availability *</label>
+                                <select id="water_availability" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select water availability...</option>
+                                    <option value="Abundant">Abundant (Large river/lake/municipal capacity)</option>
+                                    <option value="Moderate">Moderate (Standard industrial supply)</option>
+                                    <option value="Scarce">Scarce (Highly restricted or dry region)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="air_cooled_compatible" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Ability to support air-cooled or low-water systems?</label>
+                                <select id="air_cooled_compatible" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes" selected>Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="municipal_water" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Municipal Water Connection?</label>
+                                <select id="municipal_water" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes">Yes (active connection on property)</option>
+                                    <option value="No">No (requires line extension)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="industrial_water" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Industrial or Raw Water Connection?</label>
+                                <select id="industrial_water" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No" selected>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="sewer_access" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Wastewater / Sewer System Access</label>
+                                <select id="sewer_access" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes">Yes (active hookup on-site)</option>
+                                    <option value="No">No (septic or line extension required)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="gas_availability" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Natural Gas Availability</label>
+                                <select id="gas_availability" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Yes">Yes (active line on-site)</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="distance_to_gas_pipeline" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Distance to Gas Pipeline (if known)</label>
+                                <input type="text" id="distance_to_gas_pipeline" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. On-site, or < 1km" />
+                            </div>
+                            <div>
+                                <label for="existing_industrial_services" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Other Existing Industrial Services</label>
+                                <input type="text" id="existing_industrial_services" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Compressed air, industrial zoning district" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 6: Community & Stakeholders -->
+                    <div id="step-6" class="hidden space-y-6">
+                        <h3 class="font-headline font-bold text-2xl border-b border-outline-variant/20 pb-2 mb-6">Community &amp; Stakeholder Environment</h3>
+                        
+                        <div class="bg-primary/5 p-5 border border-primary/20 text-xs font-body text-on-surface-variant leading-relaxed mb-6">
+                            <strong>Note on Stakeholder Relations:</strong> Indigenous engagement and local municipal alignment are treated as core development planning items, rather than obstacles to be cleared.
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="community_attitude" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">General Community Attitude *</label>
+                                <select id="community_attitude" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select community profile...</option>
+                                    <option value="Supportive">Supportive (Actively seeking development)</option>
+                                    <option value="Mostly supportive">Mostly supportive</option>
+                                    <option value="Neutral/unknown">Neutral / Unknown</option>
+                                    <option value="Some opposition">Some opposition (to industrial growth)</option>
+                                    <option value="Significant opposition">Significant active opposition</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="indigenous_engagement_req" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">First Nations Consultation Requirements *</label>
+                                <select id="indigenous_engagement_req" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select consultation requirement...</option>
+                                    <option value="Yes">Yes (Located on traditional/treaty lands)</option>
+                                    <option value="No">No (Not expected)</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="history_protests" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">History of Local Environmental/Industrial Protests?</label>
+                                <select id="history_protests" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="No" selected>No</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="known_litigation" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Known Zoning or Development Litigation in Area?</label>
+                                <select id="known_litigation" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="No" selected>No</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="municipal_support" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Level of Municipal/Local Government Support</label>
+                                <select id="municipal_support" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Strongly Supportive" selected>Strongly Supportive</option>
+                                    <option value="Neutral">Neutral</option>
+                                    <option value="Reserved / Concerned">Reserved / Concerned</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="economic_dev_support" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Economic Development Agency Engagement</label>
+                                <select id="economic_dev_support" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown">Unknown / Not Sure</option>
+                                    <option value="Actively engaged" selected>Actively engaged &amp; supporting</option>
+                                    <option value="Not engaged">Not currently engaged</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="indigenous_relationships" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Existing Relationships with Local First Nations</label>
+                                <select id="indigenous_relationships" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="Unknown" selected>Unknown / Unestablished</option>
+                                    <option value="Active discussions underway">Active discussions underway</option>
+                                    <option value="Partnership or agreement in place">Partnership or agreement in place</option>
+                                    <option value="No contact established">No contact established</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="other_stakeholder_concerns" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Any Other Key Community Concerns</label>
+                                <input type="text" id="other_stakeholder_concerns" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. Visual impact, noise, grid load concerns" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 7: Opportunity & Objectives -->
+                    <div id="step-7" class="hidden space-y-6">
+                        <h3 class="font-headline font-bold text-2xl border-b border-outline-variant/20 pb-2 mb-6">Opportunity Type &amp; Project Objectives</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="opportunity_type" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Primary Objective *</label>
+                                <select id="opportunity_type" required class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
+                                    <option value="" disabled selected>Select objective...</option>
+                                    <option value="Sell the property">Sell the property</option>
+                                    <option value="Lease the property">Lease the property</option>
+                                    <option value="Find a data-centre developer/operator">Find a data-centre developer/operator</option>
+                                    <option value="Find an infrastructure partner">Find an infrastructure partner</option>
+                                    <option value="Develop the site directly">Develop the site directly</option>
+                                    <option value="Attract economic development">Attract economic development</option>
+                                    <option value="Market available power">Market available power</option>
+                                    <option value="Convert an existing industrial site">Convert an existing industrial site</option>
+                                    <option value="Convert an existing crypto/data-centre site">Convert an existing crypto/data-centre site</option>
+                                    <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate site suitability only</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="target_size_mw" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Approximate Target Project Size (MW)</label>
+                                <input type="number" id="target_size_mw" class="w-full bg-surface border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. 15" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-3">Target Workload Types (Select all that apply)</span>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="AI/HPC" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    AI / HPC (Training)
+                                </label>
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="Inference" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    AI Inference
+                                </label>
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="Colocation" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    Colocation
+                                </label>
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="Hyperscale" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    Hyperscale
+                                </label>
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="Cloud" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    Cloud Services
+                                </label>
+                                <label class="flex items-center gap-3 text-sm font-body cursor-pointer">
+                                    <input type="checkbox" name="project_types" value="General data centre" class="text-primary focus:ring-primary rounded-none border-outline-variant/30" />
+                                    General Data Centre
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Legal Disclaimer -->
+                        <div class="bg-surface-container-high p-6 border-l-4 border-primary mt-8">
+                            <h4 class="font-headline font-bold text-xs uppercase tracking-wider text-primary mb-2">Preliminary Assessment Disclaimer</h4>
+                            <p class="font-body text-xs text-on-surface-variant leading-relaxed">
+                                The assessment is preliminary and informational only. It does not constitute engineering, utility, environmental, legal, financial, investment, insurance or other professional advice. Site characteristics and infrastructure availability must be independently verified before any development or investment decision.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Buttons -->
+                    <div class="border-t border-outline-variant/20 pt-8 flex justify-between items-center">
+                        <button type="button" id="back-btn" onclick="prevStep()" class="hidden border border-outline-variant/40 hover:bg-surface-container-high text-on-background px-6 py-3 font-label font-semibold uppercase tracking-widest text-xs transition-colors duration-300">
+                            Back
+                        </button>
+                        <button type="button" id="next-btn" onclick="nextStep()" class="bg-primary hover:bg-on-background text-on-primary px-8 py-4 font-label font-semibold uppercase tracking-widest text-xs transition-colors duration-300 ml-auto">
+                            Next
+                        </button>
+                        <button type="submit" id="submit-btn" class="hidden bg-primary hover:bg-on-background text-on-primary px-8 py-4 font-label font-semibold uppercase tracking-widest text-xs transition-colors duration-300 ml-auto">
+                            Calculate Assessment
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- RESULT CONTAINER (Hidden until submission) -->
+            <div class="max-w-4xl mx-auto bg-surface-container-low border border-outline-variant/15 p-8 md:p-12 shadow-sm hidden" id="results-box">
+                <div class="border-b border-outline-variant/20 pb-4 mb-8">
+                    <h2 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-2">Assessment Completed</h2>
+                    <h3 class="font-headline font-bold text-3xl text-on-background">Preliminary Site Report</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12 items-center bg-surface p-8 border border-outline-variant/15">
+                    <div class="md:col-span-8">
+                        <span class="text-xs uppercase font-label font-bold tracking-wider text-on-surface-variant block mb-1">Preliminary Classification</span>
+                        <div class="font-headline font-extrabold text-2xl md:text-3xl text-on-background tracking-tighter" id="result-classification">
+                            Conditional — Further Investigation Recommended
+                        </div>
+                    </div>
+                    <div class="md:col-span-4 md:text-right border-t md:border-t-0 md:border-l border-outline-variant/20 pt-4 md:pt-0 md:pl-8">
+                        <span class="text-xs uppercase font-label font-bold tracking-wider text-on-surface-variant block mb-1">Assessment Confidence</span>
+                        <div class="font-headline font-bold text-lg text-primary" id="result-confidence">
+                            Medium Confidence
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three Lists: Strengths, Verification, Constraints -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    
+                    <!-- Key Strengths -->
+                    <div class="space-y-4">
+                        <h4 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base">check_circle</span> Key Strengths
+                        </h4>
+                        <ul class="list-disc list-inside space-y-2 font-body text-sm text-on-surface-variant leading-relaxed pl-1" id="strengths-list">
+                            <!-- JS injected -->
+                        </ul>
+                    </div>
+
+                    <!-- Potential Constraints -->
+                    <div class="space-y-4">
+                        <h4 class="font-headline font-bold text-base text-error uppercase tracking-wider border-b border-outline-variant/20 pb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base">warning</span> Potential Constraints
+                        </h4>
+                        <ul class="list-disc list-inside space-y-2 font-body text-sm text-on-surface-variant leading-relaxed pl-1" id="constraints-list">
+                            <!-- JS injected -->
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Issues Requiring Verification -->
+                <div class="space-y-4 mb-12 border-t border-outline-variant/20 pt-8">
+                    <h4 class="font-headline font-bold text-base text-on-background uppercase tracking-wider border-b border-outline-variant/20 pb-2 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">help</span> Issues Requiring Verification
+                    </h4>
+                    <ul class="list-disc list-inside space-y-2 font-body text-sm text-on-surface-variant leading-relaxed pl-1" id="verification-list">
+                        <!-- JS injected -->
+                    </ul>
+                </div>
+
+                <!-- Recommended Next Steps -->
+                <div class="bg-surface-container p-8 border-l-4 border-primary mb-16">
+                    <h4 class="font-headline font-bold text-lg text-on-background mb-4">Recommended Next Steps</h4>
+                    <ol class="list-decimal list-inside space-y-3 font-body text-sm text-on-surface-variant leading-relaxed pl-1" id="steps-list">
+                        <!-- JS injected -->
+                    </ol>
+                </div>
+
+                <!-- Lead Form / Lead CTA -->
+                <div class="border-t border-outline-variant/20 pt-12" id="lead-form-section">
+                    <div class="max-w-2xl mx-auto text-center mb-10">
+                        <h3 class="font-headline font-bold text-2xl text-on-background mb-3">Want Ocean Falls to Review the Site?</h3>
+                        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                            A preliminary online assessment cannot replace utility, engineering, environmental, legal or technical due diligence. Ocean Falls can review the opportunity in more detail and help identify the work required to determine whether the site should advance.
+                        </p>
+                    </div>
+
+                    <form id="lead-form" onsubmit="handleLeadSubmit(event)" class="space-y-6 max-w-xl mx-auto bg-surface p-8 border border-outline-variant/15">
+                        <input type="hidden" id="lead_site_id" value="" />
+                        <div>
+                            <label for="lead_name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Your Name *</label>
+                            <input type="text" id="lead_name" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Full Name" />
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="lead_company" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Company Name *</label>
+                                <input type="text" id="lead_company" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Your Company" />
+                            </div>
+                            <div>
+                                <label for="lead_relationship" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Relationship to Property *</label>
+                                <select id="lead_relationship" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors">
+                                    <option value="" disabled selected>Select relationship...</option>
+                                    <option value="I own the property">I own the property</option>
+                                    <option value="I represent the owner">I represent the owner</option>
+                                    <option value="Municipality/community">Municipality/community</option>
+                                    <option value="Utility/power provider">Utility/power provider</option>
+                                    <option value="Broker/advisor">Broker/advisor</option>
+                                    <option value="Developer/operator">Developer/operator</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="lead_email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Email Address *</label>
+                                <input type="email" id="lead_email" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="name@company.com" />
+                            </div>
+                            <div>
+                                <label for="lead_phone" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Phone Number</label>
+                                <input type="tel" id="lead_phone" class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="+1 (604) 555-0199" />
+                            </div>
+                        </div>
+                        <div>
+                            <label for="lead_contact_method" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Preferred Contact Method *</label>
+                            <select id="lead_contact_method" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors">
+                                    <option value="Email" selected>Email</option>
+                                    <option value="Phone">Phone</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="lead_comments" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Short Additional Comments</label>
+                            <textarea id="lead_comments" rows="3" class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Any specific timeline requirements or details you'd like to share..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-on-primary py-4 font-label font-semibold uppercase tracking-widest text-sm hover:bg-on-background transition-colors duration-300">
+                            Request a Detailed Site Review
+                        </button>
+                    </form>
+                </div>
+
+                <div class="border-t border-outline-variant/20 pt-8 mt-12 text-center">
+                    <button type="button" onclick="resetAssessment()" class="border border-outline-variant/40 hover:bg-surface-container-low px-6 py-3 font-label font-semibold uppercase tracking-widest text-xs transition-colors duration-300">
+                        Assess Another Property
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-low w-full border-t border-outline-variant/15">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-12 py-16 w-full max-w-full items-start">
+            <div class="space-y-6">
+                <div class="font-headline font-bold text-lg text-on-background">
+                    Ocean Falls
+                </div>
+                <p class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-surface-variant">
+                    &copy; 2026 Ocean Falls Technology Corp. All rights reserved.
+                </p>
+                <p class="font-body text-xs leading-relaxed text-on-surface-variant/75">
+                    Insurance products and advisory services are provided by Ocean Falls Insurance Services Limited.
+                </p>
+                <p class="font-body text-sm leading-relaxed text-on-surface-variant flex items-center gap-2">
+                    <svg class="w-4 h-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.733.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                    <a href="tel:+17789065933" class="hover:text-primary transition-colors">+1 778-906-5933</a>
+                </p>
+                <p class="font-body text-xs leading-relaxed tracking-wide text-on-surface-variant">
+                    Powered by <a href="https://kevinday.ai" target="_blank" rel="noopener noreferrer" class="hover:text-primary transition-colors hover:underline">KevinDay.ai</a>
+                </p>
+            </div>
+            <div></div>
+            <div class="flex flex-col gap-3 md:items-end">
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="investors.html">Investors</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="legal-notice.html">Legal Notice</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="privacy-policy.html">Privacy Policy</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Assessment JavaScript Logic -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        function updateProgress() {
+            // Update title
+            const titles = [
+                "Property Details",
+                "Power Capacity & Grid Connection",
+                "Connectivity & Fibre",
+                "Zoning & Development Feasibility",
+                "Water & Supporting Infrastructure",
+                "Community & Stakeholder Environment",
+                "Objectives & Workloads"
+            ];
+            document.getElementById("step-title").innerText = `Step ${currentStep} of ${totalSteps}: ${titles[currentStep-1]}`;
+            
+            // Update percentage text
+            const pct = Math.round((currentStep / totalSteps) * 100);
+            document.getElementById("step-percentage").innerText = `${pct}% Complete`;
+            
+            // Update progress bar width
+            document.getElementById("progress-bar").style.width = `${pct}%`;
+
+            // Toggle visibility of navigation buttons
+            document.getElementById("back-btn").style.display = currentStep > 1 ? "block" : "none";
+            document.getElementById("next-btn").style.display = currentStep < totalSteps ? "block" : "none";
+            document.getElementById("submit-btn").style.display = currentStep === totalSteps ? "block" : "none";
+        }
+
+        function nextStep() {
+            // Validate required inputs on current step before moving forward
+            const stepDiv = document.getElementById(`step-${currentStep}`);
+            const requiredInputs = stepDiv.querySelectorAll("[required]");
+            let allValid = true;
+            requiredInputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    allValid = false;
+                }
+            });
+
+            if (!allValid) return;
+
+            if (currentStep < totalSteps) {
+                document.getElementById(`step-${currentStep}`).classList.add("hidden");
+                currentStep++;
+                document.getElementById(`step-${currentStep}`).classList.remove("hidden");
+                window.scrollTo({ top: document.getElementById("wizard-box").offsetTop - 100, behavior: 'smooth' });
+                updateProgress();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step-${currentStep}`).classList.add("hidden");
+                currentStep--;
+                document.getElementById(`step-${currentStep}`).classList.remove("hidden");
+                window.scrollTo({ top: document.getElementById("wizard-box").offsetTop - 100, behavior: 'smooth' });
+                updateProgress();
+            }
+        }
+
+        // Conditional displays
+        function toggleCostField(val) {
+            const el = document.getElementById("cost-field-container");
+            if (val === "Yes") {
+                el.classList.remove("hidden");
+                document.getElementById("delivered_cost_mwh").required = true;
+            } else {
+                el.classList.add("hidden");
+                document.getElementById("delivered_cost_mwh").required = false;
+                document.getElementById("delivered_cost_mwh").value = "";
+            }
+        }
+
+        function togglePpaFields(val) {
+            const el = document.getElementById("ppa-term-container");
+            if (val === "Yes") {
+                el.classList.remove("hidden");
+            } else {
+                el.classList.add("hidden");
+                document.getElementById("ppa_remaining_term").value = "";
+            }
+        }
+
+        function toggleFibreFields(val) {
+            const el = document.getElementById("fibre-details-container");
+            const dist = document.getElementById("fibre-dist-container");
+            
+            if (val === "No" || val === "Unknown") {
+                el.classList.add("hidden");
+                document.getElementById("diverse_routes").required = false;
+                // If fiber is not present, distance matters
+                dist.classList.remove("hidden");
+            } else {
+                el.classList.remove("hidden");
+                document.getElementById("diverse_routes").required = true;
+                dist.classList.add("hidden");
+            }
+        }
+
+        async function handleAssessmentSubmit(event) {
+            event.preventDefault();
+            
+            // Extra safety validation
+            const form = event.target;
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Gather values
+            const projectTypes = [];
+            document.querySelectorAll("input[name='project_types']:checked").forEach(checkbox => {
+                projectTypes.push(checkbox.value);
+            });
+
+            const payload = {
+                property_name: document.getElementById("property_name").value,
+                ownership_status: document.getElementById("ownership_status").value,
+                street_address: document.getElementById("street_address").value,
+                city: document.getElementById("city").value,
+                province_state: document.getElementById("province_state").value,
+                country: document.getElementById("country").value,
+                acreage: document.getElementById("acreage").value,
+                current_property_use: document.getElementById("current_property_use").value,
+                existing_infra: document.getElementById("existing_infra").value,
+                existing_electrical_infra: document.getElementById("existing_electrical_infra").value,
+                
+                existing_capacity_mw: document.getElementById("existing_capacity_mw").value,
+                firm_power_available_mw: document.getElementById("firm_power_available_mw").value,
+                additional_power_mw: document.getElementById("additional_power_mw").value,
+                max_potential_capacity_mw: document.getElementById("max_potential_capacity_mw").value,
+                power_type: document.getElementById("power_type").value,
+                utility_provider: document.getElementById("utility_provider").value,
+                grid_status: document.getElementById("grid_status").value,
+                substation_on_near_site: document.getElementById("substation_on_near_site").value,
+                transmission_infra: document.getElementById("transmission_infra").value,
+                voltage_kv: document.getElementById("voltage_kv").value,
+                time_to_capacity: document.getElementById("time_to_capacity").value,
+                delivered_cost_mwh: document.getElementById("delivered_cost_mwh").value || "Unknown",
+                generation_source: document.getElementById("generation_source").value,
+                renewable_pct: document.getElementById("renewable_pct").value,
+                has_ppa: document.getElementById("has_ppa").value,
+                ppa_remaining_term: document.getElementById("ppa_remaining_term").value,
+                demand_restrictions: document.getElementById("demand_restrictions").value,
+                other_constraints: document.getElementById("other_constraints").value,
+
+                fibre_available: document.getElementById("fibre_available").value,
+                distance_to_fibre: document.getElementById("distance_to_fibre").value,
+                fibre_providers: document.getElementById("fibre_providers").value,
+                diverse_routes: document.getElementById("diverse_routes").value || "Unknown",
+                latency_limitations: document.getElementById("latency_limitations").value,
+                telecom_infra: document.getElementById("telecom_infra").value,
+
+                zoning: document.getElementById("zoning").value,
+                data_centre_permitted: document.getElementById("data_centre_permitted").value,
+                permitting_complexity: document.getElementById("permitting_complexity").value,
+                environmental_approvals: document.getElementById("environmental_approvals").value,
+                environmental_restrictions: document.getElementById("environmental_restrictions").value,
+                flood_exposure: document.getElementById("flood_exposure").value,
+                wildfire_exposure: document.getElementById("wildfire_exposure").value,
+                seismic_exposure: document.getElementById("seismic_exposure").value,
+                other_natural_hazards: document.getElementById("other_natural_hazards").value,
+                site_access_roads: document.getElementById("site_access_roads").value,
+                proximity_airport_port: document.getElementById("proximity_airport_port").value,
+                construction_logistics_constraints: document.getElementById("construction_logistics_constraints").value,
+
+                water_availability: document.getElementById("water_availability").value,
+                air_cooled_compatible: document.getElementById("air_cooled_compatible").value,
+                municipal_water: document.getElementById("municipal_water").value,
+                industrial_water: document.getElementById("industrial_water").value,
+                sewer_access: document.getElementById("sewer_access").value,
+                gas_availability: document.getElementById("gas_availability").value,
+                distance_to_gas_pipeline: document.getElementById("distance_to_gas_pipeline").value,
+                existing_industrial_services: document.getElementById("existing_industrial_services").value,
+
+                community_attitude: document.getElementById("community_attitude").value,
+                indigenous_engagement_req: document.getElementById("indigenous_engagement_req").value,
+                history_protests: document.getElementById("history_protests").value,
+                known_litigation: document.getElementById("known_litigation").value,
+                municipal_support: document.getElementById("municipal_support").value,
+                economic_dev_support: document.getElementById("economic_dev_support").value,
+                indigenous_relationships: document.getElementById("indigenous_relationships").value,
+                other_stakeholder_concerns: document.getElementById("other_stakeholder_concerns").value,
+
+                opportunity_type: document.getElementById("opportunity_type").value,
+                target_size_mw: document.getElementById("target_size_mw").value,
+                project_types: projectTypes
+            };
+
+            // Disable button
+            document.getElementById("submit-btn").disabled = true;
+            document.getElementById("submit-btn").innerText = "Analyzing Site...";
+
+            try {
+                const response = await fetch("/api/assessments", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayResults(data.result, data.site_id);
+                } else {
+                    alert("Failed to analyze site: " + data.message);
+                    document.getElementById("submit-btn").disabled = false;
+                    document.getElementById("submit-btn").innerText = "Calculate Assessment";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during submission. Please try again.");
+                document.getElementById("submit-btn").disabled = false;
+                document.getElementById("submit-btn").innerText = "Calculate Assessment";
+            }
+        }
+
+        function displayResults(res, siteId) {
+            // Hide wizard, show result
+            document.getElementById("wizard-box").classList.add("hidden");
+            document.getElementById("results-box").classList.remove("hidden");
+            window.scrollTo({ top: document.getElementById("results-box").offsetTop - 100, behavior: 'smooth' });
+
+            // Set classification text
+            document.getElementById("result-classification").innerText = res.classification;
+            
+            // Add style based on classification
+            const classDiv = document.getElementById("result-classification");
+            classDiv.className = "font-headline font-extrabold text-2xl md:text-3xl tracking-tighter";
+            if (res.classification === "Promising") {
+                classDiv.classList.add("text-emerald-700");
+            } else if (res.classification === "Conditional") {
+                classDiv.classList.add("text-amber-600");
+            } else if (res.classification === "Significant Due Diligence Required") {
+                classDiv.classList.add("text-primary");
+            } else {
+                classDiv.classList.add("text-red-700");
+            }
+
+            document.getElementById("result-confidence").innerText = `${res.confidence_level} Confidence`;
+            document.getElementById("lead_site_id").value = siteId;
+
+            // Populate Strengths
+            const strengthsUl = document.getElementById("strengths-list");
+            strengthsUl.innerHTML = "";
+            res.key_strengths.forEach(str => {
+                const li = document.createElement("li");
+                li.innerText = str;
+                strengthsUl.appendChild(li);
+            });
+
+            // Populate Constraints
+            const constraintsUl = document.getElementById("constraints-list");
+            constraintsUl.innerHTML = "";
+            if (res.potential_constraints.length === 0) {
+                const li = document.createElement("li");
+                li.innerText = "No critical constraints identified based on answers.";
+                constraintsUl.appendChild(li);
+            } else {
+                res.potential_constraints.forEach(con => {
+                    const li = document.createElement("li");
+                    li.innerText = con;
+                    constraintsUl.appendChild(li);
+                });
+            }
+
+            // Populate Verification
+            const verificationsUl = document.getElementById("verification-list");
+            verificationsUl.innerHTML = "";
+            res.verification_issues.forEach(ver => {
+                const li = document.createElement("li");
+                li.innerText = ver;
+                verificationsUl.appendChild(li);
+            });
+
+            // Populate Next Steps
+            const stepsOl = document.getElementById("steps-list");
+            stepsOl.innerHTML = "";
+            res.recommended_steps.forEach(step => {
+                const li = document.createElement("li");
+                li.className = "mb-1";
+                li.innerText = step;
+                stepsOl.appendChild(li);
+            });
+        }
+
+        async function handleLeadSubmit(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector("button[type='submit']");
+            
+            const payload = {
+                site_id: document.getElementById("lead_site_id").value,
+                name: document.getElementById("lead_name").value,
+                company: document.getElementById("lead_company").value,
+                relationship_to_property: document.getElementById("lead_relationship").value,
+                email: document.getElementById("lead_email").value,
+                phone: document.getElementById("lead_phone").value,
+                preferred_contact_method: document.getElementById("lead_contact_method").value,
+                comments: document.getElementById("lead_comments").value
+            };
+
+            btn.disabled = true;
+            btn.innerText = "Submitting Request...";
+
+            try {
+                const response = await fetch("/api/lead", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById("lead-form-section").innerHTML = `
+                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-8 text-center max-w-xl mx-auto shadow-sm">
+                            <span class="material-symbols-outlined text-4xl mb-3 block">check_circle</span>
+                            <h3 class="font-headline font-bold text-xl mb-2">Request Successfully Sent</h3>
+                            <p class="font-body text-sm text-emerald-700 leading-relaxed">
+                                Thank you for your inquiry. An Ocean Falls infrastructure advisor will review your site data and contact you at <strong>${payload.email}</strong> within 1-2 business days.
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    alert("Error saving contact request: " + data.message);
+                    btn.disabled = false;
+                    btn.innerText = "Request a Detailed Site Review";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred while submitting contact request.");
+                btn.disabled = false;
+                btn.innerText = "Request a Detailed Site Review";
+            }
+        }
+
+        function resetAssessment() {
+            // Reset form
+            document.getElementById("assessment-form").reset();
+            document.getElementById("lead-form").reset();
+            
+            // Hide result, show wizard
+            document.getElementById("results-box").classList.add("hidden");
+            document.getElementById("wizard-box").classList.remove("hidden");
+            
+            // Reset wizard step
+            document.getElementById(`step-${currentStep}`).classList.add("hidden");
+            currentStep = 1;
+            document.getElementById(`step-${currentStep}`).classList.remove("hidden");
+            
+            // Restore lead form container in case it was replaced by success message
+            document.getElementById("lead-form-section").innerHTML = `
+                <div class="max-w-2xl mx-auto text-center mb-10">
+                    <h3 class="font-headline font-bold text-2xl text-on-background mb-3">Want Ocean Falls to Review the Site?</h3>
+                    <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        A preliminary online assessment cannot replace utility, engineering, environmental, legal or technical due diligence. Ocean Falls can review the opportunity in more detail and help identify the work required to determine whether the site should advance.
+                    </p>
+                </div>
+                <form id="lead-form" onsubmit="handleLeadSubmit(event)" class="space-y-6 max-w-xl mx-auto bg-surface p-8 border border-outline-variant/15">
+                    <input type="hidden" id="lead_site_id" value="" />
+                    <div>
+                        <label for="lead_name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Your Name *</label>
+                        <input type="text" id="lead_name" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Full Name" />
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="lead_company" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Company Name *</label>
+                            <input type="text" id="lead_company" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Your Company" />
+                        </div>
+                        <div>
+                            <label for="lead_relationship" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Relationship to Property *</label>
+                            <select id="lead_relationship" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors">
+                                <option value="" disabled selected>Select relationship...</option>
+                                <option value="I own the property">I own the property</option>
+                                <option value="I represent the owner">I represent the owner</option>
+                                <option value="Municipality/community">Municipality/community</option>
+                                <option value="Utility/power provider">Utility/power provider</option>
+                                <option value="Broker/advisor">Broker/advisor</option>
+                                <option value="Developer/operator">Developer/operator</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="lead_email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Email Address *</label>
+                            <input type="email" id="lead_email" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="name@company.com" />
+                        </div>
+                        <div>
+                            <label for="lead_phone" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Phone Number</label>
+                            <input type="tel" id="lead_phone" class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="+1 (604) 555-0199" />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="lead_contact_method" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Preferred Contact Method *</label>
+                        <select id="lead_contact_method" required class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors">
+                                <option value="Email" selected>Email</option>
+                                <option value="Phone">Phone</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="lead_comments" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">Short Additional Comments</label>
+                        <textarea id="lead_comments" rows="3" class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Any specific timeline requirements or details you'd like to share..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-on-primary py-4 font-label font-semibold uppercase tracking-widest text-sm hover:bg-on-background transition-colors duration-300">
+                        Request a Detailed Site Review
+                    </button>
+                </form>
+            `;
+            
+            // Reset submit button state
+            document.getElementById("submit-btn").disabled = false;
+            document.getElementById("submit-btn").innerText = "Calculate Assessment";
+
+            // Hide toggle fields
+            document.getElementById("cost-field-container").classList.add("hidden");
+            document.getElementById("ppa-term-container").classList.add("hidden");
+
+            updateProgress();
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>

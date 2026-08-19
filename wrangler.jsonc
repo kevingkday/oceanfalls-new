@@ -7,5 +7,12 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "oceanfalls-db",
+      "database_id": "8c4bc63b-632b-42fa-ba41-d6a0a03fb409"
+    }
+  ]
 }
