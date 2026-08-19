@@ -9,6 +9,9 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "GOHIGHLEVEL_WEBHOOK_URL": ""
+  },
   "d1_databases": [
     {
       "binding": "DB",

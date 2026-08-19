@@ -18,20 +18,27 @@ export default {
       }
     }
 
+    // Build context object matching Cloudflare Pages style
+    const context = {
+      request,
+      env,
+      waitUntil: (promise) => ctx.waitUntil(promise)
+    };
+
     // Route to API endpoints
     if (pathname === "/api/assessments" && request.method === "POST") {
-      return assessmentsPost({ request, env });
+      return assessmentsPost(context);
     }
     if (pathname === "/api/lead" && request.method === "POST") {
-      return leadPost({ request, env });
+      return leadPost(context);
     }
     if (pathname === "/api/admin/login") {
-      if (request.method === "POST") return loginPost({ request, env });
-      if (request.method === "GET") return loginGet({ request, env });
+      if (request.method === "POST") return loginPost(context);
+      if (request.method === "GET") return loginGet(context);
     }
     if (pathname === "/api/admin/sites") {
-      if (request.method === "GET") return sitesGet({ request, env });
-      if (request.method === "POST") return sitesPost({ request, env });
+      if (request.method === "GET") return sitesGet(context);
+      if (request.method === "POST") return sitesPost(context);
     }
 
     // Otherwise, serve static assets via the built-in ASSETS binding
