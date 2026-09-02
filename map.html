@@ -603,76 +603,61 @@
                 }
             });
 
-            // 2. Clustered Points Layer
+            // 2. Individual Location Points (Always visible at every zoom level)
             map.addSource('facility-points', {
                 type: 'geojson',
                 data: { type: 'FeatureCollection', features: [] },
-                cluster: true,
-                clusterMaxZoom: 8,
-                clusterRadius: 42
+                cluster: false
             });
 
-            // Cluster circles
+            // Outer ring / halo for selected facility
             map.addLayer({
-                id: 'clusters',
+                id: 'facility-selected-halo',
                 type: 'circle',
                 source: 'facility-points',
-                filter: ['has', 'point_count'],
+                filter: ['==', ['get', 'is_selected'], 1],
                 paint: {
-                    'circle-color': PIN_COLOR,
-                    'circle-radius': ['step', ['get', 'point_count'], 16, 5, 20, 15, 26],
-                    'circle-stroke-color': PIN_STROKE,
-                    'circle-stroke-width': 2,
-                    'circle-opacity': 0.92
+                    'circle-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 11,
+                        8, 16
+                    ],
+                    'circle-color': 'rgba(70, 95, 136, 0.25)',
+                    'circle-stroke-color': '#465f88',
+                    'circle-stroke-width': 2
                 }
             });
 
-            // Cluster count text
+            // Location Dots (Always visible from initial zoomed-out view to street level)
             map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'facility-points',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-font': ['Noto Sans Bold', 'Noto Sans Regular'],
-                    'text-size': 12
-                },
-                paint: {
-                    'text-color': '#ffffff'
-                }
-            });
-
-            // Unclustered individual facility points
-            map.addLayer({
-                id: 'unclustered-point',
+                id: 'facility-points-layer',
                 type: 'circle',
                 source: 'facility-points',
-                filter: ['!', ['has', 'point_count']],
                 paint: {
                     'circle-color': [
                         'case',
+                        ['==', ['get', 'is_selected'], 1], '#1c2630',
                         ['==', ['get', 'site_type'], 'ai_datacentre'], '#2563eb',
                         PIN_COLOR
                     ],
-                    'circle-radius': 7.5,
-                    'circle-stroke-color': PIN_STROKE,
-                    'circle-stroke-width': 2,
-                    'circle-opacity': 0.92
+                    'circle-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 5.5,
+                        6, 7,
+                        10, 8.5
+                    ],
+                    'circle-stroke-color': '#ffffff',
+                    'circle-stroke-width': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 1.5,
+                        8, 2.2
+                    ],
+                    'circle-opacity': 0.95
                 }
             });
 
-            // Interactivity
-            map.on('click', 'clusters', (e) => {
-                const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-                const clusterId = features[0].properties.cluster_id;
-                map.getSource('facility-points').getClusterExpansionZoom(clusterId, (err, zoom) => {
-                    if (err) return;
-                    map.easeTo({ center: features[0].geometry.coordinates, zoom: zoom + 0.5 });
-                });
-            });
-
-            map.on('click', 'unclustered-point', (e) => {
+            // Interactivity: Click any dot to view facility details
+            map.on('click', 'facility-points-layer', (e) => {
                 const feature = e.features[0];
                 if (!feature) return;
                 const id = feature.properties.id;
@@ -682,10 +667,8 @@
                 }
             });
 
-            map.on('mouseenter', 'clusters', () => { map.getCanvas().style.cursor = 'pointer'; });
-            map.on('mouseleave', 'clusters', () => { map.getCanvas().style.cursor = ''; });
-            map.on('mouseenter', 'unclustered-point', () => { map.getCanvas().style.cursor = 'pointer'; });
-            map.on('mouseleave', 'unclustered-point', () => { map.getCanvas().style.cursor = ''; });
+            map.on('mouseenter', 'facility-points-layer', () => { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'facility-points-layer', () => { map.getCanvas().style.cursor = ''; });
         }
 
         // Fetch Datacentres from API (with embedded fallback for local file:/// inspection)
@@ -850,7 +833,7 @@
 
         // Map Data Synchronization
         function syncMapData() {
-            if (!map || !map.isStyleLoaded()) return;
+            if (!map || !map.getSource('facility-points')) return;
 
             // 1. Points GeoJSON
             const pointsGeoJson = {
@@ -866,7 +849,8 @@
                         name: d.name,
                         city: d.city,
                         capacity_mw: d.capacity_mw,
-                        site_type: d.site_type
+                        site_type: d.site_type,
+                        is_selected: d.id === currentSelectedId ? 1 : 0
                     }
                 }))
             };
