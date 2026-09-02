@@ -4,7 +4,8 @@
   "compatibility_date": "2026-03-30",
   "main": "index.js",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
   },
   "observability": {
     "enabled": true

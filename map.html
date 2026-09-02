@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>National Datacentre Intelligence Map — Ocean Falls Technology Corp</title>
+    <meta name="description" content="Interactive map of active AI and hyperscale datacentre proposals, operational facilities, and grid-load requests across Canada." />
+    <link rel="canonical" href="https://oceanfalls.com/map" />
+
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Public_Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <!-- MapLibre GL CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+
+    <!-- Embedded Canadian Datacentres Catalog (Offline & Static Fallback) -->
+    <script src="seed-datacentres.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#465f88",
+                        "primary-dim": "#3a537c",
+                        "primary-hover": "#364a6d",
+                        "surface": "#f7fafc",
+                        "surface-dim": "#ccdde4",
+                        "surface-container": "#e7eff3",
+                        "surface-container-low": "#eff4f7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#283439",
+                        "on-surface": "#283439",
+                        "on-surface-variant": "#546166",
+                        "outline": "#707d82",
+                        "outline-variant": "#a7b4ba",
+                        "accent-steel": "#5b7a9c",
+                    },
+                    fontFamily: {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f7fafc;
+            color: #283439;
+        }
+        /* Custom map styling overrides */
+        .maplibregl-popup-content {
+            border-radius: 0;
+            padding: 12px 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            border: 1px solid #d7e5eb;
+            font-family: 'Public Sans', sans-serif;
+        }
+        .maplibregl-popup-close-button {
+            padding: 4px 8px;
+            font-size: 16px;
+            color: #546166;
+        }
+        .scrollbar-slim::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scrollbar-slim::-webkit-scrollbar-track {
+            background: #f1f4f6;
+        }
+        .scrollbar-slim::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+        }
+        .scrollbar-slim::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased h-screen flex flex-col overflow-hidden">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-[#283439] text-white px-6 md:px-8 py-3.5 flex justify-between items-center z-30 shadow-sm border-b border-black/20 flex-shrink-0">
+        <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-2 group">
+                <span class="font-headline font-bold text-lg tracking-tighter text-white group-hover:text-primary-dim transition-colors">Ocean Falls</span>
+                <span class="bg-primary/30 text-white/90 border border-primary/40 px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-widest">Site Intelligence</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-6 ml-6 border-l border-white/15 pl-6 text-xs font-label">
+                <a href="/" class="text-white/70 hover:text-white transition-colors">Home</a>
+                <a href="/site-assessment.html" class="text-white/70 hover:text-white transition-colors">Site Assessment</a>
+                <a href="/investors.html" class="text-white/70 hover:text-white transition-colors">Investors</a>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Metrics Summary Badge -->
+            <div class="hidden sm:flex items-center gap-4 px-3 py-1 bg-white/5 border border-white/10 text-xs font-label text-white/80">
+                <div><span class="font-bold text-white" id="stat-total-sites">-</span> Facilities Mapped</div>
+                <div class="h-3 w-px bg-white/20"></div>
+                <div><span class="font-bold text-white" id="stat-total-mw">-</span> MW Tracked</div>
+            </div>
+
+            <!-- Admin Actions Bar (Shown if logged in) -->
+            <div id="admin-map-bar" class="hidden items-center gap-2">
+                <button onclick="openAddModal()" class="bg-primary text-white hover:bg-primary-hover px-3 py-1.5 text-xs font-label font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-colors">
+                    <span class="material-symbols-outlined text-sm font-bold">add_location_alt</span>
+                    <span>Add Facility</span>
+                </button>
+                <a href="/admin.html" class="border border-white/25 hover:bg-white/10 text-white px-3 py-1.5 text-xs font-label font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">tune</span>
+                    <span class="hidden md:inline">Admin Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Toggle Sidebar for Mobile -->
+            <button onclick="toggleSidebar()" class="lg:hidden p-1.5 border border-white/20 text-white hover:bg-white/10" aria-label="Toggle List Sidebar">
+                <span class="material-symbols-outlined text-lg">list</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace (Map + Sidebar) -->
+    <div class="flex-grow flex relative overflow-hidden">
+
+        <!-- Left Sidebar: Filter, Search & Proposals List -->
+        <aside id="map-sidebar" class="w-full lg:w-[420px] bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col z-20 transition-all duration-300 absolute lg:relative h-full shadow-lg lg:shadow-none -translate-x-full lg:translate-x-0">
+            
+            <!-- Sidebar Header & Search Box -->
+            <div class="p-4 border-b border-outline-variant/15 bg-surface-container-low space-y-3">
+                <div class="flex items-center justify-between">
+                    <h1 class="font-headline font-bold text-sm text-on-background uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base text-primary">analytics</span>
+                        Canadian Datacentre Grid
+                    </h1>
+                    <button onclick="toggleSidebar()" class="lg:hidden text-on-surface-variant hover:text-on-background">
+                        <span class="material-symbols-outlined text-xl">close</span>
+                    </button>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative">
+                    <span class="material-symbols-outlined text-base absolute left-3 top-2.5 text-on-surface-variant">search</span>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        oninput="onSearchInput(event)" 
+                        placeholder="Filter by city, developer, project name..." 
+                        class="w-full bg-surface border border-outline-variant/30 pl-9 pr-8 py-2 text-xs focus:outline-none focus:border-primary transition-colors placeholder:text-on-surface-variant/60" 
+                    />
+                    <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-2.5 top-2.5 text-on-surface-variant hover:text-on-background">
+                        <span class="material-symbols-outlined text-sm">cancel</span>
+                    </button>
+                </div>
+
+                <!-- Quick Filter Pills -->
+                <div class="flex flex-wrap gap-1.5 pt-1 text-[11px] font-label font-medium">
+                    <button onclick="setFilter('all')" class="filter-pill active px-2.5 py-1 bg-primary text-white border border-primary transition-colors" data-filter="all">All</button>
+                    <button onclick="setFilter('ai')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="ai">AI Specialized</button>
+                    <button onclick="setFilter('100mw')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="100mw">100+ MW</button>
+                    <button onclick="setFilter('construction')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="construction">In Construction</button>
+                    <button onclick="setFilter('operational')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="operational">Operational</button>
+                </div>
+
+                <!-- Local File / Offline Notice -->
+                <div id="local-file-notice" class="hidden p-2.5 bg-blue-50/90 border border-blue-200/80 text-[11px] text-blue-900 leading-tight">
+                    <div class="font-bold flex items-center gap-1 mb-0.5">
+                        <span class="material-symbols-outlined text-xs">info</span> Local Catalog Mode
+                    </div>
+                    Loaded 75 pre-indexed facilities. For live database management and edits, access via your local dev server (<a href="http://localhost:8788/map.html" class="underline font-semibold text-primary">localhost:8788/map</a>).
+                </div>
+            </div>
+
+            <!-- List Count and Sort Controls -->
+            <div class="px-4 py-2 bg-surface border-b border-outline-variant/10 flex justify-between items-center text-[11px] font-label text-on-surface-variant">
+                <span id="filtered-count-label">Loading facilities...</span>
+                <div class="flex items-center gap-1.5">
+                    <span>Sort:</span>
+                    <select id="sort-select" onchange="onSortChange(event)" class="bg-transparent border-0 py-0 pl-1 pr-6 text-[11px] font-semibold text-primary focus:ring-0 cursor-pointer">
+                        <option value="mw_desc">Capacity (High to Low)</option>
+                        <option value="city_asc">City Name (A–Z)</option>
+                        <option value="name_asc">Project Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Scrollable Facility List -->
+            <div id="facilities-list" class="flex-grow overflow-y-auto scrollbar-slim divide-y divide-outline-variant/10">
+                <div class="p-8 text-center text-on-surface-variant text-xs font-body">
+                    <div class="inline-block animate-spin w-5 h-5 border-2 border-primary border-t-transparent mb-2"></div>
+                    <p>Loading Canadian datacentre intelligence...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Stage: Map Canvas -->
+        <main class="flex-grow relative h-full">
+            <div id="map-canvas" class="w-full h-full"></div>
+
+            <!-- Map Controls / Overlays -->
+            <div class="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 border border-outline-variant/30 shadow-sm text-xs font-label">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+                <span class="font-semibold text-on-background">Impact Radius:</span>
+                <span class="text-on-surface-variant">Estimated acoustic / power footprint (m)</span>
+            </div>
+
+            <!-- Map Pin Drop Mode Notification -->
+            <div id="pin-drop-banner" class="hidden absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-[#283439] text-white px-5 py-2.5 shadow-xl border border-primary/40 flex items-center gap-3 animate-pulse">
+                <span class="material-symbols-outlined text-primary-fixed-dim">location_searching</span>
+                <span class="text-xs font-label font-semibold">Click on the map to set facility coordinates</span>
+                <button onclick="cancelPinDrop()" class="text-xs font-bold underline ml-2 hover:text-red-300">Cancel</button>
+            </div>
+
+            <!-- Facility Detail Slide-over Panel -->
+            <div id="detail-drawer" class="hidden absolute top-4 right-4 bottom-4 w-full max-w-md bg-surface-container-lowest border border-outline-variant/30 shadow-2xl z-20 flex flex-col overflow-hidden transition-all duration-300">
+                
+                <!-- Drawer Header -->
+                <div class="bg-[#283439] text-white p-6 relative">
+                    <button onclick="closeDetailDrawer()" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors" aria-label="Close Details">
+                        <span class="material-symbols-outlined text-xl">close</span>
+                    </button>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span id="detail-status-pill" class="bg-primary/30 border border-primary/40 text-white px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider">Proposed</span>
+                        <span id="detail-ai-pill" class="hidden bg-emerald-900/50 border border-emerald-500/40 text-emerald-300 px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider">AI Facility</span>
+                    </div>
+                    <h2 id="detail-title" class="font-headline font-bold text-xl tracking-tight leading-snug">Project Title</h2>
+                    <p id="detail-location" class="font-body text-xs text-white/75 mt-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">location_on</span>
+                        <span>City, Province</span>
+                    </p>
+                </div>
+
+                <!-- Drawer Content -->
+                <div class="flex-grow overflow-y-auto p-6 space-y-6 font-body text-xs text-on-surface scrollbar-slim">
+                    
+                    <!-- Quick Specs Grid -->
+                    <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 border border-outline-variant/15 text-center">
+                        <div class="border-r border-outline-variant/15 pr-2">
+                            <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Reported Capacity</span>
+                            <span id="detail-capacity" class="font-headline font-extrabold text-lg text-primary">- MW</span>
+                        </div>
+                        <div class="pl-2">
+                            <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Est. Impact Radius</span>
+                            <span id="detail-radius" class="font-headline font-bold text-base text-on-background">- m</span>
+                        </div>
+                    </div>
+
+                    <!-- Developer & Type -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Developer / Proponent:</span>
+                            <span id="detail-developer" class="font-semibold text-right">-</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Facility Classification:</span>
+                            <span id="detail-type" class="font-semibold text-right capitalize">-</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Coordinates:</span>
+                            <span id="detail-coords" class="font-mono text-[11px] text-right">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Regulatory / Technical Notes -->
+                    <div class="space-y-2">
+                        <h3 class="font-headline font-bold text-xs uppercase tracking-wider text-primary flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">info</span>
+                            Intelligence &amp; Regulatory Notes
+                        </h3>
+                        <div id="detail-notes" class="p-3.5 bg-surface border border-outline-variant/20 rounded-none leading-relaxed text-on-surface whitespace-pre-line text-xs">
+                            No additional notes.
+                        </div>
+                    </div>
+
+                    <!-- External Source Link -->
+                    <div id="detail-source-container" class="space-y-2">
+                        <a id="detail-source-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 p-2.5 font-label font-semibold text-xs flex items-center justify-center gap-2 transition-colors">
+                            <span>View Source Filing / Reference</span>
+                            <span class="material-symbols-outlined text-sm">open_in_new</span>
+                        </a>
+                    </div>
+
+                    <!-- Staff Edit Actions (Only when logged in) -->
+                    <div id="detail-admin-actions" class="hidden pt-4 border-t border-outline-variant/20 space-y-2">
+                        <div class="text-[10px] font-label font-bold uppercase tracking-wider text-primary">Staff Operations</div>
+                        <div class="flex gap-2">
+                            <button onclick="openEditModalCurrent()" class="flex-1 bg-primary text-white py-2 font-label font-bold uppercase tracking-wider text-xs hover:bg-primary-hover transition-colors flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                                <span>Edit Facility</span>
+                            </button>
+                            <button id="detail-toggle-vis-btn" onclick="toggleVisibilityCurrent()" class="px-3 py-2 border border-outline-variant/40 hover:bg-surface-container text-on-surface text-xs font-label font-semibold transition-colors" title="Toggle Visibility">
+                                <span class="material-symbols-outlined text-sm" id="detail-vis-icon">visibility</span>
+                            </button>
+                            <button onclick="deleteFacilityCurrent()" class="px-3 py-2 border border-red-300 text-red-700 hover:bg-red-50 text-xs font-label font-semibold transition-colors" title="Delete Facility">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD / EDIT FACILITY MODAL DIALOG -->
+    <dialog id="facility-modal" class="backdrop:bg-black/60 backdrop:backdrop-blur-sm p-0 border border-outline-variant/30 max-w-2xl w-full shadow-2xl overflow-hidden">
+        <form id="facility-form" onsubmit="saveFacilitySubmit(event)" class="bg-surface-container-lowest flex flex-col max-h-[90vh]">
+            
+            <!-- Modal Header -->
+            <div class="bg-[#283439] text-white p-5 flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary-fixed-dim" id="modal-icon">add_business</span>
+                    <h2 class="font-headline font-bold text-base tracking-tight" id="modal-title">Add Datacentre Facility</h2>
+                </div>
+                <button type="button" onclick="closeFacilityModal()" class="text-white/70 hover:text-white">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+
+            <!-- Modal Form Body (Scrollable) -->
+            <div class="p-6 overflow-y-auto space-y-4 font-body text-xs scrollbar-slim">
+                <input type="hidden" id="form-id" />
+
+                <!-- Project Name -->
+                <div>
+                    <label for="form-name" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Facility / Project Name *</label>
+                    <input type="text" id="form-name" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River AI Campus" />
+                </div>
+
+                <!-- Location: Address, City, Province -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="md:col-span-1">
+                        <label for="form-city" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">City *</label>
+                        <input type="text" id="form-city" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Prince George" />
+                    </div>
+                    <div>
+                        <label for="form-province" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Province *</label>
+                        <select id="form-province" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="BC">British Columbia (BC)</option>
+                            <option value="AB">Alberta (AB)</option>
+                            <option value="ON">Ontario (ON)</option>
+                            <option value="QC">Quebec (QC)</option>
+                            <option value="SK">Saskatchewan (SK)</option>
+                            <option value="MB">Manitoba (MB)</option>
+                            <option value="NB">New Brunswick (NB)</option>
+                            <option value="NS">Nova Scotia (NS)</option>
+                            <option value="PE">Prince Edward Island (PE)</option>
+                            <option value="NL">Newfoundland and Labrador (NL)</option>
+                            <option value="YT">Yukon (YT)</option>
+                            <option value="NT">Northwest Territories (NT)</option>
+                            <option value="NU">Nunavut (NU)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="form-address" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Street Address</label>
+                        <input type="text" id="form-address" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. 100 Industrial Parkway" />
+                    </div>
+                </div>
+
+                <!-- Coordinates: Lat & Lng -->
+                <div class="grid grid-cols-2 gap-3 bg-surface p-3 border border-outline-variant/20">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label for="form-lat" class="font-label font-bold text-[10px] uppercase tracking-wider text-primary">Latitude *</label>
+                        </div>
+                        <input type="number" step="any" id="form-lat" required class="w-full bg-surface-container-lowest border border-outline-variant/30 px-3 py-1.5 text-xs font-mono focus:outline-none focus:border-primary" placeholder="53.9171" />
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label for="form-lng" class="font-label font-bold text-[10px] uppercase tracking-wider text-primary">Longitude *</label>
+                        </div>
+                        <input type="number" step="any" id="form-lng" required class="w-full bg-surface-container-lowest border border-outline-variant/30 px-3 py-1.5 text-xs font-mono focus:outline-none focus:border-primary" placeholder="-122.7497" />
+                    </div>
+                    <div class="col-span-2 text-right">
+                        <button type="button" onclick="startMapPick()" class="text-primary hover:underline text-[11px] font-label font-semibold inline-flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">pin_drop</span> Click on map to select coordinates
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specs: Capacity (MW), Status, Type -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label for="form-capacity" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Capacity (MW)</label>
+                        <input type="number" step="any" id="form-capacity" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. 150" />
+                    </div>
+                    <div>
+                        <label for="form-status" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Status</label>
+                        <select id="form-status" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="proposed">Proposed</option>
+                            <option value="under_construction">Under Construction</option>
+                            <option value="operational">Operational</option>
+                            <option value="on_hold">On Hold</option>
+                            <option value="decommissioned">Decommissioned</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="form-type" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Facility Type</label>
+                        <select id="form-type" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="datacentre">Standard Datacentre</option>
+                            <option value="ai_datacentre">AI / High-Density Compute</option>
+                            <option value="crypto_conversion">Industrial / Crypto Retrofit</option>
+                            <option value="hyperscale">Hyperscale Campus</option>
+                            <option value="edge">Edge Facility</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Developer & Impact Radius -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label for="form-developer" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Developer / Proponent</label>
+                        <input type="text" id="form-developer" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Crusoe Energy / Beacon Data Centers" />
+                    </div>
+                    <div>
+                        <label for="form-radius" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Noise / Impact Radius (m)</label>
+                        <input type="number" id="form-radius" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="1500" />
+                    </div>
+                </div>
+
+                <!-- Source URL -->
+                <div>
+                    <label for="form-source" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Source / Regulatory Filing URL</label>
+                    <input type="url" id="form-source" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="https://www.ieso.ca/... or news citation" />
+                </div>
+
+                <!-- Technical Notes -->
+                <div>
+                    <label for="form-notes" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Technical &amp; Site Notes</label>
+                    <textarea id="form-notes" rows="4" class="w-full bg-surface border border-outline-variant/30 p-3 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="Enter cooling specifications, utility interconnection, land parcel notes, or timeline details..."></textarea>
+                </div>
+
+                <!-- Checkboxes: AI Tag & Public Visibility -->
+                <div class="flex flex-wrap items-center gap-6 pt-2">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="form-ai-tag" class="text-primary focus:ring-primary rounded-none border-outline-variant/40" />
+                        <span class="font-label font-semibold text-xs text-on-surface">Mark as AI-Related Workload</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="form-visible" checked class="text-primary focus:ring-primary rounded-none border-outline-variant/40" />
+                        <span class="font-label font-semibold text-xs text-on-surface">Publish on Public Map</span>
+                    </label>
+                </div>
+
+                <div id="modal-error-msg" class="hidden text-xs text-red-600 font-semibold p-2 bg-red-50 border border-red-200"></div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-surface-container-low p-4 border-t border-outline-variant/20 flex justify-end gap-3 flex-shrink-0">
+                <button type="button" onclick="closeFacilityModal()" class="px-4 py-2 border border-outline-variant/30 font-label font-semibold text-xs text-on-surface hover:bg-surface transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" id="modal-save-btn" class="bg-primary text-white hover:bg-primary-hover px-6 py-2 font-label font-bold uppercase tracking-wider text-xs transition-colors shadow-sm">
+                    Save Facility
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- MapLibre GL JS -->
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+    <!-- Map Application Controller Script -->
+    <script>
+        // State
+        let map = null;
+        let allDatacentres = [];
+        let filteredDatacentres = [];
+        let currentSelectedId = null;
+        let activeFilter = 'all';
+        let searchQuery = '';
+        let sortMode = 'mw_desc';
+        let isAdminLoggedIn = false;
+        let isPickingLocation = false;
+        let tempMarker = null;
+
+        // Colors
+        const PIN_COLOR = '#465f88';
+        const PIN_STROKE = '#1c2630';
+        const RADIUS_FILL = 'rgba(70, 95, 136, 0.12)';
+        const RADIUS_STROKE = 'rgba(70, 95, 136, 0.55)';
+
+        // Initial Map Setup
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAdminAuth();
+            initMap();
+            await fetchDatacentres();
+            checkUrlDeepLink();
+        });
+
+        async function checkAdminAuth() {
+            try {
+                const res = await fetch('/api/admin/login');
+                const data = await res.json();
+                if (data && data.authenticated) {
+                    isAdminLoggedIn = true;
+                    document.getElementById('admin-map-bar')?.classList.remove('hidden');
+                    document.getElementById('admin-map-bar')?.classList.add('flex');
+                    document.getElementById('detail-admin-actions')?.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.warn('Auth check error:', err);
+            }
+        }
+
+        function initMap() {
+            // Check for optional CARTO API key in query params or global config
+            const urlParams = new URLSearchParams(window.location.search);
+            const cartoKey = urlParams.get('carto_key') || window.CARTO_API_KEY || '';
+            let styleConfig;
+
+            if (cartoKey) {
+                // If user provided a CARTO key, use official CARTO Positron endpoints
+                styleConfig = {
+                    version: 8,
+                    sources: {
+                        'carto-positron': {
+                            type: 'raster',
+                            tiles: [
+                                `https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png?key=${cartoKey}`,
+                                `https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png?key=${cartoKey}`,
+                                `https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png?key=${cartoKey}`
+                            ],
+                            tileSize: 256,
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'carto-tiles',
+                            type: 'raster',
+                            source: 'carto-positron',
+                            minzoom: 0,
+                            maxzoom: 19
+                        }
+                    ]
+                };
+            } else {
+                // OpenFreeMap Positron: crisp vector tiles, 100% free, NO API key required, NO watermark
+                styleConfig = 'https://tiles.openfreemap.org/styles/positron';
+            }
+
+            map = new maplibregl.Map({
+                container: 'map-canvas',
+                style: styleConfig,
+                center: [-98, 54], // Center over Canada
+                zoom: 3.8,
+                minZoom: 2.8,
+                maxZoom: 16,
+                attributionControl: { compact: true }
+            });
+
+            map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+            map.on('load', () => {
+                setupMapLayers();
+                if (filteredDatacentres.length > 0) {
+                    syncMapData();
+                }
+            });
+
+            map.on('click', (e) => {
+                if (isPickingLocation) {
+                    onMapPickCoordinates(e.lngLat);
+                }
+            });
+        }
+
+        function setupMapLayers() {
+            // 1. Concentric Radii Layer
+            map.addSource('facility-radii', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+
+            map.addLayer({
+                id: 'facility-radii-fill',
+                type: 'fill',
+                source: 'facility-radii',
+                paint: {
+                    'fill-color': RADIUS_FILL,
+                    'fill-opacity': ['get', 'fill_opacity']
+                }
+            });
+
+            map.addLayer({
+                id: 'facility-radii-line',
+                type: 'line',
+                source: 'facility-radii',
+                paint: {
+                    'line-color': RADIUS_STROKE,
+                    'line-width': ['get', 'line_width'],
+                    'line-opacity': ['get', 'line_opacity']
+                }
+            });
+
+            // 2. Clustered Points Layer
+            map.addSource('facility-points', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] },
+                cluster: true,
+                clusterMaxZoom: 8,
+                clusterRadius: 42
+            });
+
+            // Cluster circles
+            map.addLayer({
+                id: 'clusters',
+                type: 'circle',
+                source: 'facility-points',
+                filter: ['has', 'point_count'],
+                paint: {
+                    'circle-color': PIN_COLOR,
+                    'circle-radius': ['step', ['get', 'point_count'], 16, 5, 20, 15, 26],
+                    'circle-stroke-color': PIN_STROKE,
+                    'circle-stroke-width': 2,
+                    'circle-opacity': 0.92
+                }
+            });
+
+            // Cluster count text
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'facility-points',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['Noto Sans Bold', 'Noto Sans Regular'],
+                    'text-size': 12
+                },
+                paint: {
+                    'text-color': '#ffffff'
+                }
+            });
+
+            // Unclustered individual facility points
+            map.addLayer({
+                id: 'unclustered-point',
+                type: 'circle',
+                source: 'facility-points',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': [
+                        'case',
+                        ['==', ['get', 'site_type'], 'ai_datacentre'], '#2563eb',
+                        PIN_COLOR
+                    ],
+                    'circle-radius': 7.5,
+                    'circle-stroke-color': PIN_STROKE,
+                    'circle-stroke-width': 2,
+                    'circle-opacity': 0.92
+                }
+            });
+
+            // Interactivity
+            map.on('click', 'clusters', (e) => {
+                const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+                const clusterId = features[0].properties.cluster_id;
+                map.getSource('facility-points').getClusterExpansionZoom(clusterId, (err, zoom) => {
+                    if (err) return;
+                    map.easeTo({ center: features[0].geometry.coordinates, zoom: zoom + 0.5 });
+                });
+            });
+
+            map.on('click', 'unclustered-point', (e) => {
+                const feature = e.features[0];
+                if (!feature) return;
+                const id = feature.properties.id;
+                const facility = allDatacentres.find(d => d.id === id);
+                if (facility) {
+                    selectFacility(facility, { fly: true });
+                }
+            });
+
+            map.on('mouseenter', 'clusters', () => { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'clusters', () => { map.getCanvas().style.cursor = ''; });
+            map.on('mouseenter', 'unclustered-point', () => { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'unclustered-point', () => { map.getCanvas().style.cursor = ''; });
+        }
+
+        // Fetch Datacentres from API (with embedded fallback for local file:/// inspection)
+        async function fetchDatacentres() {
+            try {
+                // If running over HTTP/HTTPS, fetch live data from Cloudflare Worker API
+                if (window.location.protocol.startsWith('http')) {
+                    const endpoint = isAdminLoggedIn ? '/api/admin/datacentres' : '/api/map/datacentres';
+                    const res = await fetch(endpoint);
+                    const data = await res.json();
+
+                    if (data.success && Array.isArray(data.datacentres) && data.datacentres.length > 0) {
+                        allDatacentres = data.datacentres;
+                        applyFiltersAndRender();
+                        updateGlobalStats();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn('API fetch unavailable, checking embedded catalog:', err);
+            }
+
+            // Fallback for file:/// local file viewing or offline browsing
+            if (window.EMBEDDED_DATACENTRES && Array.isArray(window.EMBEDDED_DATACENTRES) && window.EMBEDDED_DATACENTRES.length > 0) {
+                allDatacentres = window.EMBEDDED_DATACENTRES;
+                applyFiltersAndRender();
+                updateGlobalStats();
+
+                // Show local file notice if in file:// mode
+                const notice = document.getElementById('local-file-notice');
+                if (notice && (window.location.protocol === 'file:' || !window.location.protocol.startsWith('http'))) {
+                    notice.classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('facilities-list').innerHTML = `
+                    <div class="p-6 text-center text-red-600 text-xs">
+                        Failed to load datacentres. For live database management, access via your local dev server (<a href="http://localhost:8788/map.html" class="underline font-bold text-primary">localhost:8788/map</a>).
+                    </div>
+                `;
+            }
+        }
+
+        async function autoSeedIfEmpty() {
+            try {
+                const seedRes = await fetch('/api/admin/seed-datacentres', { method: 'POST' });
+                const seedData = await seedRes.json();
+                if (seedData.success) {
+                    const reload = await fetch('/api/admin/datacentres');
+                    const reloadJson = await reload.json();
+                    if (reloadJson.success) allDatacentres = reloadJson.datacentres;
+                }
+            } catch (e) {
+                console.warn('Auto-seed attempt:', e);
+            }
+        }
+
+        function updateGlobalStats() {
+            const totalSites = allDatacentres.length;
+            let totalMw = 0;
+            allDatacentres.forEach(d => {
+                if (d.capacity_mw) totalMw += Number(d.capacity_mw);
+            });
+
+            document.getElementById('stat-total-sites').textContent = totalSites;
+            document.getElementById('stat-total-mw').textContent = Math.round(totalMw).toLocaleString();
+        }
+
+        // Filtering & Sorting
+        function applyFiltersAndRender() {
+            let list = [...allDatacentres];
+
+            // Search filter
+            if (searchQuery.trim()) {
+                const q = searchQuery.toLowerCase().trim();
+                list = list.filter(d => 
+                    (d.name && d.name.toLowerCase().includes(q)) ||
+                    (d.city && d.city.toLowerCase().includes(q)) ||
+                    (d.developer && d.developer.toLowerCase().includes(q)) ||
+                    (d.province_state && d.province_state.toLowerCase().includes(q)) ||
+                    (d.address && d.address.toLowerCase().includes(q))
+                );
+            }
+
+            // Category filter
+            if (activeFilter === 'ai') {
+                list = list.filter(d => d.ai_tag === 1 || d.site_type === 'ai_datacentre');
+            } else if (activeFilter === '100mw') {
+                list = list.filter(d => Number(d.capacity_mw) >= 100);
+            } else if (activeFilter === 'construction') {
+                list = list.filter(d => d.proposal_status === 'under_construction');
+            } else if (activeFilter === 'operational') {
+                list = list.filter(d => d.proposal_status === 'operational');
+            }
+
+            // Sorting
+            if (sortMode === 'mw_desc') {
+                list.sort((a, b) => (Number(b.capacity_mw) || 0) - (Number(a.capacity_mw) || 0));
+            } else if (sortMode === 'city_asc') {
+                list.sort((a, b) => String(a.city || '').localeCompare(String(b.city || '')));
+            } else if (sortMode === 'name_asc') {
+                list.sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+            }
+
+            filteredDatacentres = list;
+
+            renderSidebarList();
+            syncMapData();
+        }
+
+        function renderSidebarList() {
+            const container = document.getElementById('facilities-list');
+            document.getElementById('filtered-count-label').textContent = `${filteredDatacentres.length} facilities matching`;
+
+            if (filteredDatacentres.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-on-surface-variant text-xs font-body">
+                        <span class="material-symbols-outlined text-3xl mb-1 text-outline-variant block">search_off</span>
+                        No datacentre facilities match the active filter.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredDatacentres.map(d => {
+                const isSelected = d.id === currentSelectedId;
+                const capacity = d.capacity_display || (d.capacity_mw ? `${d.capacity_mw} MW` : 'Undisclosed');
+                const isAi = d.ai_tag === 1 || d.site_type === 'ai_datacentre';
+                const statusName = (d.proposal_status || 'proposed').replace('_', ' ');
+
+                return `
+                    <div 
+                        onclick="onFacilityClick('${d.id}')"
+                        class="p-4 cursor-pointer transition-all duration-150 border-l-4 ${isSelected ? 'bg-primary/5 border-primary shadow-sm' : 'border-transparent hover:bg-surface-container-low'}"
+                        id="list-item-${d.id}"
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="font-headline font-bold text-xs text-on-background line-clamp-1">${escapeHtml(d.name)}</h3>
+                            <span class="font-headline font-extrabold text-xs text-primary whitespace-nowrap">${escapeHtml(capacity)}</span>
+                        </div>
+                        <p class="font-body text-[11px] text-on-surface-variant mt-1 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">location_on</span>
+                            <span>${escapeHtml(d.city)}, ${escapeHtml(d.province_state || 'Canada')}</span>
+                        </p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-[9px] font-label uppercase px-1.5 py-0.5 border ${statusBadgeClass(d.proposal_status)}">${statusName}</span>
+                            ${isAi ? '<span class="text-[9px] font-label uppercase px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200">AI</span>' : ''}
+                            ${d.developer ? `<span class="text-[10px] text-on-surface-variant truncate max-w-[150px]">${escapeHtml(d.developer)}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function statusBadgeClass(status) {
+            switch(status) {
+                case 'operational': return 'bg-emerald-50 text-emerald-800 border-emerald-300';
+                case 'under_construction': return 'bg-amber-50 text-amber-800 border-amber-300';
+                case 'on_hold': return 'bg-rose-50 text-rose-800 border-rose-300';
+                default: return 'bg-surface-container text-on-surface-variant border-outline-variant/30';
+            }
+        }
+
+        // Map Data Synchronization
+        function syncMapData() {
+            if (!map || !map.isStyleLoaded()) return;
+
+            // 1. Points GeoJSON
+            const pointsGeoJson = {
+                type: 'FeatureCollection',
+                features: filteredDatacentres.map(d => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [parseFloat(d.lng), parseFloat(d.lat)]
+                    },
+                    properties: {
+                        id: d.id,
+                        name: d.name,
+                        city: d.city,
+                        capacity_mw: d.capacity_mw,
+                        site_type: d.site_type
+                    }
+                }))
+            };
+
+            const pointSource = map.getSource('facility-points');
+            if (pointSource) pointSource.setData(pointsGeoJson);
+
+            // 2. Radii GeoJSON
+            const radiiFeatures = [];
+            filteredDatacentres.forEach(d => {
+                const radiusMeters = Number(d.noise_radius_m) || calculateRadiusFromMw(d.capacity_mw);
+                const isSelected = d.id === currentSelectedId;
+                const polygon = createCirclePolygon(parseFloat(d.lat), parseFloat(d.lng), radiusMeters);
+
+                polygon.properties = {
+                    id: d.id,
+                    fill_opacity: isSelected ? 0.22 : 0.08,
+                    line_width: isSelected ? 2.5 : 1,
+                    line_opacity: isSelected ? 0.85 : 0.35
+                };
+                radiiFeatures.push(polygon);
+            });
+
+            const radiiSource = map.getSource('facility-radii');
+            if (radiiSource) radiiSource.setData({ type: 'FeatureCollection', features: radiiFeatures });
+        }
+
+        function calculateRadiusFromMw(mw) {
+            if (!mw) return 1500;
+            // Scale estimated acoustic / impact radius with sqrt of MW
+            return Math.min(5000, Math.max(500, Math.round(Math.sqrt(mw) * 120)));
+        }
+
+        function createCirclePolygon(lat, lng, radiusMeters, points = 48) {
+            const coords = [];
+            const earthRadius = 6371008.8;
+            const latRad = (lat * Math.PI) / 180;
+            const lngRad = (lng * Math.PI) / 180;
+            const angDist = radiusMeters / earthRadius;
+
+            for (let i = 0; i <= points; i++) {
+                const bearing = (i / points) * 2 * Math.PI;
+                const lat2 = Math.asin(Math.sin(latRad) * Math.cos(angDist) + Math.cos(latRad) * Math.sin(angDist) * Math.cos(bearing));
+                const lng2 = lngRad + Math.atan2(Math.sin(bearing) * Math.sin(angDist) * Math.cos(latRad), Math.cos(angDist) - Math.sin(latRad) * Math.sin(lat2));
+                coords.push([(lng2 * 180) / Math.PI, (lat2 * 180) / Math.PI]);
+            }
+
+            return {
+                type: 'Feature',
+                geometry: { type: 'Polygon', coordinates: [coords] },
+                properties: {}
+            };
+        }
+
+        // Selection & Drawer Display
+        function onFacilityClick(id) {
+            const facility = allDatacentres.find(d => d.id === id);
+            if (facility) {
+                selectFacility(facility, { fly: true });
+                // If on mobile, close sidebar to show map & drawer
+                if (window.innerWidth < 1024) {
+                    document.getElementById('map-sidebar').classList.add('-translate-x-full');
+                }
+            }
+        }
+
+        function selectFacility(facility, { fly = true } = {}) {
+            currentSelectedId = facility.id;
+
+            // Highlight list item
+            document.querySelectorAll('#facilities-list > div').forEach(el => {
+                el.classList.remove('bg-primary/5', 'border-primary', 'shadow-sm');
+                el.classList.add('border-transparent');
+            });
+            const activeEl = document.getElementById(`list-item-${facility.id}`);
+            if (activeEl) {
+                activeEl.classList.remove('border-transparent');
+                activeEl.classList.add('bg-primary/5', 'border-primary', 'shadow-sm');
+                activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Fly map to coordinate
+            if (fly && map) {
+                map.flyTo({
+                    center: [parseFloat(facility.lng), parseFloat(facility.lat)],
+                    zoom: Math.max(map.getZoom(), 11),
+                    essential: true
+                });
+            }
+
+            // Populate and show Detail Drawer
+            const drawer = document.getElementById('detail-drawer');
+            document.getElementById('detail-title').textContent = facility.name || 'Proposed Datacentre';
+            document.getElementById('detail-location').textContent = `${facility.address ? facility.address + ', ' : ''}${facility.city}, ${facility.province_state || 'Canada'}`;
+
+            const statusPill = document.getElementById('detail-status-pill');
+            statusPill.textContent = (facility.proposal_status || 'proposed').replace('_', ' ');
+
+            const aiPill = document.getElementById('detail-ai-pill');
+            if (facility.ai_tag === 1 || facility.site_type === 'ai_datacentre') {
+                aiPill.classList.remove('hidden');
+            } else {
+                aiPill.classList.add('hidden');
+            }
+
+            document.getElementById('detail-capacity').textContent = facility.capacity_display || (facility.capacity_mw ? `${facility.capacity_mw} MW` : 'Undisclosed');
+            document.getElementById('detail-radius').textContent = `${Number(facility.noise_radius_m) || calculateRadiusFromMw(facility.capacity_mw)} m`;
+            document.getElementById('detail-developer').textContent = facility.developer || 'Not Disclosed';
+            document.getElementById('detail-type').textContent = (facility.site_type || 'datacentre').replace('_', ' ');
+            document.getElementById('detail-coords').textContent = `${Number(facility.lat).toFixed(4)}, ${Number(facility.lng).toFixed(4)}`;
+            document.getElementById('detail-notes').textContent = facility.notes || 'No detailed project notes recorded for this site.';
+
+            const sourceLink = document.getElementById('detail-source-link');
+            const sourceContainer = document.getElementById('detail-source-container');
+            if (facility.source_url) {
+                sourceLink.href = facility.source_url;
+                sourceContainer.classList.remove('hidden');
+            } else {
+                sourceContainer.classList.add('hidden');
+            }
+
+            // Admin visibility icon
+            if (isAdminLoggedIn) {
+                const isVis = facility.is_visible !== 0;
+                document.getElementById('detail-vis-icon').textContent = isVis ? 'visibility' : 'visibility_off';
+                document.getElementById('detail-toggle-vis-btn').title = isVis ? 'Hide from public map' : 'Show on public map';
+            }
+
+            drawer.classList.remove('hidden');
+
+            // Update URL hash/param
+            const url = new URL(window.location);
+            url.searchParams.set('facility', facility.id);
+            window.history.replaceState({}, '', url);
+
+            syncMapData();
+        }
+
+        function closeDetailDrawer() {
+            document.getElementById('detail-drawer').classList.add('hidden');
+            currentSelectedId = null;
+            const url = new URL(window.location);
+            url.searchParams.delete('facility');
+            window.history.replaceState({}, '', url);
+            syncMapData();
+        }
+
+        function checkUrlDeepLink() {
+            const params = new URLSearchParams(window.location.search);
+            const facilityId = params.get('facility');
+            if (facilityId) {
+                const target = allDatacentres.find(d => d.id === facilityId);
+                if (target) selectFacility(target, { fly: true });
+            }
+        }
+
+        // Search & Filter controls
+        function onSearchInput(e) {
+            searchQuery = e.target.value;
+            document.getElementById('clear-search-btn').classList.toggle('hidden', !searchQuery);
+            applyFiltersAndRender();
+        }
+
+        function clearSearch() {
+            searchQuery = '';
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            applyFiltersAndRender();
+        }
+
+        function setFilter(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.add('active', 'bg-primary', 'text-white', 'border-primary');
+                    btn.classList.remove('bg-surface', 'text-on-surface-variant');
+                } else {
+                    btn.classList.remove('active', 'bg-primary', 'text-white', 'border-primary');
+                    btn.classList.add('bg-surface', 'text-on-surface-variant');
+                }
+            });
+            applyFiltersAndRender();
+        }
+
+        function onSortChange(e) {
+            sortMode = e.target.value;
+            applyFiltersAndRender();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('map-sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Admin Modal Workflows (Add / Edit)
+        function openAddModal(prefillCoords = null) {
+            document.getElementById('modal-title').textContent = 'Add Datacentre Facility';
+            document.getElementById('modal-icon').textContent = 'add_business';
+            document.getElementById('form-id').value = '';
+            document.getElementById('facility-form').reset();
+            document.getElementById('form-visible').checked = true;
+
+            if (prefillCoords) {
+                document.getElementById('form-lat').value = prefillCoords.lat.toFixed(6);
+                document.getElementById('form-lng').value = prefillCoords.lng.toFixed(6);
+            }
+
+            document.getElementById('facility-modal').showModal();
+        }
+
+        function openEditModalCurrent() {
+            const facility = allDatacentres.find(d => d.id === currentSelectedId);
+            if (!facility) return;
+
+            document.getElementById('modal-title').textContent = 'Edit Datacentre Facility';
+            document.getElementById('modal-icon').textContent = 'edit_location';
+            document.getElementById('form-id').value = facility.id;
+            document.getElementById('form-name').value = facility.name || '';
+            document.getElementById('form-city').value = facility.city || '';
+            document.getElementById('form-province').value = (facility.province_state || 'BC').toUpperCase();
+            document.getElementById('form-address').value = facility.address || '';
+            document.getElementById('form-lat').value = facility.lat || '';
+            document.getElementById('form-lng').value = facility.lng || '';
+            document.getElementById('form-capacity').value = facility.capacity_mw != null ? facility.capacity_mw : '';
+            document.getElementById('form-status').value = facility.proposal_status || 'proposed';
+            document.getElementById('form-type').value = facility.site_type || 'datacentre';
+            document.getElementById('form-developer').value = facility.developer || '';
+            document.getElementById('form-radius').value = facility.noise_radius_m || 1500;
+            document.getElementById('form-source').value = facility.source_url || '';
+            document.getElementById('form-notes').value = facility.notes || '';
+            document.getElementById('form-ai-tag').checked = facility.ai_tag === 1 || facility.site_type === 'ai_datacentre';
+            document.getElementById('form-visible').checked = facility.is_visible !== 0;
+
+            document.getElementById('facility-modal').showModal();
+        }
+
+        function closeFacilityModal() {
+            document.getElementById('facility-modal').close();
+            document.getElementById('modal-error-msg').classList.add('hidden');
+        }
+
+        // Map coordinate picker
+        function startMapPick() {
+            closeFacilityModal();
+            isPickingLocation = true;
+            document.getElementById('pin-drop-banner').classList.remove('hidden');
+            map.getCanvas().style.cursor = 'crosshair';
+        }
+
+        function cancelPinDrop() {
+            isPickingLocation = false;
+            document.getElementById('pin-drop-banner').classList.add('hidden');
+            map.getCanvas().style.cursor = '';
+            document.getElementById('facility-modal').showModal();
+        }
+
+        function onMapPickCoordinates(lngLat) {
+            isPickingLocation = false;
+            document.getElementById('pin-drop-banner').classList.add('hidden');
+            map.getCanvas().style.cursor = '';
+
+            document.getElementById('form-lat').value = lngLat.lat.toFixed(6);
+            document.getElementById('form-lng').value = lngLat.lng.toFixed(6);
+
+            document.getElementById('facility-modal').showModal();
+        }
+
+        // Submit Add / Edit
+        async function saveFacilitySubmit(e) {
+            e.preventDefault();
+            const errorDiv = document.getElementById('modal-error-msg');
+            errorDiv.classList.add('hidden');
+
+            const id = document.getElementById('form-id').value;
+            const isEdit = Boolean(id);
+
+            const payload = {
+                id: id || undefined,
+                name: document.getElementById('form-name').value.trim(),
+                city: document.getElementById('form-city').value.trim(),
+                province_state: document.getElementById('form-province').value,
+                address: document.getElementById('form-address').value.trim(),
+                lat: parseFloat(document.getElementById('form-lat').value),
+                lng: parseFloat(document.getElementById('form-lng').value),
+                capacity_mw: document.getElementById('form-capacity').value ? parseFloat(document.getElementById('form-capacity').value) : null,
+                proposal_status: document.getElementById('form-status').value,
+                site_type: document.getElementById('form-type').value,
+                developer: document.getElementById('form-developer').value.trim(),
+                noise_radius_m: document.getElementById('form-radius').value ? parseFloat(document.getElementById('form-radius').value) : 1500,
+                source_url: document.getElementById('form-source').value.trim(),
+                notes: document.getElementById('form-notes').value.trim(),
+                ai_tag: document.getElementById('form-ai-tag').checked ? 1 : 0,
+                is_visible: document.getElementById('form-visible').checked ? 1 : 0
+            };
+
+            const saveBtn = document.getElementById('modal-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+
+            try {
+                const method = isEdit ? 'PUT' : 'POST';
+                const res = await fetch('/api/admin/datacentres', {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || 'Failed to save datacentre facility.');
+                }
+
+                closeFacilityModal();
+                await fetchDatacentres();
+
+                // Select the updated/created facility
+                const savedFacility = allDatacentres.find(d => d.id === (data.datacentre?.id || id));
+                if (savedFacility) {
+                    selectFacility(savedFacility, { fly: true });
+                }
+
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Facility';
+            }
+        }
+
+        // Toggle visibility from drawer
+        async function toggleVisibilityCurrent() {
+            const facility = allDatacentres.find(d => d.id === currentSelectedId);
+            if (!facility) return;
+
+            const nextVisible = facility.is_visible === 0 ? 1 : 0;
+            try {
+                const res = await fetch('/api/admin/datacentres', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: facility.id, is_visible: nextVisible })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    facility.is_visible = nextVisible;
+                    document.getElementById('detail-vis-icon').textContent = nextVisible ? 'visibility' : 'visibility_off';
+                    document.getElementById('detail-toggle-vis-btn').title = nextVisible ? 'Hide from public map' : 'Show on public map';
+                    applyFiltersAndRender();
+                }
+            } catch (err) {
+                alert('Failed to toggle visibility: ' + err.message);
+            }
+        }
+
+        // Delete from drawer
+        async function deleteFacilityCurrent() {
+            const facility = allDatacentres.find(d => d.id === currentSelectedId);
+            if (!facility) return;
+
+            if (!confirm(`Are you sure you want to permanently delete "${facility.name}"?`)) return;
+
+            try {
+                const res = await fetch(`/api/admin/datacentres?id=${encodeURIComponent(facility.id)}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    closeDetailDrawer();
+                    await fetchDatacentres();
+                } else {
+                    alert('Error deleting: ' + data.message);
+                }
+            } catch (err) {
+                alert('Failed to delete: ' + err.message);
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>

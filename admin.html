@@ -127,131 +127,226 @@
         </div>
 
         <!-- DASHBOARD PANEL (Hidden until login) -->
-        <div id="dashboard-panel" class="hidden space-y-8">
+        <div id="dashboard-panel" class="hidden space-y-6">
             
-            <!-- Welcome Bar -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/15 pb-6">
-                <div>
-                    <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Prospective Sites Database</h1>
-                    <p class="font-body text-sm text-on-surface-variant mt-1">Manage and evaluate submissions for AI, HPC, and data-centre development.</p>
-                </div>
-                <div>
-                    <button onclick="exportCSV()" class="bg-primary text-on-primary px-5 py-3 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">download</span> Export Filtered to CSV
-                    </button>
-                </div>
+            <!-- ADMIN NAVIGATION TABS -->
+            <div class="flex items-center gap-2 border-b border-outline-variant/20 pb-0">
+                <button id="tab-btn-sites" onclick="switchAdminTab('sites')" class="px-5 py-3 font-label font-bold text-xs uppercase tracking-wider border-b-2 border-primary text-primary transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">domain</span>
+                    <span>Prospective Sites (Assessments)</span>
+                </button>
+                <button id="tab-btn-datacentres" onclick="switchAdminTab('datacentres')" class="px-5 py-3 font-label font-bold text-xs uppercase tracking-wider border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">map</span>
+                    <span>Datacentre Map Database</span>
+                </button>
             </div>
 
-            <!-- SEARCH, FILTERS & SORTING -->
-            <div class="bg-surface-container-low border border-outline-variant/15 p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-                
-                <!-- Search -->
-                <div class="md:col-span-2">
-                    <label for="filter-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Search sites, city, or contact</label>
-                    <div class="relative">
-                        <span class="material-symbols-outlined text-sm absolute left-3 top-3.5 text-on-surface-variant">search</span>
-                        <input type="text" id="filter-search" oninput="triggerSearch()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River, Prince George, Kevin..." />
+            <!-- TAB 1: SITES SUBMISSIONS PANEL -->
+            <div id="tab-content-sites" class="space-y-8">
+                <!-- Welcome Bar -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/15 pb-6">
+                    <div>
+                        <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Prospective Sites Database</h1>
+                        <p class="font-body text-sm text-on-surface-variant mt-1">Manage and evaluate submissions for AI, HPC, and data-centre development.</p>
+                    </div>
+                    <div>
+                        <button onclick="exportCSV()" class="bg-primary text-on-primary px-5 py-3 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">download</span> Export Filtered to CSV
+                        </button>
                     </div>
                 </div>
 
-                <!-- Sort By -->
-                <div>
-                    <label for="filter-sort-by" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Sort By</label>
-                    <select id="filter-sort-by" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="created_at" selected>Submission Date (Newest)</option>
-                        <option value="firm_power_available_mw">Firm Power Available</option>
-                        <option value="max_potential_capacity_mw">Potential Power Capacity</option>
-                        <option value="name">Property Name</option>
-                        <option value="calculated_score">Calculated Suitability Score</option>
-                    </select>
+                <!-- SEARCH, FILTERS & SORTING -->
+                <div class="bg-surface-container-low border border-outline-variant/15 p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+                    
+                    <!-- Search -->
+                    <div class="md:col-span-2">
+                        <label for="filter-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Search sites, city, or contact</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined text-sm absolute left-3 top-3.5 text-on-surface-variant">search</span>
+                            <input type="text" id="filter-search" oninput="triggerSearch()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River, Prince George, Kevin..." />
+                        </div>
+                    </div>
+
+                    <!-- Sort By -->
+                    <div>
+                        <label for="filter-sort-by" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Sort By</label>
+                        <select id="filter-sort-by" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="created_at" selected>Submission Date (Newest)</option>
+                            <option value="firm_power_available_mw">Firm Power Available</option>
+                            <option value="max_potential_capacity_mw">Potential Power Capacity</option>
+                            <option value="name">Property Name</option>
+                            <option value="calculated_score">Calculated Suitability Score</option>
+                        </select>
+                    </div>
+
+                    <!-- Classification Filter -->
+                    <div>
+                        <label for="filter-classification" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Classification</label>
+                        <select id="filter-classification" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>All Classifications</option>
+                            <option value="Promising">Promising</option>
+                            <option value="Conditional">Conditional</option>
+                            <option value="Significant Due Diligence Required">Significant Due Diligence Required</option>
+                            <option value="Unlikely Based on Current Information">Unlikely</option>
+                        </select>
+                    </div>
+
+                    <!-- Country Filter -->
+                    <div>
+                        <label for="filter-country" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Country</label>
+                        <select id="filter-country" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>All Countries</option>
+                            <!-- Injected by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Province/State Filter -->
+                    <div>
+                        <label for="filter-prov" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Province / State</label>
+                        <select id="filter-prov" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>All Provinces/States</option>
+                            <!-- Injected by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Opportunity Type Filter -->
+                    <div>
+                        <label for="filter-opportunity" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Opportunity Type</label>
+                        <select id="filter-opportunity" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>All Objectives</option>
+                            <option value="Sell the property">Sell the property</option>
+                            <option value="Lease the property">Lease the property</option>
+                            <option value="Find a data-centre developer/operator">Find developer/operator</option>
+                            <option value="Find an infrastructure partner">Find infra partner</option>
+                            <option value="Develop the site directly">Develop directly</option>
+                            <option value="Attract economic development">Attract economic development</option>
+                            <option value="Market available power">Market available power</option>
+                            <option value="Convert an existing industrial site">Convert industrial site</option>
+                            <option value="Convert an existing crypto/data-centre site">Convert crypto/DC site</option>
+                            <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate site only</option>
+                        </select>
+                    </div>
+
+                    <!-- Min Power (Firm / Potential) -->
+                    <div>
+                        <label for="filter-min-firm" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Min Firm Power (MW)</label>
+                        <select id="filter-min-firm" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>Any MW</option>
+                            <option value="1">1+ MW</option>
+                            <option value="5">5+ MW</option>
+                            <option value="20">20+ MW</option>
+                            <option value="50">50+ MW</option>
+                        </select>
+                    </div>
+
                 </div>
 
-                <!-- Classification Filter -->
-                <div>
-                    <label for="filter-classification" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Classification</label>
-                    <select id="filter-classification" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="" selected>All Classifications</option>
-                        <option value="Promising">Promising</option>
-                        <option value="Conditional">Conditional</option>
-                        <option value="Significant Due Diligence Required">Significant Due Diligence Required</option>
-                        <option value="Unlikely Based on Current Information">Unlikely</option>
-                    </select>
+                <!-- SITE LIST TABLE -->
+                <div class="bg-surface-container-low border border-outline-variant/15 overflow-x-auto shadow-sm">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container border-b border-outline-variant/20 font-label font-bold text-[10px] uppercase tracking-wider text-primary">
+                                <th class="py-4 px-6">ID</th>
+                                <th class="py-4 px-6">Property Name</th>
+                                <th class="py-4 px-6">Location</th>
+                                <th class="py-4 px-6">Classification</th>
+                                <th class="py-4 px-6 text-center">Score</th>
+                                <th class="py-4 px-6 text-center">Firm MW</th>
+                                <th class="py-4 px-6 text-center">Potential MW</th>
+                                <th class="py-4 px-6">Contact &amp; Company</th>
+                                <th class="py-4 px-6">Lead Status</th>
+                                <th class="py-4 px-6">Submitted Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sites-tbody" class="divide-y divide-outline-variant/10">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                    <div id="no-sites-message" class="hidden p-12 text-center text-on-surface-variant font-body">
+                        <span class="material-symbols-outlined text-4xl block mb-2 text-outline-variant">info</span>
+                        No submitted sites match the active filter criteria.
+                    </div>
                 </div>
-
-                <!-- Country Filter -->
-                <div>
-                    <label for="filter-country" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Country</label>
-                    <select id="filter-country" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="" selected>All Countries</option>
-                        <!-- Injected by JS -->
-                    </select>
-                </div>
-
-                <!-- Province/State Filter -->
-                <div>
-                    <label for="filter-prov" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Province / State</label>
-                    <select id="filter-prov" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="" selected>All Provinces/States</option>
-                        <!-- Injected by JS -->
-                    </select>
-                </div>
-
-                <!-- Opportunity Type Filter -->
-                <div>
-                    <label for="filter-opportunity" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Opportunity Type</label>
-                    <select id="filter-opportunity" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="" selected>All Objectives</option>
-                        <option value="Sell the property">Sell the property</option>
-                        <option value="Lease the property">Lease the property</option>
-                        <option value="Find a data-centre developer/operator">Find developer/operator</option>
-                        <option value="Find an infrastructure partner">Find infra partner</option>
-                        <option value="Develop the site directly">Develop directly</option>
-                        <option value="Attract economic development">Attract economic development</option>
-                        <option value="Market available power">Market available power</option>
-                        <option value="Convert an existing industrial site">Convert industrial site</option>
-                        <option value="Convert an existing crypto/data-centre site">Convert crypto/DC site</option>
-                        <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate site only</option>
-                    </select>
-                </div>
-
-                <!-- Min Power (Firm / Potential) -->
-                <div>
-                    <label for="filter-min-firm" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Min Firm Power (MW)</label>
-                    <select id="filter-min-firm" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                        <option value="" selected>Any MW</option>
-                        <option value="1">1+ MW</option>
-                        <option value="5">5+ MW</option>
-                        <option value="20">20+ MW</option>
-                        <option value="50">50+ MW</option>
-                    </select>
-                </div>
-
             </div>
 
-            <!-- SITE LIST TABLE -->
-            <div class="bg-surface-container-low border border-outline-variant/15 overflow-x-auto shadow-sm">
-                <table class="w-full text-left text-xs border-collapse">
-                    <thead>
-                        <tr class="bg-surface-container border-b border-outline-variant/20 font-label font-bold text-[10px] uppercase tracking-wider text-primary">
-                            <th class="py-4 px-6">ID</th>
-                            <th class="py-4 px-6">Property Name</th>
-                            <th class="py-4 px-6">Location</th>
-                            <th class="py-4 px-6">Classification</th>
-                            <th class="py-4 px-6 text-center">Score</th>
-                            <th class="py-4 px-6 text-center">Firm MW</th>
-                            <th class="py-4 px-6 text-center">Potential MW</th>
-                            <th class="py-4 px-6">Contact &amp; Company</th>
-                            <th class="py-4 px-6">Lead Status</th>
-                            <th class="py-4 px-6">Submitted Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sites-tbody" class="divide-y divide-outline-variant/10">
-                        <!-- Injected by JS -->
-                    </tbody>
-                </table>
-                <div id="no-sites-message" class="hidden p-12 text-center text-on-surface-variant font-body">
-                    <span class="material-symbols-outlined text-4xl block mb-2 text-outline-variant">info</span>
-                    No submitted sites match the active filter criteria.
+            <!-- TAB 2: DATACENTRE MAP DATABASE PANEL -->
+            <div id="tab-content-datacentres" class="hidden space-y-8">
+                <!-- Welcome Bar -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/15 pb-6">
+                    <div>
+                        <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Datacentre Map Database</h1>
+                        <p class="font-body text-sm text-on-surface-variant mt-1">Manage public datacentre proposals, operational facilities, and grid intelligence points.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="syncSeedDatacentres()" id="btn-seed-dc" class="border border-outline-variant/30 hover:bg-surface-container text-on-surface px-4 py-2.5 font-label font-semibold uppercase tracking-wider text-xs transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">sync</span>
+                            <span>Sync Live Feed</span>
+                        </button>
+                        <a href="/map.html" target="_blank" class="border border-primary/30 hover:bg-primary/10 text-primary px-4 py-2.5 font-label font-semibold uppercase tracking-wider text-xs transition-colors flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            <span>View Public Map</span>
+                        </a>
+                        <button onclick="openAddDcModal()" class="bg-primary text-on-primary px-5 py-2.5 font-label font-bold uppercase tracking-widest text-xs hover:bg-on-background transition-colors flex items-center gap-2 shadow-sm">
+                            <span class="material-symbols-outlined text-sm font-bold">add</span>
+                            <span>Add Facility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DC Search & Filters -->
+                <div class="bg-surface-container-low border border-outline-variant/15 p-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="md:col-span-2">
+                        <label for="filter-dc-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-1.5">Search Name, City, Developer</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined text-sm absolute left-3 top-2.5 text-on-surface-variant">search</span>
+                            <input type="text" id="filter-dc-search" oninput="filterAdminDatacentres()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Algoma, Cambridge, Crusoe, 400..." />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="filter-dc-status" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-1.5">Status</label>
+                        <select id="filter-dc-status" onchange="filterAdminDatacentres()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="">All Statuses</option>
+                            <option value="proposed">Proposed</option>
+                            <option value="under_construction">Under Construction</option>
+                            <option value="operational">Operational</option>
+                            <option value="on_hold">On Hold</option>
+                            <option value="decommissioned">Decommissioned</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filter-dc-vis" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-1.5">Visibility</label>
+                        <select id="filter-dc-vis" onchange="filterAdminDatacentres()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="">All (Public &amp; Hidden)</option>
+                            <option value="1">Public Only</option>
+                            <option value="0">Hidden Only</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- DC Table -->
+                <div class="bg-surface-container-low border border-outline-variant/15 overflow-x-auto shadow-sm">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container border-b border-outline-variant/20 font-label font-bold text-[10px] uppercase tracking-wider text-primary">
+                                <th class="py-4 px-6">Facility / Project Name</th>
+                                <th class="py-4 px-6">Location</th>
+                                <th class="py-4 px-6 text-center">Capacity (MW)</th>
+                                <th class="py-4 px-6">Status</th>
+                                <th class="py-4 px-6">Type</th>
+                                <th class="py-4 px-6">Developer</th>
+                                <th class="py-4 px-6 text-center">Visibility</th>
+                                <th class="py-4 px-6 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dc-tbody" class="divide-y divide-outline-variant/10">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                    <div id="no-dc-message" class="hidden p-12 text-center text-on-surface-variant font-body">
+                        <span class="material-symbols-outlined text-4xl block mb-2 text-outline-variant">travel_explore</span>
+                        No datacentres found in the database. Click "Sync Live Feed" or "Add Facility".
+                    </div>
                 </div>
             </div>
 
@@ -662,10 +757,161 @@
         </div>
     </div>
 
+    <!-- DATACENTRE ADD / EDIT MODAL -->
+    <dialog id="admin-dc-modal" class="backdrop:bg-black/60 backdrop:backdrop-blur-sm p-0 border border-outline-variant/30 max-w-2xl w-full shadow-2xl overflow-hidden">
+        <form id="admin-dc-form" onsubmit="saveDcFormSubmit(event)" class="bg-surface-container-lowest flex flex-col max-h-[90vh]">
+            <div class="bg-[#283439] text-white p-5 flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary-fixed-dim" id="dc-modal-icon">add_business</span>
+                    <h2 class="font-headline font-bold text-base tracking-tight" id="dc-modal-title">Add Datacentre Location</h2>
+                </div>
+                <button type="button" onclick="closeDcModal()" class="text-white/70 hover:text-white">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 font-body text-xs">
+                <input type="hidden" id="dc-form-id" />
+                <div>
+                    <label for="dc-form-name" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Facility / Project Name *</label>
+                    <input type="text" id="dc-form-name" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River AI Campus" />
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label for="dc-form-city" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">City *</label>
+                        <input type="text" id="dc-form-city" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" />
+                    </div>
+                    <div>
+                        <label for="dc-form-province" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Province *</label>
+                        <select id="dc-form-province" required class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="BC">British Columbia (BC)</option>
+                            <option value="AB">Alberta (AB)</option>
+                            <option value="ON">Ontario (ON)</option>
+                            <option value="QC">Quebec (QC)</option>
+                            <option value="SK">Saskatchewan (SK)</option>
+                            <option value="MB">Manitoba (MB)</option>
+                            <option value="NB">New Brunswick (NB)</option>
+                            <option value="NS">Nova Scotia (NS)</option>
+                            <option value="PE">Prince Edward Island (PE)</option>
+                            <option value="NL">Newfoundland and Labrador (NL)</option>
+                            <option value="YT">Yukon (YT)</option>
+                            <option value="NT">Northwest Territories (NT)</option>
+                            <option value="NU">Nunavut (NU)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dc-form-address" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Street Address</label>
+                        <input type="text" id="dc-form-address" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 bg-surface p-3 border border-outline-variant/20">
+                    <div>
+                        <label for="dc-form-lat" class="font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1 block">Latitude *</label>
+                        <input type="number" step="any" id="dc-form-lat" required class="w-full bg-surface-container-lowest border border-outline-variant/30 px-3 py-1.5 text-xs font-mono focus:outline-none focus:border-primary" placeholder="53.9171" />
+                    </div>
+                    <div>
+                        <label for="dc-form-lng" class="font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1 block">Longitude *</label>
+                        <input type="number" step="any" id="dc-form-lng" required class="w-full bg-surface-container-lowest border border-outline-variant/30 px-3 py-1.5 text-xs font-mono focus:outline-none focus:border-primary" placeholder="-122.7497" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label for="dc-form-capacity" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Capacity (MW)</label>
+                        <input type="number" step="any" id="dc-form-capacity" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. 150" />
+                    </div>
+                    <div>
+                        <label for="dc-form-status" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Status</label>
+                        <select id="dc-form-status" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="proposed">Proposed</option>
+                            <option value="under_construction">Under Construction</option>
+                            <option value="operational">Operational</option>
+                            <option value="on_hold">On Hold</option>
+                            <option value="decommissioned">Decommissioned</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dc-form-type" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Facility Type</label>
+                        <select id="dc-form-type" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="datacentre">Standard Datacentre</option>
+                            <option value="ai_datacentre">AI / High-Density Compute</option>
+                            <option value="crypto_conversion">Crypto / Industrial Conversion</option>
+                            <option value="hyperscale">Hyperscale Campus</option>
+                            <option value="edge">Edge Facility</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label for="dc-form-developer" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Developer / Proponent</label>
+                        <input type="text" id="dc-form-developer" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" />
+                    </div>
+                    <div>
+                        <label for="dc-form-radius" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Noise / Impact Radius (m)</label>
+                        <input type="number" id="dc-form-radius" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="1500" />
+                    </div>
+                </div>
+                <div>
+                    <label for="dc-form-source" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Source / Regulatory URL</label>
+                    <input type="url" id="dc-form-source" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" />
+                </div>
+                <div>
+                    <label for="dc-form-notes" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Technical / Regulatory Notes</label>
+                    <textarea id="dc-form-notes" rows="3" class="w-full bg-surface border border-outline-variant/30 p-3 text-xs focus:outline-none focus:border-primary transition-colors"></textarea>
+                </div>
+                <div class="flex items-center gap-6 pt-2">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="dc-form-ai-tag" class="text-primary focus:ring-primary rounded-none border-outline-variant/40" />
+                        <span class="font-label font-semibold text-xs text-on-surface">Mark as AI Workload</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="dc-form-visible" checked class="text-primary focus:ring-primary rounded-none border-outline-variant/40" />
+                        <span class="font-label font-semibold text-xs text-on-surface">Publish on Public Map</span>
+                    </label>
+                </div>
+                <div id="dc-modal-error" class="hidden text-xs text-red-600 font-semibold p-2 bg-red-50 border border-red-200"></div>
+            </div>
+            <div class="bg-surface-container-low p-4 border-t border-outline-variant/20 flex justify-end gap-3 flex-shrink-0">
+                <button type="button" onclick="closeDcModal()" class="px-4 py-2 border border-outline-variant/30 font-label font-semibold text-xs text-on-surface hover:bg-surface transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" id="dc-modal-save-btn" class="bg-primary text-white hover:bg-on-background px-6 py-2 font-label font-bold uppercase tracking-wider text-xs transition-colors shadow-sm">
+                    Save Facility
+                </button>
+            </div>
+        </form>
+    </dialog>
+
     <!-- Admin JavaScript Logic -->
     <script>
         let searchTimeout = null;
         let activeSiteId = null;
+        let adminDatacentres = [];
+
+        // Admin Tab switching
+        function switchAdminTab(tab) {
+            const btnSites = document.getElementById('tab-btn-sites');
+            const btnDc = document.getElementById('tab-btn-datacentres');
+            const panelSites = document.getElementById('tab-content-sites');
+            const panelDc = document.getElementById('tab-content-datacentres');
+
+            if (tab === 'sites') {
+                btnSites.classList.add('border-primary', 'text-primary');
+                btnSites.classList.remove('border-transparent', 'text-on-surface-variant');
+                btnDc.classList.remove('border-primary', 'text-primary');
+                btnDc.classList.add('border-transparent', 'text-on-surface-variant');
+                panelSites.classList.remove('hidden');
+                panelDc.classList.add('hidden');
+            } else {
+                btnDc.classList.add('border-primary', 'text-primary');
+                btnDc.classList.remove('border-transparent', 'text-on-surface-variant');
+                btnSites.classList.remove('border-primary', 'text-primary');
+                btnSites.classList.add('border-transparent', 'text-on-surface-variant');
+                panelSites.classList.add('hidden');
+                panelDc.classList.remove('hidden');
+                if (adminDatacentres.length === 0) {
+                    fetchAdminDatacentres();
+                }
+            }
+        }
 
         // Check auth on load
         async function checkAuth() {
@@ -695,6 +941,7 @@
             document.getElementById("dashboard-panel").classList.remove("hidden");
             document.getElementById("logout-container").classList.remove("hidden");
             fetchFiltersAndSites();
+            fetchAdminDatacentres();
         }
 
         async function handleLoginSubmit(event) {
@@ -1059,6 +1306,282 @@
 
             // Force download
             window.location.href = url;
+        }
+
+        // ==========================================
+        // DATACENTRES MAP DATABASE MANAGEMENT
+        // ==========================================
+        async function fetchAdminDatacentres() {
+            try {
+                const res = await fetch("/api/admin/datacentres");
+                const data = await res.json();
+                if (data.success && Array.isArray(data.datacentres)) {
+                    adminDatacentres = data.datacentres;
+                    filterAdminDatacentres();
+                }
+            } catch (err) {
+                console.error("Error loading admin datacentres:", err);
+            }
+        }
+
+        function filterAdminDatacentres() {
+            const q = (document.getElementById("filter-dc-search")?.value || "").toLowerCase().trim();
+            const status = document.getElementById("filter-dc-status")?.value || "";
+            const vis = document.getElementById("filter-dc-vis")?.value || "";
+
+            let list = [...adminDatacentres];
+
+            if (q) {
+                list = list.filter(d => 
+                    (d.name && d.name.toLowerCase().includes(q)) ||
+                    (d.city && d.city.toLowerCase().includes(q)) ||
+                    (d.developer && d.developer.toLowerCase().includes(q)) ||
+                    (d.province_state && d.province_state.toLowerCase().includes(q))
+                );
+            }
+
+            if (status) {
+                list = list.filter(d => d.proposal_status === status);
+            }
+
+            if (vis !== "") {
+                const visVal = parseInt(vis);
+                list = list.filter(d => (d.is_visible !== 0 ? 1 : 0) === visVal);
+            }
+
+            renderAdminDatacentresTable(list);
+        }
+
+        function renderAdminDatacentresTable(list) {
+            const tbody = document.getElementById("dc-tbody");
+            const noDcMsg = document.getElementById("no-dc-message");
+            if (!tbody) return;
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = "";
+                noDcMsg?.classList.remove("hidden");
+                return;
+            }
+
+            noDcMsg?.classList.add("hidden");
+
+            tbody.innerHTML = list.map(d => {
+                const isVis = d.is_visible !== 0;
+                const capacity = d.capacity_display || (d.capacity_mw ? `${d.capacity_mw} MW` : "Undisclosed");
+                const isAi = d.ai_tag === 1 || d.site_type === "ai_datacentre";
+
+                return `
+                    <tr class="hover:bg-surface transition-colors">
+                        <td class="py-3 px-6">
+                            <div class="font-headline font-bold text-on-background flex items-center gap-1.5">
+                                ${escapeHtml(d.name)}
+                                ${isAi ? '<span class="px-1 py-0.2 bg-blue-100 text-blue-800 text-[9px] font-bold">AI</span>' : ''}
+                            </div>
+                            <div class="text-[10px] text-on-surface-variant font-mono">${escapeHtml(d.id)}</div>
+                        </td>
+                        <td class="py-3 px-6">
+                            <div>${escapeHtml(d.city)}, ${escapeHtml(d.province_state || "Canada")}</div>
+                            <div class="text-[10px] text-on-surface-variant">${escapeHtml(d.address || "")}</div>
+                        </td>
+                        <td class="py-3 px-6 text-center font-headline font-bold text-primary">
+                            ${escapeHtml(capacity)}
+                        </td>
+                        <td class="py-3 px-6 capitalize">
+                            <span class="px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider bg-surface-container border border-outline-variant/30">
+                                ${(d.proposal_status || "proposed").replace("_", " ")}
+                            </span>
+                        </td>
+                        <td class="py-3 px-6 capitalize text-on-surface-variant">
+                            ${(d.site_type || "datacentre").replace("_", " ")}
+                        </td>
+                        <td class="py-3 px-6 text-on-surface-variant">
+                            ${escapeHtml(d.developer || "-")}
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <button onclick="toggleDcVisibility('${d.id}', ${isVis})" class="p-1 text-xs font-semibold ${isVis ? 'text-emerald-700 hover:text-emerald-900' : 'text-outline-variant hover:text-on-surface'}" title="${isVis ? 'Click to hide' : 'Click to make public'}">
+                                <span class="material-symbols-outlined text-base">${isVis ? 'visibility' : 'visibility_off'}</span>
+                            </button>
+                        </td>
+                        <td class="py-3 px-6 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button onclick="openEditDcModal('${d.id}')" class="p-1 text-primary hover:text-on-background" title="Edit Facility">
+                                    <span class="material-symbols-outlined text-base">edit</span>
+                                </button>
+                                <a href="/map.html?facility=${encodeURIComponent(d.id)}" target="_blank" class="p-1 text-on-surface-variant hover:text-primary" title="View on Map">
+                                    <span class="material-symbols-outlined text-base">pin_drop</span>
+                                </a>
+                                <button onclick="deleteDc('${d.id}', '${escapeHtml(d.name)}')" class="p-1 text-red-600 hover:text-red-900" title="Delete Facility">
+                                    <span class="material-symbols-outlined text-base">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        async function toggleDcVisibility(id, currentVisible) {
+            const nextVisible = currentVisible ? 0 : 1;
+            try {
+                const res = await fetch("/api/admin/datacentres", {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id, is_visible: nextVisible })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const target = adminDatacentres.find(d => d.id === id);
+                    if (target) target.is_visible = nextVisible;
+                    filterAdminDatacentres();
+                }
+            } catch (err) {
+                alert("Failed to toggle visibility: " + err.message);
+            }
+        }
+
+        function openAddDcModal() {
+            document.getElementById("dc-modal-title").innerText = "Add Datacentre Location";
+            document.getElementById("dc-modal-icon").innerText = "add_business";
+            document.getElementById("dc-form-id").value = "";
+            document.getElementById("admin-dc-form").reset();
+            document.getElementById("dc-form-visible").checked = true;
+            document.getElementById("dc-modal-error").classList.add("hidden");
+            document.getElementById("admin-dc-modal").showModal();
+        }
+
+        function openEditDcModal(id) {
+            const d = adminDatacentres.find(item => item.id === id);
+            if (!d) return;
+
+            document.getElementById("dc-modal-title").innerText = "Edit Datacentre Location";
+            document.getElementById("dc-modal-icon").innerText = "edit_location";
+            document.getElementById("dc-form-id").value = d.id;
+            document.getElementById("dc-form-name").value = d.name || "";
+            document.getElementById("dc-form-city").value = d.city || "";
+            document.getElementById("dc-form-province").value = (d.province_state || "BC").toUpperCase();
+            document.getElementById("dc-form-address").value = d.address || "";
+            document.getElementById("dc-form-lat").value = d.lat || "";
+            document.getElementById("dc-form-lng").value = d.lng || "";
+            document.getElementById("dc-form-capacity").value = d.capacity_mw != null ? d.capacity_mw : "";
+            document.getElementById("dc-form-status").value = d.proposal_status || "proposed";
+            document.getElementById("dc-form-type").value = d.site_type || "datacentre";
+            document.getElementById("dc-form-developer").value = d.developer || "";
+            document.getElementById("dc-form-radius").value = d.noise_radius_m || 1500;
+            document.getElementById("dc-form-source").value = d.source_url || "";
+            document.getElementById("dc-form-notes").value = d.notes || "";
+            document.getElementById("dc-form-ai-tag").checked = d.ai_tag === 1 || d.site_type === "ai_datacentre";
+            document.getElementById("dc-form-visible").checked = d.is_visible !== 0;
+
+            document.getElementById("dc-modal-error").classList.add("hidden");
+            document.getElementById("admin-dc-modal").showModal();
+        }
+
+        function closeDcModal() {
+            document.getElementById("admin-dc-modal").close();
+        }
+
+        async function saveDcFormSubmit(e) {
+            e.preventDefault();
+            const errDiv = document.getElementById("dc-modal-error");
+            errDiv.classList.add("hidden");
+
+            const id = document.getElementById("dc-form-id").value;
+            const isEdit = Boolean(id);
+
+            const payload = {
+                id: id || undefined,
+                name: document.getElementById("dc-form-name").value.trim(),
+                city: document.getElementById("dc-form-city").value.trim(),
+                province_state: document.getElementById("dc-form-province").value,
+                address: document.getElementById("dc-form-address").value.trim(),
+                lat: parseFloat(document.getElementById("dc-form-lat").value),
+                lng: parseFloat(document.getElementById("dc-form-lng").value),
+                capacity_mw: document.getElementById("dc-form-capacity").value ? parseFloat(document.getElementById("dc-form-capacity").value) : null,
+                proposal_status: document.getElementById("dc-form-status").value,
+                site_type: document.getElementById("dc-form-type").value,
+                developer: document.getElementById("dc-form-developer").value.trim(),
+                noise_radius_m: document.getElementById("dc-form-radius").value ? parseFloat(document.getElementById("dc-form-radius").value) : 1500,
+                source_url: document.getElementById("dc-form-source").value.trim(),
+                notes: document.getElementById("dc-form-notes").value.trim(),
+                ai_tag: document.getElementById("dc-form-ai-tag").checked ? 1 : 0,
+                is_visible: document.getElementById("dc-form-visible").checked ? 1 : 0
+            };
+
+            const btn = document.getElementById("dc-modal-save-btn");
+            btn.disabled = true;
+            btn.innerText = "Saving...";
+
+            try {
+                const res = await fetch("/api/admin/datacentres", {
+                    method: isEdit ? "PUT" : "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to save datacentre.");
+                }
+
+                closeDcModal();
+                await fetchAdminDatacentres();
+            } catch (err) {
+                errDiv.innerText = err.message;
+                errDiv.classList.remove("hidden");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Save Facility";
+            }
+        }
+
+        async function deleteDc(id, name) {
+            if (!confirm(`Are you sure you want to permanently remove "${name}"?`)) return;
+
+            try {
+                const res = await fetch(`/api/admin/datacentres?id=${encodeURIComponent(id)}`, {
+                    method: "DELETE"
+                });
+                const data = await res.json();
+                if (data.success) {
+                    await fetchAdminDatacentres();
+                } else {
+                    alert("Delete failed: " + data.message);
+                }
+            } catch (err) {
+                alert("Error deleting datacentre: " + err.message);
+            }
+        }
+
+        async function syncSeedDatacentres() {
+            const btn = document.getElementById("btn-seed-dc");
+            if (!confirm("Fetch and sync Canadian datacentres from live feed into the database?")) return;
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm animate-spin">sync</span><span>Syncing...</span>`;
+
+            try {
+                const res = await fetch("/api/admin/seed-datacentres", { method: "POST" });
+                const data = await res.json();
+                if (data.success) {
+                    alert(data.message || "Live feed sync successful!");
+                    await fetchAdminDatacentres();
+                } else {
+                    alert("Sync error: " + (data.message || "Unknown error"));
+                }
+            } catch (err) {
+                alert("Connection error during sync: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<span class="material-symbols-outlined text-sm">sync</span><span>Sync Live Feed</span>`;
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
         }
 
         // Run Auth Check on start

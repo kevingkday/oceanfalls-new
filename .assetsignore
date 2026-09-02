@@ -1,6 +1,8 @@
 node_modules
 .git
 .github
+.wrangler
+.wrangler/**
 wrangler.jsonc
 package.json
 package-lock.json
