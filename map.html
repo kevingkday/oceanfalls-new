@@ -694,8 +694,16 @@
                     const res = await fetch(endpoint);
                     const data = await res.json();
 
-                    if (data.success && Array.isArray(data.datacentres) && data.datacentres.length > 0) {
-                        allDatacentres = data.datacentres;
+                    if (data.success && Array.isArray(data.datacentres)) {
+                        // Merge live database records with baseline catalog so newly added facilities (like QScale) don't replace the baseline feed
+                        const siteMap = new Map();
+                        if (window.EMBEDDED_DATACENTRES && Array.isArray(window.EMBEDDED_DATACENTRES)) {
+                            window.EMBEDDED_DATACENTRES.forEach(d => siteMap.set(d.id, d));
+                        }
+                        // Live database records take priority (adds new facilities and applies edits)
+                        data.datacentres.forEach(d => siteMap.set(d.id, d));
+
+                        allDatacentres = Array.from(siteMap.values());
                         applyFiltersAndRender();
                         updateGlobalStats();
                         return;

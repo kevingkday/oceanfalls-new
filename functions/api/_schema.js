@@ -187,5 +187,87 @@ export async function ensureSchema(db) {
     }
   }
 
+  // 3. Ensure baseline Canadian datacentre catalog is seeded into D1
+  try {
+    const countRow = await db.prepare("SELECT COUNT(*) as cnt FROM datacentres WHERE id LIKE 'national:%'").first();
+    if (!countRow || countRow.cnt < 50) {
+      console.log(`Baseline catalog missing (found ${countRow ? countRow.cnt : 0}). Auto-seeding default Canadian datacentres...`);
+      await seedDefaultDatacentres(db);
+    }
+  } catch (err) {
+    console.error("Auto-seed check error:", err);
+  }
+
   console.log("Database schema successfully verified and initialized.");
+}
+
+export async function seedDefaultDatacentres(db) {
+  try {
+    const { DEFAULT_DATACENTRES } = await import("./_default_datacentres.js");
+    if (!DEFAULT_DATACENTRES || !DEFAULT_DATACENTRES.length) return;
+
+    const now = new Date().toISOString();
+    const stmts = [];
+
+    for (const d of DEFAULT_DATACENTRES) {
+      stmts.push(db.prepare(`
+        INSERT INTO datacentres (
+          id, name, address, city, province_state, country,
+          lat, lng, capacity_mw, capacity_display, proposal_status,
+          site_type, developer, noise_radius_m, source_url,
+          notes, ai_tag, is_visible, created_at, updated_at
+        ) VALUES (
+          ?, ?, ?, ?, ?, 'Canada',
+          ?, ?, ?, ?, ?,
+          ?, ?, ?, ?,
+          ?, ?, ?, ?, ?
+        )
+        ON CONFLICT(id) DO UPDATE SET
+          name = excluded.name,
+          address = excluded.address,
+          city = excluded.city,
+          province_state = excluded.province_state,
+          lat = excluded.lat,
+          lng = excluded.lng,
+          capacity_mw = excluded.capacity_mw,
+          capacity_display = excluded.capacity_display,
+          proposal_status = excluded.proposal_status,
+          site_type = excluded.site_type,
+          developer = excluded.developer,
+          noise_radius_m = excluded.noise_radius_m,
+          source_url = excluded.source_url,
+          notes = excluded.notes,
+          ai_tag = excluded.ai_tag,
+          updated_at = excluded.updated_at
+      `).bind(
+        d.id,
+        d.name,
+        d.address || "",
+        d.city,
+        d.province_state,
+        Number(d.lat),
+        Number(d.lng),
+        d.capacity_mw != null ? Number(d.capacity_mw) : null,
+        d.capacity_display || (d.capacity_mw ? `${d.capacity_mw} MW` : "Unknown"),
+        d.proposal_status || "proposed",
+        d.site_type || "datacentre",
+        d.developer || "",
+        Number(d.noise_radius_m) || 1500,
+        d.source_url || "",
+        d.notes || "",
+        d.ai_tag || 0,
+        d.is_visible !== 0 ? 1 : 0,
+        now,
+        now
+      ));
+    }
+
+    // Execute in batches of 40 to stay comfortably within D1 batch limits
+    for (let i = 0; i < stmts.length; i += 40) {
+      await db.batch(stmts.slice(i, i + 40));
+    }
+    console.log(`Successfully seeded ${stmts.length} default datacentres.`);
+  } catch (err) {
+    console.error("Error in seedDefaultDatacentres:", err);
+  }
 }

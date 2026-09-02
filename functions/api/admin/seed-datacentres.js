@@ -95,7 +95,7 @@ export async function onRequestPost(context) {
     }
 
     // 3. Upsert statements into D1
-    let processed = 0;
+    const stmts = [];
     const now = new Date().toISOString();
 
     for (const p of proposals) {
@@ -108,7 +108,7 @@ export async function onRequestPost(context) {
       const aiTag = extra.ai_tag || meta.site_type === "ai_datacentre" ? 1 : 0;
       const isVisible = p.show_map !== false ? 1 : 0;
 
-      await db.prepare(`
+      stmts.push(db.prepare(`
         INSERT INTO datacentres (
           id, name, address, city, province_state, country,
           lat, lng, capacity_mw, capacity_display, proposal_status,
@@ -163,10 +163,14 @@ export async function onRequestPost(context) {
         now,
         now,
         JSON.stringify(extra)
-      ).run();
-
-      processed += 1;
+      ));
     }
+
+    // Run in batches of 40
+    for (let i = 0; i < stmts.length; i += 40) {
+      await db.batch(stmts.slice(i, i + 40));
+    }
+    const processed = stmts.length;
 
     return new Response(JSON.stringify({
       success: true,
