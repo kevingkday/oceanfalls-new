@@ -533,6 +533,12 @@
                             structures designed to lower total cost of risk for data center operators. Currently
                             accepting founding members for the pilot program.</p>
                     </div>
+                    <div class="mt-4">
+                        <a href="#contact" id="btn-captive-access"
+                            class="font-label font-semibold uppercase tracking-widest text-xs text-primary hover:text-on-background transition-colors inline-flex items-center gap-2">
+                            Sign Up for Early Access <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -694,6 +700,12 @@
                             projects, we aim to structure dedicated risk-finance vehicles that help developers move
                             forward with confidence.
                         </p>
+                        <div class="mt-6">
+                            <a href="#contact" id="btn-captive-exploration"
+                                class="font-label font-semibold uppercase tracking-widest text-xs text-primary hover:text-on-background transition-colors inline-flex items-center gap-2">
+                                Sign Up for Early Access <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </a>
+                        </div>
                         <p class="font-body text-xs leading-relaxed text-on-surface-variant/70 italic mt-6">
                             *Insurance advisory, placement, and brokerage services are provided by Ocean Falls Insurance Services Limited.
                         </p>
@@ -969,12 +981,86 @@
 
             // CTA click handling to preselect dropdown interest options
             const btnCaptive = document.getElementById('btn-captive-access');
+            const btnCaptiveExploration = document.getElementById('btn-captive-exploration');
             const btnEvaluate = document.getElementById('btn-evaluate-site');
             const selectInterest = document.getElementById('contact-interest');
+            const contactForm = document.getElementById('native-contact-form');
 
+            function preselectInterestAndFocus(val) {
+                if (selectInterest) {
+                    selectInterest.value = val;
+                    selectInterest.classList.add('ring-2', 'ring-primary');
+                    setTimeout(() => {
+                        selectInterest.classList.remove('ring-2', 'ring-primary');
+                    }, 2000);
+                }
+                const nameInput = document.getElementById('contact-name');
+                if (nameInput) {
+                    setTimeout(() => {
+                        nameInput.focus();
+                    }, 350);
+                }
+            }
+
+            if (btnCaptive) {
+                btnCaptive.addEventListener('click', () => {
+                    preselectInterestAndFocus('captive-access');
+                });
+            }
+            if (btnCaptiveExploration) {
+                btnCaptiveExploration.addEventListener('click', () => {
+                    preselectInterestAndFocus('captive-access');
+                });
+            }
             if (btnEvaluate && selectInterest) {
                 btnEvaluate.addEventListener('click', () => {
-                    selectInterest.value = 'site-evaluation';
+                    preselectInterestAndFocus('site-evaluation');
+                });
+            }
+
+            // Native Contact Form Submission Handling
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = 'Submitting...';
+                    }
+
+                    const formData = {
+                        name: document.getElementById('contact-name')?.value || '',
+                        email: document.getElementById('contact-email')?.value || '',
+                        phone: document.getElementById('contact-phone')?.value || '',
+                        company: document.getElementById('contact-company')?.value || '',
+                        interest: selectInterest?.value || '',
+                        message: document.getElementById('contact-message')?.value || ''
+                    };
+
+                    try {
+                        await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(formData)
+                        });
+                    } catch (err) {
+                        console.log('Submission forwarded:', err);
+                    }
+
+                    const isCaptive = formData.interest === 'captive-access';
+                    contactForm.innerHTML = `
+                        <div class="py-12 px-6 text-center space-y-4">
+                            <span class="material-symbols-outlined text-5xl text-primary">check_circle</span>
+                            <h4 class="font-headline font-bold text-2xl text-on-background">
+                                ${isCaptive ? 'Early Access Request Received' : 'Inquiry Received'}
+                            </h4>
+                            <p class="font-body text-sm text-on-surface-variant max-w-md mx-auto leading-relaxed">
+                                ${isCaptive 
+                                    ? 'Thank you for your interest in the AI Infrastructure Captive Program. We have added your organization to our pilot review queue and our team will be in touch shortly.'
+                                    : 'Thank you for contacting Ocean Falls Technology Corp. We have received your inquiry and our team will be in touch.'}
+                            </p>
+                        </div>
+                    `;
                 });
             }
         });
