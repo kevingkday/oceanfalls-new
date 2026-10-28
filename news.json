@@ -1,0 +1,55 @@
+{
+  "lastUpdated": "2026-10-28",
+  "signals": [
+    {
+      "theme": "Utility Interconnect Bottlenecks",
+      "date": "2026-09-15",
+      "dateDisplay": "September 2026",
+      "outlet": "BC Hydro / CBC News",
+      "headline": "BC Hydro’s 2026 AI Power Intake Closes Nearly 2x Oversubscribed as ≥10 MW Projects Hit Election Delay",
+      "theFact": "Under British Columbia’s Industrial Electricity Allocation Framework, all AI and data centre projects requesting 10 MW or more were forced into BC Hydro’s competitive 2026 Call for Demand, which attracted 15 applications requesting nearly 800 MW against a two-year cap of just 400 MW (300 MW for AI and 100 MW for conventional data centres). While projects under 10 MW remain eligible for BC Hydro’s standard interconnection process, large-load applicants now face rationed grid capacity and an extended decision timeline pushed past the provincial transition.",
+      "oceanFallsAngle": "By targeting sub-10 MW brownfield industrial sites and behind-the-meter enterprise MicroNodes, Ocean Falls bypasses BC Hydro’s oversubscribed ≥10 MW competitive auction entirely and connects through the standard utility pathway.",
+      "url": "https://www.cbc.ca/news/canada/british-columbia/data-centre-approval-bc-9.7343321"
+    },
+    {
+      "theme": "Community & Environmental Backlash",
+      "date": "2026-10-08",
+      "dateDisplay": "September–October 2026",
+      "outlet": "CBC News & Municipal Reports",
+      "headline": "Municipal Protests, Cooling Bans, and Setback Rules Stall Multi-Hundred-Megawatt Hyperscale Campuses",
+      "theFact": "Across British Columbia and North America, local opposition to massive AI data centres has escalated from street protests in Vancouver and mill-site debates in Powell River to municipal cooling bans and zoning restrictions in major U.S. hubs like Aurora, Colorado. Following resident outcry over 177 MW to 500 MW facilities sited near neighborhoods, cities have begun enacting bans on water-intensive evaporative cooling, advancing 750-foot residential buffer rules, and forcing hyperscale developers to reconsider project locations.",
+      "oceanFallsAngle": "Ocean Falls eliminates municipal friction by deploying quiet, closed-loop or air-cooled sub-10 MW MicroClusters inside pre-zoned industrial brownfields and on-premise MicroNodes inside existing commercial buildings, requiring zero new municipal water draw or greenfield rezoning.",
+      "url": "https://www.quintenews.com/2026/10/08/quinte-west-cancels-data-centre-pause/"
+    },
+    {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-09-29",
+      "dateDisplay": "September 2026",
+      "outlet": "CNW / Bell Canada & Cisco Newsroom",
+      "headline": "Canadian Sovereign AI Push Shifts Toward Modular, Domestically Controlled Infrastructure for Regulated Sectors",
+      "theFact": "While Ottawa’s Sovereign AI Compute Strategy and federal MOU intake prioritize massive 100+ MW sovereign data centres, Canadian enterprise leaders are moving toward modular, localized deployments, highlighted by Bell and Cisco’s September 29, 2026 MOU to deploy modular AI PODs and Sovereign Critical Infrastructure for government and regulated industries. In provinces like British Columbia, where FIPPA and public-sector cloud guidelines require strict domestic control over storage, routing, and metadata, regulated enterprises increasingly require private, Canadian-controlled inference environments rather than foreign-controlled public clouds.",
+      "oceanFallsAngle": "Ocean Falls’ managed MicroNode delivers turnkey, sovereign AI inference directly behind a client’s own firewall in British Columbia, satisfying strict BC FIPPA, healthcare, and Indigenous OCAP data-residency mandates without waiting years for a 100+ MW federal megaproject.",
+      "url": "https://www.newswire.ca/news-releases/bell-and-cisco-to-collaborate-on-sovereign-ai-infrastructure-for-canada-889841003.html"
+    },
+    {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-09-02",
+      "dateDisplay": "September 2026",
+      "outlet": "Equinix & NVIDIA Investor Newsroom",
+      "headline": "Equinix, NVIDIA, and Together AI Launch Distributed 'Inference Exchange' as Enterprises Migrate to Open Models at the Edge",
+      "theFact": "On September 2, 2026, Equinix expanded its partnership with NVIDIA and Together AI to launch Equinix Inference Exchange, a distributed AI inference architecture supporting more than 200 open-source models across metro-edge and sovereign environments. Alongside HPE and NVIDIA’s launch of the HPE AI Grid for regional and far-edge inference clusters, the announcement confirms an industry-wide architectural shift moving production AI inference away from centralized training megacampuses and closer to enterprise data and users.",
+      "oceanFallsAngle": "As NVIDIA, HPE, and Equinix validate open-model, distributed edge inference as the enterprise standard, Ocean Falls brings that exact open-source inference architecture directly onto customer premises via MicroNode and into regional B.C. communities via sub-10 MW MicroClusters.",
+      "url": "https://investor.equinix.com/news-events/press-releases/detail/1122/equinix-accelerates-ai-inference-for-enterprises-with"
+    },
+    {
+      "theme": "Digital Infrastructure Risk & Insurance",
+      "date": "2026-10-15",
+      "dateDisplay": "October 2026",
+      "outlet": "Insurance Business Canada & Swiss Re Institute",
+      "headline": "Soaring Multi-Billion-Dollar Data Centre Valuations Strain Commercial Insurance Capacity and Accelerate Captive Adoption",
+      "theFact": "Senior construction risk leaders at Gallagher and Aon reported in October 2026 that Canadian data centre construction reached $4.6 billion in 2025 and is projected to nearly double to $8.6 billion by 2031, with mega-campuses now insured for only one-third to one-half of total value due to Probable Maximum Loss (PML) limits and syndicated capacity constraints across 75+ carriers. Echoing Swiss Re Institute’s September 2026 findings that hyperscale concentration tests the limits of insurability, brokers confirm that AI infrastructure operators are increasingly forced toward engineered risk retention and captive insurance structures to bridge coverage gaps between construction and high-uptime operations.",
+      "oceanFallsAngle": "Ocean Falls solves the concentration-of-risk crisis from both sides: our distributed MicroNode and sub-10 MW MicroCluster architecture avoids multi-billion-dollar single-site PML accumulation, while our specialized AI Infrastructure Captive Program structures alternative risk finance for coverage gaps traditional carriers will not underwrite.",
+      "url": "https://www.insurancebusinessmag.com/ca/news/construction/data-centres-are-rewriting-the-rules-of-canadian-construction-insurance-593478.aspx"
+    }
+  ]
+}
