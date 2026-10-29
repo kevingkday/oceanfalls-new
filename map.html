@@ -59,6 +59,13 @@
             background-color: #f7fafc;
             color: #283439;
         }
+        .site-nav-links a {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+        @media (min-width: 1536px) {
+            .site-nav-links a { font-size: 13px; }
+        }
         /* Custom map styling overrides */
         .maplibregl-popup-content {
             border-radius: 0;
@@ -90,17 +97,17 @@
 
     <!-- Top Navigation Bar (Matches rest of site) -->
     <nav class="bg-surface/95 backdrop-blur-lg border-b border-outline-variant/15 z-40 flex-shrink-0">
-        <div class="flex justify-between items-center w-full px-6 lg:px-12 py-5 max-w-full">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="lg:hidden p-1.5 text-on-surface-variant hover:text-on-background border border-outline-variant/30" aria-label="Toggle Datacentre List">
+        <div class="flex justify-between items-center w-full px-6 xl:px-10 py-5 max-w-full gap-4">
+            <div class="flex items-center gap-3 shrink-0">
+                <button onclick="toggleSidebar()" class="min-[1380px]:hidden p-1.5 text-on-surface-variant hover:text-on-background border border-outline-variant/30" aria-label="Toggle Datacentre List">
                     <span class="material-symbols-outlined text-lg">list</span>
                 </button>
-                <a href="/" class="font-headline font-bold text-xl tracking-tighter text-on-background">
+                <a href="/" class="font-headline font-bold text-xl tracking-tighter text-on-background whitespace-nowrap">
                     Ocean Falls
                 </a>
             </div>
 
-            <div class="hidden xl:flex items-center gap-10">
+            <div class="site-nav-links hidden min-[1380px]:flex items-center gap-4 2xl:gap-6">
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="/#micronode">MicroNode</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
@@ -113,6 +120,8 @@
                     href="/map.html">Datacentres Map</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="/#risks">Risks</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="/#signals">Market Signals</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="/#strategy">Approach</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
@@ -135,7 +144,7 @@
                 </div>
 
                 <a href="/#contact"
-                    class="bg-primary text-on-primary px-6 py-2 font-label font-semibold tracking-tight uppercase text-sm hover:opacity-90 transition-opacity whitespace-nowrap">
+                    class="bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
                     Corporate Inquiries
                 </a>
             </div>

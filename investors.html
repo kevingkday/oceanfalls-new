@@ -117,17 +117,26 @@
             background-color: #f7fafc;
             color: #283439;
         }
+
+        .site-nav-links a {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        @media (min-width: 1536px) {
+            .site-nav-links a { font-size: 13px; }
+        }
     </style>
 </head>
 
 <body class="bg-surface text-on-surface antialiased">
     <!-- Top Navigation Bar -->
     <nav class="bg-surface/80 backdrop-blur-lg fixed w-full top-0 z-50">
-        <div class="flex justify-between items-center w-full px-12 py-6 max-w-full">
-            <a href="index.html" class="font-headline font-bold text-xl tracking-tighter text-on-background">
+        <div class="flex justify-between items-center w-full px-6 xl:px-10 py-6 max-w-full gap-4">
+            <a href="index.html" class="font-headline font-bold text-xl tracking-tighter text-on-background whitespace-nowrap shrink-0">
                 Ocean Falls
             </a>
-            <div class="hidden md:flex items-center gap-10">
+            <div class="site-nav-links hidden min-[1380px]:flex items-center gap-4 2xl:gap-6">
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#micronode">MicroNode</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
@@ -141,6 +150,8 @@
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#risks">Risks</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="/#signals">Market Signals</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#strategy">Approach</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-primary border-b-2 border-primary pb-1 transition-colors duration-200"
                     href="investors.html">Investors</a>
@@ -148,7 +159,7 @@
                     href="index.html#contact">Contact</a>
             </div>
             <a href="index.html#contact"
-                class="bg-primary text-on-primary px-6 py-2 font-label font-semibold tracking-tight uppercase text-sm hover:opacity-90 transition-opacity">
+                class="bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
                 Corporate Inquiries
             </a>
         </div>
@@ -189,16 +200,41 @@
         <!-- Shareholder Updates Section -->
         <section class="pb-32 px-12 bg-surface">
             <div class="max-w-4xl mx-auto">
-                <div class="mb-12">
-                    <h2 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-3">Shareholder Updates</h2>
-                    <h3 class="font-headline font-bold text-3xl tracking-tight text-on-background">Latest Communications</h3>
+                <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <h2 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-3">Shareholder Updates</h2>
+                        <h3 class="font-headline font-bold text-3xl tracking-tight text-on-background">Latest Communications</h3>
+                    </div>
+                    <p id="investor-signals-updated"
+                        class="inline-flex items-center self-start font-label font-semibold text-[11px] uppercase tracking-widest text-primary border border-primary/20 bg-primary/5 px-4 py-2 whitespace-nowrap">
+                        Updated: —
+                    </p>
                 </div>
 
-                <!-- Placeholder state — replace with actual updates -->
-                <div class="bg-surface-container-low p-12 md:p-16 text-center">
-                    <span class="material-symbols-outlined text-5xl text-outline-variant mb-6 block" aria-hidden="true">description</span>
-                    <h4 class="font-headline font-bold text-xl text-on-background mb-3">Updates Coming Soon</h4>
-                    <p class="font-body text-on-surface-variant leading-relaxed max-w-lg mx-auto">
+                <p class="font-body text-base text-on-surface-variant leading-relaxed mb-10 max-w-3xl">
+                    Current market briefings sit alongside shareholder communications. The same weekly intelligence feed published on the homepage tracks the grid, community, sovereignty, and insurance constraints shaping Ocean Falls’ distributed infrastructure strategy.
+                </p>
+
+                <div id="investor-signals-grid" data-market-signals data-updated-target="investor-signals-updated"
+                    class="grid grid-cols-1 gap-6" aria-live="polite" aria-busy="true">
+                    <div class="bg-surface-container-low border border-outline-variant/15 p-8 animate-pulse" aria-hidden="true">
+                        <div class="h-3 w-40 bg-outline-variant/40 mb-5"></div>
+                        <div class="h-6 w-4/5 bg-outline-variant/30 mb-3"></div>
+                        <div class="h-4 w-full bg-outline-variant/20 mb-2"></div>
+                        <div class="h-16 w-full bg-outline-variant/15 mt-6"></div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <a href="/#signals"
+                        class="font-label font-semibold uppercase tracking-widest text-xs text-primary hover:text-on-background transition-colors inline-flex items-center gap-2">
+                        View all Market Signals <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                    </a>
+                </div>
+
+                <div class="mt-16 bg-surface-container-low p-10 md:p-12">
+                    <h4 class="font-headline font-bold text-xl text-on-background mb-3">Shareholder Communications</h4>
+                    <p class="font-body text-on-surface-variant leading-relaxed max-w-2xl">
                         Shareholder letters, corporate updates, and relevant filings will be posted here as they become available.
                     </p>
                 </div>
@@ -271,6 +307,12 @@
             </div>
             <div class="flex flex-col gap-3 md:items-end">
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="map.html">Datacentres Map</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="site-assessment.html">Site Assessment</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="/#signals">Market Signals</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="investors.html">Investors</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="legal-notice.html">Legal Notice</a>
@@ -281,6 +323,7 @@
             </div>
         </div>
     </footer>
+    <script src="/market-signals.js"></script>
     <script src="https://widgets.leadconnectorhq.com/loader.js"
         data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
         data-widget-id="69ca6f8dd0f49b840df595b0"></script>

@@ -87,16 +87,23 @@
             background-color: #f7fafc;
             color: #283439;
         }
+        .site-nav-links a {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+        @media (min-width: 1536px) {
+            .site-nav-links a { font-size: 13px; }
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface antialiased">
     <!-- Top Navigation Bar -->
     <nav class="bg-surface/80 backdrop-blur-lg fixed w-full top-0 z-50">
-        <div class="flex justify-between items-center w-full px-12 py-6 max-w-full">
-            <a href="index.html" class="font-headline font-bold text-xl tracking-tighter text-on-background">
+        <div class="flex justify-between items-center w-full px-6 xl:px-10 py-6 max-w-full gap-4">
+            <a href="index.html" class="font-headline font-bold text-xl tracking-tighter text-on-background whitespace-nowrap shrink-0">
                 Ocean Falls
             </a>
-            <div class="hidden md:flex items-center gap-10">
+            <div class="site-nav-links hidden min-[1380px]:flex items-center gap-4 2xl:gap-6">
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#micronode">MicroNode</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
@@ -110,6 +117,8 @@
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#risks">Risks</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="/#signals">Market Signals</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#strategy">Approach</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="investors.html">Investors</a>
@@ -117,7 +126,7 @@
                     href="index.html#contact">Contact</a>
             </div>
             <a href="index.html#contact"
-                class="bg-primary text-on-primary px-6 py-2 font-label font-semibold tracking-tight uppercase text-sm hover:opacity-90 transition-opacity">
+                class="bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
                 Corporate Inquiries
             </a>
         </div>
@@ -993,6 +1002,8 @@
             </div>
             <div></div>
             <div class="flex flex-col gap-3 md:items-end">
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="map.html">Datacentres Map</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="/#signals">Market Signals</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="investors.html">Investors</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="legal-notice.html">Legal Notice</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline" href="privacy-policy.html">Privacy Policy</a>

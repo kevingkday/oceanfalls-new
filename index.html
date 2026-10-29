@@ -153,17 +153,26 @@
             background-color: #f7fafc;
             color: #283439;
         }
+
+        .site-nav-links a {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        @media (min-width: 1536px) {
+            .site-nav-links a { font-size: 13px; }
+        }
     </style>
 </head>
 
 <body class="bg-surface text-on-surface antialiased">
     <!-- Top Navigation Bar -->
     <nav class="bg-surface/80 backdrop-blur-lg fixed w-full top-0 z-50">
-        <div class="flex justify-between items-center w-full px-12 py-6 max-w-full">
-            <div class="font-headline font-bold text-xl tracking-tighter text-on-background">
+        <div class="flex justify-between items-center w-full px-6 xl:px-10 py-6 max-w-full gap-4">
+            <div class="font-headline font-bold text-xl tracking-tighter text-on-background whitespace-nowrap shrink-0">
                 Ocean Falls
             </div>
-            <div class="hidden md:flex items-center gap-10">
+            <div class="site-nav-links hidden min-[1380px]:flex items-center gap-4 2xl:gap-6">
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="#micronode">MicroNode</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
@@ -177,6 +186,8 @@
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="#risks">Risks</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
+                    href="#signals">Market Signals</a>
+                <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="#strategy">Approach</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="investors.html">Investors</a>
@@ -184,7 +195,7 @@
                     href="#contact">Contact</a>
             </div>
             <a href="#contact"
-                class="bg-primary text-on-primary px-6 py-2 font-label font-semibold tracking-tight uppercase text-sm hover:opacity-90 transition-opacity">
+                class="bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
                 Corporate Inquiries
             </a>
         </div>
@@ -575,8 +586,13 @@
                                 <span class="font-headline font-extrabold text-4xl text-primary/30 mb-6 block">01</span>
                                 <h4 class="font-headline font-bold text-lg mb-2 text-on-background">Power &amp; Site
                                     Selection</h4>
+                                <p class="font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Sub-10 MW BC Hydro Fast-Track</p>
                                 <p class="font-body text-xs text-on-surface-variant leading-relaxed">Unrealistic power
-                                    availability timelines and site selection errors.</p>
+                                    availability timelines and site selection errors. In British Columbia, projects
+                                    requesting 10 MW or more are pushed into BC Hydro’s oversubscribed competitive
+                                    Call for Demand. Sub-10 MW brownfield deployments and behind-the-meter MicroNodes
+                                    stay on the standard interconnection path — the fastest compliant route to
+                                    energization.</p>
                             </div>
                         </div>
                         <!-- Pain Point 2 -->
@@ -643,10 +659,61 @@
                         <p class="font-body text-sm text-on-surface-variant leading-relaxed mb-3">
                             Instead of always bringing enormous amounts of new power to AI, distributed inference can bring AI infrastructure to smaller amounts of power that already exist.
                         </p>
-                        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                        <p class="font-body text-sm text-on-surface-variant leading-relaxed mb-3">
                             Ocean Falls is developing MicroNode to provide standardized, managed GPU infrastructure at enterprise premises and smaller power sites—designed to streamline deployment and reduce infrastructure complexity.
                         </p>
+                        <p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                            In British Columbia that also means staying under BC Hydro’s 10 MW threshold. Loads of 10 MW or more enter the rationed, oversubscribed Call for Demand queue. Sub-10 MW brownfield MicroClusters and behind-the-meter MicroNodes remain eligible for the standard interconnection process — the fastest compliant path to energization.
+                        </p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Signals Section -->
+        <section id="signals" class="py-32 px-6 md:px-12 bg-surface-container-lowest border-t border-b border-outline-variant/15">
+            <div class="max-w-full">
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+                    <div class="max-w-3xl">
+                        <h2 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-4">Market Intelligence</h2>
+                        <h3 class="font-headline font-bold text-4xl md:text-5xl tracking-tight text-on-background mb-6">Market Signals &amp; Infrastructure Briefings</h3>
+                        <p class="font-body text-base md:text-lg text-on-surface-variant leading-relaxed">
+                            Grid constraints, community pushback, sovereign AI rules, and insurance capacity barriers are validating distributed, sub-10 MW infrastructure. These briefings track the evidence behind that shift.
+                        </p>
+                    </div>
+                    <p id="signals-last-updated"
+                        class="inline-flex items-center self-start font-label font-semibold text-[11px] uppercase tracking-widest text-primary border border-primary/20 bg-primary/5 px-4 py-2 whitespace-nowrap">
+                        Updated: —
+                    </p>
+                </div>
+
+                <div id="signals-grid" data-market-signals data-updated-target="signals-last-updated"
+                    class="grid grid-cols-1 xl:grid-cols-2 gap-6" aria-live="polite" aria-busy="true">
+                    <div class="bg-surface-container-low border border-outline-variant/15 p-8 animate-pulse" aria-hidden="true">
+                        <div class="h-3 w-40 bg-outline-variant/40 mb-5"></div>
+                        <div class="h-6 w-4/5 bg-outline-variant/30 mb-3"></div>
+                        <div class="h-4 w-full bg-outline-variant/20 mb-2"></div>
+                        <div class="h-4 w-11/12 bg-outline-variant/20 mb-2"></div>
+                        <div class="h-20 w-full bg-outline-variant/15 mt-6"></div>
+                    </div>
+                    <div class="bg-surface-container-low border border-outline-variant/15 p-8 animate-pulse" aria-hidden="true">
+                        <div class="h-3 w-36 bg-outline-variant/40 mb-5"></div>
+                        <div class="h-6 w-3/4 bg-outline-variant/30 mb-3"></div>
+                        <div class="h-4 w-full bg-outline-variant/20 mb-2"></div>
+                        <div class="h-4 w-10/12 bg-outline-variant/20 mb-2"></div>
+                        <div class="h-20 w-full bg-outline-variant/15 mt-6"></div>
+                    </div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 border border-outline-variant/20 bg-surface">
+                    <a href="map.html"
+                        class="flex items-center justify-between gap-6 p-8 md:p-10 border-b md:border-b-0 md:border-r border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+                        <span class="font-body text-sm md:text-base leading-relaxed text-on-background">Track 40+ proposed and operational Canadian facilities on our National Datacentre Intelligence Map <span class="text-primary" aria-hidden="true">→</span></span>
+                    </a>
+                    <a href="site-assessment.html"
+                        class="flex items-center justify-between gap-6 p-8 md:p-10 hover:bg-surface-container-low transition-colors">
+                        <span class="font-body text-sm md:text-base leading-relaxed text-on-background">Have a sub-10 MW brownfield site? Run a 5-minute Site Viability Assessment <span class="text-primary" aria-hidden="true">→</span></span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -870,6 +937,10 @@
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="map.html">Datacentres Map</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="site-assessment.html">Site Assessment</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="#signals">Market Signals</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="investors.html">Investors</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="legal-notice.html">Legal Notice</a>
@@ -880,6 +951,7 @@
             </div>
         </div>
     </footer>
+    <script src="/market-signals.js"></script>
     <script src="https://link.msgsndr.com/js/form_embed.js"></script>
 
     <!-- Custom Chat Trigger Button -->
@@ -982,7 +1054,6 @@
             // CTA click handling to preselect dropdown interest options
             const btnCaptive = document.getElementById('btn-captive-access');
             const btnCaptiveExploration = document.getElementById('btn-captive-exploration');
-            const btnEvaluate = document.getElementById('btn-evaluate-site');
             const selectInterest = document.getElementById('contact-interest');
             const contactForm = document.getElementById('native-contact-form');
 
@@ -1010,11 +1081,6 @@
             if (btnCaptiveExploration) {
                 btnCaptiveExploration.addEventListener('click', () => {
                     preselectInterestAndFocus('captive-access');
-                });
-            }
-            if (btnEvaluate && selectInterest) {
-                btnEvaluate.addEventListener('click', () => {
-                    preselectInterestAndFocus('site-evaluation');
                 });
             }
 
