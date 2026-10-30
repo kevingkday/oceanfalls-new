@@ -150,7 +150,7 @@
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#risks">Risks</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
-                    href="/#signals">Market Signals</a>
+                    href="market-signals.html">Market Signals</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-on-background hover:text-primary transition-colors duration-200"
                     href="index.html#strategy">Approach</a>
                 <a class="font-label font-semibold tracking-tight uppercase text-sm text-primary border-b-2 border-primary pb-1 transition-colors duration-200"
@@ -197,13 +197,13 @@
             </div>
         </section>
 
-        <!-- Shareholder Updates Section -->
+        <!-- Shareholder Updates & Market Signals Section -->
         <section class="pb-32 px-12 bg-surface">
             <div class="max-w-4xl mx-auto">
                 <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <h2 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-3">Shareholder Updates</h2>
-                        <h3 class="font-headline font-bold text-3xl tracking-tight text-on-background">Latest Communications</h3>
+                        <h3 class="font-headline font-bold text-3xl tracking-tight text-on-background">Latest Communications &amp; Market Signals</h3>
                     </div>
                     <p id="investor-signals-updated"
                         class="inline-flex items-center self-start font-label font-semibold text-[11px] uppercase tracking-widest text-primary border border-primary/20 bg-primary/5 px-4 py-2 whitespace-nowrap">
@@ -226,17 +226,64 @@
                 </div>
 
                 <div class="mt-8">
-                    <a href="/#signals"
+                    <a href="market-signals.html"
                         class="font-label font-semibold uppercase tracking-widest text-xs text-primary hover:text-on-background transition-colors inline-flex items-center gap-2">
                         View all Market Signals <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
                     </a>
                 </div>
 
-                <div class="mt-16 bg-surface-container-low p-10 md:p-12">
-                    <h4 class="font-headline font-bold text-xl text-on-background mb-3">Shareholder Communications</h4>
-                    <p class="font-body text-on-surface-variant leading-relaxed max-w-2xl">
-                        Shareholder letters, corporate updates, and relevant filings will be posted here as they become available.
-                    </p>
+                <!-- Newsletter Signup Box Beneath Signals (Investor Communications + Market Signals) -->
+                <div id="newsletter" class="mt-14 bg-on-background text-surface p-8 md:p-12 border border-outline-variant/20 relative overflow-hidden">
+                    <div class="grid grid-cols-12 gap-8 items-center relative z-10">
+                        <div class="col-span-12 lg:col-span-6 space-y-4">
+                            <div class="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 px-3 py-1">
+                                <span class="material-symbols-outlined text-xs text-primary-container">newspaper</span>
+                                <span class="font-label text-[10px] font-bold uppercase tracking-widest text-surface">Shareholder &amp; Market Dispatches</span>
+                            </div>
+                            <h4 class="font-headline font-bold text-2xl md:text-3xl text-surface tracking-tight leading-tight">
+                                Subscribe to Investor Communications &amp; Market Signals
+                            </h4>
+                            <p class="font-body text-surface/80 text-sm md:text-base leading-relaxed">
+                                Shareholder letters, corporate updates, milestone announcements, and weekly Market Signals briefings are delivered directly through our unified dispatch.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-1 text-[11px] font-label uppercase tracking-widest text-surface/65">
+                                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Shareholder Updates</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Market Signals Briefings</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Unsubscribe Anytime</span>
+                            </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-6">
+                            <form data-newsletter-form data-source="investors-page" class="bg-surface text-on-surface p-6 md:p-8 border border-outline-variant/20 shadow-lg space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="inv-newsletter-name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                            First Name <span class="text-on-surface-variant/60 font-normal">(Optional)</span>
+                                        </label>
+                                        <input type="text" id="inv-newsletter-name" name="name"
+                                            class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                            placeholder="Alex" />
+                                    </div>
+                                    <div>
+                                        <label for="inv-newsletter-email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                            Email Address <span class="text-error">*</span>
+                                        </label>
+                                        <input type="email" id="inv-newsletter-email" name="email" required
+                                            class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                            placeholder="name@company.com" />
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-primary text-on-primary py-4 px-6 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors duration-300 shadow-sm flex items-center justify-center gap-2">
+                                    <span>Subscribe to Updates</span>
+                                    <span class="material-symbols-outlined text-sm">mail</span>
+                                </button>
+                                <div data-newsletter-feedback class="hidden pt-2 text-xs font-body leading-relaxed"></div>
+                                <p class="font-body text-[11px] text-on-surface-variant/75 leading-relaxed">
+                                    Includes official investor communications and Market Signals articles. Delivered via Buttondown.
+                                </p>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -311,13 +358,15 @@
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="site-assessment.html">Site Assessment</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
-                    href="/#signals">Market Signals</a>
+                    href="market-signals.html">Market Signals</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="investors.html">Investors</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="legal-notice.html">Legal Notice</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="privacy-policy.html">Privacy Policy</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="#newsletter">Newsletter</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="index.html#contact">Contact</a>
             </div>

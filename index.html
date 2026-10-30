@@ -725,6 +725,62 @@
             </div>
         </section>
 
+        <!-- Newsletter Subscription Section (Market Signals & Investor Communications) -->
+        <section id="newsletter" class="py-20 px-6 md:px-12 bg-surface-container-lowest border-b border-outline-variant/15">
+            <div class="bg-on-background text-surface p-10 md:p-16 border border-outline-variant/20 relative overflow-hidden">
+                <div class="grid grid-cols-12 gap-10 items-center relative z-10">
+                    <div class="col-span-12 lg:col-span-6 space-y-5">
+                        <div class="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 px-3 py-1">
+                            <span class="material-symbols-outlined text-xs text-primary-container">newspaper</span>
+                            <span class="font-label text-[10px] font-bold uppercase tracking-widest text-surface">Market Signals &amp; Shareholder Dispatches</span>
+                        </div>
+                        <h3 class="font-headline font-bold text-3xl md:text-4xl text-surface tracking-tight leading-tight">
+                            Subscribe to Market Signals &amp; Investor Communications
+                        </h3>
+                        <p class="font-body text-surface/80 text-base leading-relaxed max-w-xl">
+                            Receive weekly Market Signals briefings and technical articles prepared by our intelligence desk alongside official Ocean Falls shareholder updates, corporate announcements, and investor communications.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-6 pt-1 text-xs font-label uppercase tracking-widest text-surface/65">
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Weekly Market Signals &amp; Articles</span>
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Investor &amp; Shareholder Updates</span>
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Unsubscribe Anytime</span>
+                        </div>
+                    </div>
+                    <div class="col-span-12 lg:col-span-6">
+                        <form id="newsletter-form" data-newsletter-form data-source="homepage-market-signals" class="bg-surface text-on-surface p-8 md:p-10 border border-outline-variant/20 shadow-lg space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="newsletter-name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                        First Name <span class="text-on-surface-variant/60 font-normal">(Optional)</span>
+                                    </label>
+                                    <input type="text" id="newsletter-name" name="name"
+                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                        placeholder="Alex" />
+                                </div>
+                                <div>
+                                    <label for="newsletter-email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                        Email Address <span class="text-error">*</span>
+                                    </label>
+                                    <input type="email" id="newsletter-email" name="email" required
+                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                        placeholder="name@company.com" />
+                                </div>
+                            </div>
+                            <button type="submit" id="newsletter-submit-btn"
+                                class="w-full bg-primary text-on-primary py-4 px-6 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors duration-300 shadow-sm flex items-center justify-center gap-2">
+                                <span>Subscribe to Updates</span>
+                                <span class="material-symbols-outlined text-sm">mail</span>
+                            </button>
+                            <div id="newsletter-feedback" data-newsletter-feedback class="hidden pt-2 text-xs font-body leading-relaxed"></div>
+                            <p class="font-body text-[11px] text-on-surface-variant/75 leading-relaxed">
+                                One unified list for Market Signals briefings and official investor communications. Delivered via Buttondown; unsubscribe anytime.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Strategic Direction Section -->
         <section id="strategy" class="py-40 px-12 bg-surface-container-low">
             <div class="max-w-4xl mx-auto text-center">
@@ -783,62 +839,6 @@
                         <p class="font-body text-xs leading-relaxed text-on-surface-variant/70 italic mt-6">
                             *Insurance advisory, placement, and brokerage services are provided by Ocean Falls Insurance Services Limited.
                         </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Newsletter Subscription Section -->
-        <section id="newsletter" class="pb-24 px-12 bg-surface">
-            <div class="bg-on-background text-surface p-12 md:p-20 border border-outline-variant/20 relative overflow-hidden">
-                <div class="grid grid-cols-12 gap-12 items-center relative z-10">
-                    <div class="col-span-12 lg:col-span-6 space-y-5">
-                        <div class="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 px-3 py-1">
-                            <span class="material-symbols-outlined text-xs text-primary-container">newspaper</span>
-                            <span class="font-label text-[10px] font-bold uppercase tracking-widest text-surface">Ocean Falls Intelligence Dispatches</span>
-                        </div>
-                        <h3 class="font-headline font-bold text-3xl md:text-4xl text-surface tracking-tight leading-tight">
-                            Subscribe to Technical Briefings &amp; Infrastructure Articles
-                        </h3>
-                        <p class="font-body text-surface/80 text-base leading-relaxed max-w-xl">
-                            Receive regular articles and field dispatches covering sovereign AI infrastructure, sub-10 MW brownfield power siting, BC regulatory compliance, and distributed inference economics.
-                        </p>
-                        <div class="flex flex-wrap items-center gap-6 pt-1 text-xs font-label uppercase tracking-widest text-surface/65">
-                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Power &amp; Siting Analysis</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Sovereign AI Briefings</span>
-                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Unsubscribe Anytime</span>
-                        </div>
-                    </div>
-                    <div class="col-span-12 lg:col-span-6">
-                        <form id="newsletter-form" class="bg-surface text-on-surface p-8 md:p-10 border border-outline-variant/20 shadow-lg space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="newsletter-name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
-                                        First Name <span class="text-on-surface-variant/60 font-normal">(Optional)</span>
-                                    </label>
-                                    <input type="text" id="newsletter-name" name="name"
-                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
-                                        placeholder="Alex" />
-                                </div>
-                                <div>
-                                    <label for="newsletter-email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
-                                        Email Address <span class="text-error">*</span>
-                                    </label>
-                                    <input type="email" id="newsletter-email" name="email" required
-                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
-                                        placeholder="name@company.com" />
-                                </div>
-                            </div>
-                            <button type="submit" id="newsletter-submit-btn"
-                                class="w-full bg-primary text-on-primary py-4 px-6 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors duration-300 shadow-sm flex items-center justify-center gap-2">
-                                <span>Subscribe to Dispatches</span>
-                                <span class="material-symbols-outlined text-sm">mail</span>
-                            </button>
-                            <div id="newsletter-feedback" class="hidden pt-2 text-xs font-body leading-relaxed"></div>
-                            <p class="font-body text-[11px] text-on-surface-variant/75 leading-relaxed">
-                                Delivered via Buttondown. We respect your inbox and never share subscriber addresses.
-                            </p>
-                        </form>
                     </div>
                 </div>
             </div>

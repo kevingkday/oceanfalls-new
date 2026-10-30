@@ -10,6 +10,7 @@ export async function onRequestPost(context) {
     if (!rawEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)) {
       return new Response(JSON.stringify({
         success: false,
+        error: "Please enter a valid email address.",
         message: "Please enter a valid email address."
       }), {
         status: 400,
@@ -25,14 +26,27 @@ export async function onRequestPost(context) {
     const apiKey = (context.env && context.env.BUTTONDOWN_API_KEY) ? context.env.BUTTONDOWN_API_KEY.trim() : "";
 
     if (apiKey) {
-      const metadata = {};
+      const metadata = {
+        streams: "market-signals,investor-communications"
+      };
       if (name) metadata.name = name;
       if (source) metadata.source = source;
 
+      const tags = Array.from(new Set([
+        "oceanfalls",
+        "market-signals",
+        "investor-communications",
+        source
+      ]));
+
+      const notes = name
+        ? `Name: ${name} | Source: ${source} (Market Signals & Investor Communications)`
+        : `Subscribed via ${source} (Market Signals & Investor Communications)`;
+
       const payloadV1 = {
         email_address: rawEmail,
-        tags: ["oceanfalls", source],
-        notes: name ? `Name: ${name} (${source})` : `Subscribed via ${source}`,
+        tags,
+        notes,
         metadata
       };
 
@@ -53,8 +67,8 @@ export async function onRequestPost(context) {
       if (bdRes.status === 422 && bdText.includes('"email"') && !bdText.includes("already")) {
         const payloadLegacy = {
           email: rawEmail,
-          tags: ["oceanfalls", source],
-          notes: name ? `Name: ${name} (${source})` : `Subscribed via ${source}`,
+          tags,
+          notes,
           metadata
         };
         bdRes = await fetch("https://api.buttondown.com/v1/subscribers", {
@@ -113,6 +127,7 @@ export async function onRequestPost(context) {
     if (buttondownStatus.startsWith("error_")) {
       return new Response(JSON.stringify({
         success: false,
+        error: "We could not complete your subscription right now. Please check your email address and try again.",
         message: "We could not complete your subscription right now. Please check your email address and try again."
       }), {
         status: 502,
@@ -124,8 +139,8 @@ export async function onRequestPost(context) {
       success: true,
       already_subscribed: alreadySubscribed,
       message: alreadySubscribed
-        ? "You are already subscribed to Ocean Falls intelligence briefings."
-        : "Thank you for subscribing. Check your inbox to confirm your subscription."
+        ? "You are already subscribed to Ocean Falls Market Signals & Investor Communications."
+        : "Thank you for subscribing to Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription."
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
@@ -134,6 +149,7 @@ export async function onRequestPost(context) {
     console.error("Newsletter subscription error:", err);
     return new Response(JSON.stringify({
       success: false,
+      error: "An unexpected error occurred. Please try again.",
       message: "An unexpected error occurred. Please try again."
     }), {
       status: 500,
@@ -141,4 +157,3 @@ export async function onRequestPost(context) {
     });
   }
 }
-

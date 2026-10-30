@@ -1,5 +1,5 @@
 /**
- * Market Signals renderer.
+ * Market Signals renderer & unified newsletter form handler.
  * A weekly updater may write either `signals` or `articles`, and may use
  * the briefing fields or common article fields (title, summary, source, link).
  */
@@ -125,7 +125,76 @@
         grid.innerHTML = items.map(renderSignalCard).join('');
     }
 
+    function bindNewsletterForms() {
+        const forms = document.querySelectorAll('#newsletter-form, [data-newsletter-form]');
+        forms.forEach(function (form) {
+            if (form.getAttribute('data-newsletter-bound') === 'true') return;
+            form.setAttribute('data-newsletter-bound', 'true');
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const feedbackEl = form.querySelector('[data-newsletter-feedback], #newsletter-feedback');
+                const nameInput = form.querySelector('input[name="name"]');
+                const emailInput = form.querySelector('input[name="email"]');
+                const nameVal = nameInput && nameInput.value ? nameInput.value.trim() : '';
+                const emailVal = emailInput && emailInput.value ? emailInput.value.trim() : '';
+                const sourceVal = form.getAttribute('data-source') || 'market-signals-newsletter';
+
+                if (!emailVal) return;
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span>Subscribing...</span>';
+                }
+                if (feedbackEl) {
+                    feedbackEl.className = 'hidden pt-2 text-xs font-body leading-relaxed';
+                    feedbackEl.textContent = '';
+                }
+
+                try {
+                    const res = await fetch('/api/newsletter', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: nameVal,
+                            email: emailVal,
+                            source: sourceVal
+                        })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok || !data.success) {
+                        throw new Error(data.error || data.message || 'Could not complete your subscription. Please try again.');
+                    }
+
+                    form.innerHTML =
+                        '<div class="py-6 px-4 text-center space-y-3">' +
+                            '<span class="material-symbols-outlined text-4xl text-primary">mark_email_read</span>' +
+                            '<h4 class="font-headline font-bold text-xl text-on-background">' +
+                                (data.already_subscribed ? "You're Already Subscribed" : "Subscription Confirmed") +
+                            '</h4>' +
+                            '<p class="font-body text-sm text-on-surface-variant max-w-md mx-auto leading-relaxed">' +
+                                escapeHtml(data.message || 'Thank you for subscribing to Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription.') +
+                            '</p>' +
+                        '</div>';
+                } catch (err) {
+                    if (feedbackEl) {
+                        feedbackEl.className = 'pt-2 text-xs font-body leading-relaxed text-error font-semibold';
+                        feedbackEl.textContent = err.message || 'Unable to subscribe right now. Please try again shortly.';
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<span>Subscribe to Updates</span><span class="material-symbols-outlined text-sm">mail</span>';
+                    }
+                }
+            });
+        });
+    }
+
     async function init() {
+        bindNewsletterForms();
+
         const grids = document.querySelectorAll('[data-market-signals]');
         if (!grids.length) return;
 
@@ -157,7 +226,8 @@
         extractItems: extractItems,
         normalizeSignal: normalizeSignal,
         updatedLabel: updatedLabel,
-        renderSignalCard: renderSignalCard
+        renderSignalCard: renderSignalCard,
+        bindNewsletterForms: bindNewsletterForms
     };
 
     if (typeof document !== 'undefined') {
