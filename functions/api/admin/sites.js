@@ -31,7 +31,7 @@ export async function onRequestGet(context) {
           w.water_availability, w.municipal_water, w.industrial_water, w.air_cooled_compatible, w.sewer_access, w.gas_availability, w.distance_to_gas_pipeline, w.existing_industrial_services,
           cs.community_attitude, cs.history_protests, cs.known_litigation, cs.municipal_support, cs.economic_dev_support, cs.indigenous_engagement_req, cs.indigenous_relationships, cs.other_stakeholder_concerns,
           con.name as contact_name, con.company as contact_company, con.email as contact_email, con.phone as contact_phone, con.relationship_to_property as contact_relationship, con.preferred_contact_method, con.comments as contact_comments,
-          r.classification, r.calculated_score, r.confidence_level, r.key_strengths, r.verification_issues, r.potential_constraints, r.recommended_steps
+          r.classification, r.calculated_score, r.confidence_level, r.key_strengths, r.verification_issues, r.potential_constraints, r.recommended_steps, r.raw_submission_json
         FROM sites s
         LEFT JOIN power_info p ON s.id = p.site_id
         LEFT JOIN connectivity_info c ON s.id = c.site_id
@@ -51,11 +51,24 @@ export async function onRequestGet(context) {
       }
       
       // Parse JSON lists
-      if (site.project_types) site.project_types = JSON.parse(site.project_types);
-      if (site.key_strengths) site.key_strengths = JSON.parse(site.key_strengths);
-      if (site.verification_issues) site.verification_issues = JSON.parse(site.verification_issues);
-      if (site.potential_constraints) site.potential_constraints = JSON.parse(site.potential_constraints);
-      if (site.recommended_steps) site.recommended_steps = JSON.parse(site.recommended_steps);
+      if (site.project_types) {
+        try { site.project_types = JSON.parse(site.project_types); } catch (e) {}
+      }
+      if (site.key_strengths) {
+        try { site.key_strengths = JSON.parse(site.key_strengths); } catch (e) {}
+      }
+      if (site.verification_issues) {
+        try { site.verification_issues = JSON.parse(site.verification_issues); } catch (e) {}
+      }
+      if (site.potential_constraints) {
+        try { site.potential_constraints = JSON.parse(site.potential_constraints); } catch (e) {}
+      }
+      if (site.recommended_steps) {
+        try { site.recommended_steps = JSON.parse(site.recommended_steps); } catch (e) {}
+      }
+      if (site.raw_submission_json) {
+        try { site.raw_submission = JSON.parse(site.raw_submission_json); } catch (e) {}
+      }
       
       return new Response(JSON.stringify({ success: true, site: site }), {
         headers: { "Content-Type": "application/json" }
@@ -64,6 +77,7 @@ export async function onRequestGet(context) {
     
     // --- LIST OR EXPORT REQUEST ---
     const search = url.searchParams.get("q") || "";
+    const trackFilter = url.searchParams.get("track") || "";
     const country = url.searchParams.get("country") || "";
     const provState = url.searchParams.get("province_state") || "";
     const classification = url.searchParams.get("classification") || "";
@@ -76,8 +90,8 @@ export async function onRequestGet(context) {
     // Build dynamic query
     let query = `
       SELECT 
-        s.id, s.name, s.city, s.province_state, s.country, s.created_at, s.lead_status, s.is_confidential, s.opportunity_type, s.target_size_mw,
-        p.firm_power_available_mw, p.max_potential_capacity_mw,
+        s.id, s.name, s.city, s.province_state, s.country, s.created_at, s.lead_status, s.is_confidential, s.opportunity_type, s.target_size_mw, s.assessment_track, s.current_use,
+        p.firm_power_available_mw, p.max_potential_capacity_mw, p.power_type,
         con.name as contact_name, con.company as contact_company, con.email as contact_email,
         r.classification, r.calculated_score, r.confidence_level
       FROM sites s
@@ -93,6 +107,11 @@ export async function onRequestGet(context) {
       query += ` AND (s.name LIKE ? OR s.city LIKE ? OR s.address LIKE ? OR con.name LIKE ? OR con.email LIKE ?)`;
       const searchWild = `%${search}%`;
       params.push(searchWild, searchWild, searchWild, searchWild, searchWild);
+    }
+
+    if (trackFilter) {
+      query += ` AND COALESCE(s.assessment_track, 'industrial') = ?`;
+      params.push(trackFilter);
     }
     
     if (country) {
@@ -139,12 +158,18 @@ export async function onRequestGet(context) {
     // --- EXPORT CSV MODE ---
     if (isCsvExport) {
       const csvRows = [
-        ["ID", "Property Name", "City", "Province/State", "Country", "Classification", "Score", "Confidence", "Firm MW", "Potential MW", "Opportunity Type", "Target MW", "Contact Name", "Contact Company", "Contact Email", "Created Date", "Lead Status", "Confidential"]
+        ["ID", "Track", "Property / Org Name", "City", "Province/State", "Country", "Classification", "Score", "Confidence", "Power / Service", "Opportunity / Use Case", "Contact Name", "Contact Company", "Contact Email", "Created Date", "Lead Status", "Confidential"]
       ];
       
       for (const row of results) {
+        const trackLabel = row.assessment_track === "micronode" ? "Track A: MicroNode" : "Track B: Industrial";
+        const powerSummary = row.assessment_track === "micronode"
+          ? (row.power_type || "Commercial Service")
+          : (row.firm_power_available_mw !== null ? `${row.firm_power_available_mw} MW` : "Unknown");
+
         csvRows.push([
           row.id,
+          trackLabel,
           row.name,
           row.city,
           row.province_state,
@@ -152,10 +177,8 @@ export async function onRequestGet(context) {
           row.classification,
           row.calculated_score,
           row.confidence_level,
-          row.firm_power_available_mw !== null ? row.firm_power_available_mw : "Unknown",
-          row.max_potential_capacity_mw !== null ? row.max_potential_capacity_mw : "Unknown",
+          powerSummary,
           row.opportunity_type,
-          row.target_size_mw !== null ? row.target_size_mw : "",
           row.contact_name,
           row.contact_company,
           row.contact_email,
@@ -166,8 +189,7 @@ export async function onRequestGet(context) {
       }
       
       const csvContent = csvRows.map(e => e.map(val => {
-        // Escape quotes and wrap in quotes if contains comma, newline or quotes
-        let text = String(val);
+        let text = String(val ?? "");
         if (text.includes(",") || text.includes("\n") || text.includes('"')) {
           text = '"' + text.replace(/"/g, '""') + '"';
         }
@@ -177,7 +199,7 @@ export async function onRequestGet(context) {
       return new Response(csvContent, {
         headers: {
           "Content-Type": "text/csv",
-          "Content-Disposition": "attachment; filename=ocean_falls_sites.csv"
+          "Content-Disposition": "attachment; filename=ocean_falls_assessments.csv"
         }
       });
     }

@@ -133,7 +133,7 @@
             <div class="flex items-center gap-2 border-b border-outline-variant/20 pb-0">
                 <button id="tab-btn-sites" onclick="switchAdminTab('sites')" class="px-5 py-3 font-label font-bold text-xs uppercase tracking-wider border-b-2 border-primary text-primary transition-colors flex items-center gap-2">
                     <span class="material-symbols-outlined text-base">domain</span>
-                    <span>Prospective Sites (Assessments)</span>
+                    <span>Assessment Leads (MicroNode &amp; Industrial)</span>
                 </button>
                 <button id="tab-btn-datacentres" onclick="switchAdminTab('datacentres')" class="px-5 py-3 font-label font-bold text-xs uppercase tracking-wider border-b-2 border-transparent text-on-surface-variant hover:text-on-background transition-colors flex items-center gap-2">
                     <span class="material-symbols-outlined text-base">map</span>
@@ -146,8 +146,8 @@
                 <!-- Welcome Bar -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/15 pb-6">
                     <div>
-                        <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Prospective Sites Database</h1>
-                        <p class="font-body text-sm text-on-surface-variant mt-1">Manage and evaluate submissions for AI, HPC, and data-centre development.</p>
+                        <h1 class="font-headline font-extrabold text-3xl tracking-tight text-on-background">Assessment Submissions Database</h1>
+                        <p class="font-body text-sm text-on-surface-variant mt-1">Manage Track A (MicroNode On-Premise) and Track B (Industrial Power / Brownfield) leads.</p>
                     </div>
                     <div>
                         <button onclick="exportCSV()" class="bg-primary text-on-primary px-5 py-3 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors flex items-center gap-2">
@@ -160,12 +160,22 @@
                 <div class="bg-surface-container-low border border-outline-variant/15 p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
                     
                     <!-- Search -->
-                    <div class="md:col-span-2">
-                        <label for="filter-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Search sites, city, or contact</label>
+                    <div>
+                        <label for="filter-search" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Search org, site, city, or contact</label>
                         <div class="relative">
                             <span class="material-symbols-outlined text-sm absolute left-3 top-3.5 text-on-surface-variant">search</span>
-                            <input type="text" id="filter-search" oninput="triggerSearch()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Fraser River, Prince George, Kevin..." />
+                            <input type="text" id="filter-search" oninput="triggerSearch()" class="w-full bg-surface border border-outline-variant/30 pl-9 pr-4 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Mission, Prince George, Kevin..." />
                         </div>
+                    </div>
+
+                    <!-- Track Filter -->
+                    <div>
+                        <label for="filter-track" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Evaluation Track</label>
+                        <select id="filter-track" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
+                            <option value="" selected>All Tracks (A &amp; B)</option>
+                            <option value="micronode">Track A: MicroNode / On-Premise</option>
+                            <option value="industrial">Track B: Industrial Power / Brownfield</option>
+                        </select>
                     </div>
 
                     <!-- Sort By -->
@@ -173,22 +183,25 @@
                         <label for="filter-sort-by" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Sort By</label>
                         <select id="filter-sort-by" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
                             <option value="created_at" selected>Submission Date (Newest)</option>
+                            <option value="calculated_score">Readiness Score</option>
                             <option value="firm_power_available_mw">Firm Power Available</option>
-                            <option value="max_potential_capacity_mw">Potential Power Capacity</option>
-                            <option value="name">Property Name</option>
-                            <option value="calculated_score">Calculated Suitability Score</option>
+                            <option value="name">Organization / Property Name</option>
                         </select>
                     </div>
 
                     <!-- Classification Filter -->
                     <div>
-                        <label for="filter-classification" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Classification</label>
+                        <label for="filter-classification" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Readiness Classification</label>
                         <select id="filter-classification" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
                             <option value="" selected>All Classifications</option>
-                            <option value="Promising">Promising</option>
-                            <option value="Conditional">Conditional</option>
-                            <option value="Significant Due Diligence Required">Significant Due Diligence Required</option>
-                            <option value="Unlikely Based on Current Information">Unlikely</option>
+                            <option value="Ready for Pilot">Ready for Pilot (Track A)</option>
+                            <option value="Ready for Pilot — Minor Prep Needed">Ready — Minor Prep (Track A)</option>
+                            <option value="Electrical / Network Audit Needed">Audit Needed (Track A)</option>
+                            <option value="Fast-Track Qualified (Sub-10 MW Speed-to-Power)">Fast-Track Sub-10 MW (Track B)</option>
+                            <option value="Promising Brownfield Candidate — Verification Needed">Promising Brownfield (Track B)</option>
+                            <option value="Longer-Lead Upgrade / Due Diligence Required">Longer-Lead Upgrade (Track B)</option>
+                            <option value="Promising">Promising (Legacy)</option>
+                            <option value="Conditional">Conditional (Legacy)</option>
                         </select>
                     </div>
 
@@ -197,7 +210,6 @@
                         <label for="filter-country" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Country</label>
                         <select id="filter-country" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
                             <option value="" selected>All Countries</option>
-                            <!-- Injected by JS -->
                         </select>
                     </div>
 
@@ -206,37 +218,31 @@
                         <label for="filter-prov" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Province / State</label>
                         <select id="filter-prov" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
                             <option value="" selected>All Provinces/States</option>
-                            <!-- Injected by JS -->
                         </select>
                     </div>
 
                     <!-- Opportunity Type Filter -->
                     <div>
-                        <label for="filter-opportunity" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Opportunity Type</label>
+                        <label for="filter-opportunity" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Objective / Use Case</label>
                         <select id="filter-opportunity" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
                             <option value="" selected>All Objectives</option>
+                            <option value="Lease the property">Lease site / sell power</option>
+                            <option value="Find an infrastructure partner">Co-develop / JV partner</option>
+                            <option value="Convert an existing industrial site">Convert industrial/crypto site</option>
                             <option value="Sell the property">Sell the property</option>
-                            <option value="Lease the property">Lease the property</option>
-                            <option value="Find a data-centre developer/operator">Find developer/operator</option>
-                            <option value="Find an infrastructure partner">Find infra partner</option>
-                            <option value="Develop the site directly">Develop directly</option>
-                            <option value="Attract economic development">Attract economic development</option>
-                            <option value="Market available power">Market available power</option>
-                            <option value="Convert an existing industrial site">Convert industrial site</option>
-                            <option value="Convert an existing crypto/data-centre site">Convert crypto/DC site</option>
-                            <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate site only</option>
+                            <option value="Evaluate whether the site has value for AI/data-centre development">Evaluate suitability first</option>
                         </select>
                     </div>
 
-                    <!-- Min Power (Firm / Potential) -->
+                    <!-- Min Power -->
                     <div>
                         <label for="filter-min-firm" class="block font-label font-semibold text-[10px] uppercase tracking-wider text-primary mb-2">Min Firm Power (MW)</label>
                         <select id="filter-min-firm" onchange="fetchSites()" class="w-full bg-surface border border-outline-variant/30 px-3 py-2.5 text-xs focus:outline-none focus:border-primary transition-colors">
-                            <option value="" selected>Any MW</option>
+                            <option value="" selected>Any Capacity</option>
                             <option value="1">1+ MW</option>
+                            <option value="3">3+ MW</option>
                             <option value="5">5+ MW</option>
-                            <option value="20">20+ MW</option>
-                            <option value="50">50+ MW</option>
+                            <option value="10">10+ MW</option>
                         </select>
                     </div>
 
@@ -247,16 +253,16 @@
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr class="bg-surface-container border-b border-outline-variant/20 font-label font-bold text-[10px] uppercase tracking-wider text-primary">
-                                <th class="py-4 px-6">ID</th>
-                                <th class="py-4 px-6">Property Name</th>
-                                <th class="py-4 px-6">Location</th>
-                                <th class="py-4 px-6">Classification</th>
-                                <th class="py-4 px-6 text-center">Score</th>
-                                <th class="py-4 px-6 text-center">Firm MW</th>
-                                <th class="py-4 px-6 text-center">Potential MW</th>
-                                <th class="py-4 px-6">Contact &amp; Company</th>
-                                <th class="py-4 px-6">Lead Status</th>
-                                <th class="py-4 px-6">Submitted Date</th>
+                                <th class="py-4 px-5">ID</th>
+                                <th class="py-4 px-5">Track</th>
+                                <th class="py-4 px-5">Organization / Property</th>
+                                <th class="py-4 px-5">Location</th>
+                                <th class="py-4 px-5">Readiness Status</th>
+                                <th class="py-4 px-5 text-center">Score</th>
+                                <th class="py-4 px-5 text-center">Power / Service</th>
+                                <th class="py-4 px-5">Contact &amp; Company</th>
+                                <th class="py-4 px-5">Lead Status</th>
+                                <th class="py-4 px-5">Submitted</th>
                             </tr>
                         </thead>
                         <tbody id="sites-tbody" class="divide-y divide-outline-variant/10">
@@ -265,7 +271,7 @@
                     </table>
                     <div id="no-sites-message" class="hidden p-12 text-center text-on-surface-variant font-body">
                         <span class="material-symbols-outlined text-4xl block mb-2 text-outline-variant">info</span>
-                        No submitted sites match the active filter criteria.
+                        No submitted assessments match the active filter criteria.
                     </div>
                 </div>
             </div>
@@ -363,6 +369,7 @@
                 <div>
                     <div class="flex items-center gap-3 mb-2">
                         <span class="text-xs uppercase font-label font-bold tracking-wider text-primary-fixed-dim" id="modal-site-id">Site ID: #0</span>
+                        <span id="modal-track-badge" class="bg-primary text-white px-2.5 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider">Track B: Industrial</span>
                         <span id="modal-confidential-badge" class="bg-red-900/40 text-red-300 border border-red-800 px-2 py-0.5 text-[9px] font-label font-semibold uppercase tracking-wider hidden">Confidential</span>
                     </div>
                     <h2 class="font-headline font-extrabold text-2xl tracking-tight" id="modal-title">Property Name</h2>
@@ -419,7 +426,7 @@
                             <span class="font-semibold" id="detail-contact-name">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Company</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Company / Org</span>
                             <span class="font-semibold" id="detail-contact-company">-</span>
                         </div>
                         <div>
@@ -431,7 +438,7 @@
                             <a class="text-primary hover:underline font-semibold" id="detail-contact-phone" href="#">-</a>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Relationship to Property</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Role / Relationship</span>
                             <span id="detail-contact-relation">-</span>
                         </div>
                         <div>
@@ -439,7 +446,7 @@
                             <span id="detail-contact-method">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Additional Comments</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Call Window &amp; Comments</span>
                             <span class="italic text-xs text-on-surface-variant" id="detail-contact-comments">-</span>
                         </div>
                     </div>
@@ -450,11 +457,11 @@
                     <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">System Assessment Summary</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-surface p-5 border border-outline-variant/15 text-center">
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Classification</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Readiness Classification</span>
                             <span class="font-headline font-extrabold text-lg" id="detail-result-class">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Suitability Score</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Readiness Score</span>
                             <span class="font-headline font-bold text-lg text-on-background" id="detail-result-score">-</span>
                         </div>
                         <div>
@@ -466,26 +473,26 @@
 
                 <!-- Property Specifications -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Property Specifications</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Site / Organization Profile</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
                             <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Acreage</span>
                             <span id="detail-prop-acreage">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Current Use</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Classification / Org Type</span>
                             <span id="detail-prop-use">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Address</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Address / Placement</span>
                             <span id="detail-prop-address">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Existing Structures</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Footprint / Cooling Setup</span>
                             <span id="detail-prop-structures">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">High-Load Assets</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Electrical / Interconnection</span>
                             <span id="detail-prop-electrical">-</span>
                         </div>
                     </div>
@@ -493,7 +500,7 @@
 
                 <!-- Power Grid Details -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Power Grid Details</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Power &amp; Electrical Details</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
                             <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Existing Active MW</span>
@@ -512,7 +519,7 @@
                             <span id="detail-power-max">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Power Type</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Power / Circuit Type</span>
                             <span id="detail-power-type">-</span>
                         </div>
                         <div>
@@ -520,7 +527,7 @@
                             <span id="detail-power-utility">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Grid Connection</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Interconnection / Backup</span>
                             <span id="detail-power-grid">-</span>
                         </div>
                         <div>
@@ -532,11 +539,11 @@
                             <span id="detail-power-transmission">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Voltage KV</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Voltage</span>
                             <span id="detail-power-voltage">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Interconnection Timeline</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Energization Timeline</span>
                             <span id="detail-power-timeline">-</span>
                         </div>
                         <div>
@@ -572,10 +579,10 @@
 
                 <!-- Fibre Connectivity -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Fibre Connectivity</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Network &amp; Fiber Connectivity</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Fibre at Boundary</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Fiber / Network Setup</span>
                             <span id="detail-fibre-avail">-</span>
                         </div>
                         <div>
@@ -591,11 +598,11 @@
                             <span id="detail-fibre-latency">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Fibre Providers</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Carriers / Providers</span>
                             <span id="detail-fibre-providers">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">On-Site Telecom Infra</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Doc Volume / On-Site Telecom</span>
                             <span id="detail-fibre-telecom">-</span>
                         </div>
                     </div>
@@ -603,10 +610,10 @@
 
                 <!-- Permitting & Environment -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Zoning &amp; Environmental Feasibility</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Compliance, Zoning &amp; Feasibility</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Current Zoning</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Compliance / Zoning</span>
                             <span id="detail-zone-class">-</span>
                         </div>
                         <div>
@@ -650,7 +657,7 @@
                             <span id="detail-zone-ports">-</span>
                         </div>
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Construction Constraints</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Notes / Constraints</span>
                             <span id="detail-zone-construction">-</span>
                         </div>
                     </div>
@@ -658,14 +665,14 @@
 
                 <!-- Water & Supporting Infrastructure -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Water &amp; Infrastructure</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Cooling &amp; Infrastructure</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Water Availability</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Water / Cooling Mode</span>
                             <span id="detail-water-avail">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Air-Cooled Compatible?</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Dry-Cooler / A/C Setup</span>
                             <span id="detail-water-air">-</span>
                         </div>
                         <div>
@@ -689,7 +696,7 @@
                             <span id="detail-water-gas-dist">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Other Industrial Services</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Pad / Placement Space</span>
                             <span id="detail-water-services">-</span>
                         </div>
                     </div>
@@ -704,7 +711,7 @@
                             <span id="detail-comm-attitude">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">First Nations Consult Req.</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">First Nations Consult / OCAP</span>
                             <span id="detail-comm-indigenous-req">-</span>
                         </div>
                         <div>
@@ -736,10 +743,10 @@
 
                 <!-- Submitter Goals -->
                 <div class="space-y-4">
-                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Project Strategy &amp; Goals</h3>
+                    <h3 class="font-headline font-bold text-base text-primary uppercase tracking-wider border-b border-outline-variant/20 pb-2">Project Strategy &amp; Workloads</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div class="col-span-2">
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Primary Objective</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Primary Objective / Pilot Focus</span>
                             <span id="detail-goal-objective">-</span>
                         </div>
                         <div>
@@ -747,7 +754,7 @@
                             <span id="detail-goal-mw">-</span>
                         </div>
                         <div>
-                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Workload Types</span>
+                            <span class="text-[10px] uppercase font-label font-bold text-on-surface-variant block mb-1">Workload / AI Use Cases</span>
                             <span id="detail-goal-types">-</span>
                         </div>
                     </div>
@@ -886,7 +893,6 @@
         let activeSiteId = null;
         let adminDatacentres = [];
 
-        // Admin Tab switching
         function switchAdminTab(tab) {
             const btnSites = document.getElementById('tab-btn-sites');
             const btnDc = document.getElementById('tab-btn-datacentres');
@@ -913,7 +919,6 @@
             }
         }
 
-        // Check auth on load
         async function checkAuth() {
             try {
                 const response = await fetch("/api/admin/login");
@@ -972,7 +977,6 @@
         }
 
         async function handleLogout() {
-            // Expire cookie by setting in the past
             document.cookie = "of_admin_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
             showLogin();
         }
@@ -984,11 +988,9 @@
             }, 300);
         }
 
-        // Fetch sites list and load filter options (Countries and Provinces dynamically)
         async function fetchFiltersAndSites() {
             await fetchSites();
             
-            // Build dynamic filters based on table rows
             const rows = Array.from(document.querySelectorAll("#sites-tbody tr"));
             const countries = new Set();
             const states = new Set();
@@ -1000,7 +1002,6 @@
                 if (state) states.add(state);
             });
 
-            // Populate Country selector
             const countrySelect = document.getElementById("filter-country");
             const selectedCountry = countrySelect.value;
             countrySelect.innerHTML = `<option value="">All Countries</option>`;
@@ -1009,7 +1010,6 @@
             });
             countrySelect.value = selectedCountry;
 
-            // Populate Province selector
             const provSelect = document.getElementById("filter-prov");
             const selectedProv = provSelect.value;
             provSelect.innerHTML = `<option value="">All Provinces/States</option>`;
@@ -1021,6 +1021,7 @@
 
         async function fetchSites() {
             const q = document.getElementById("filter-search").value;
+            const track = document.getElementById("filter-track") ? document.getElementById("filter-track").value : "";
             const sortBy = document.getElementById("filter-sort-by").value;
             const classification = document.getElementById("filter-classification").value;
             const country = document.getElementById("filter-country") ? document.getElementById("filter-country").value : "";
@@ -1029,6 +1030,7 @@
             const minFirm = document.getElementById("filter-min-firm").value;
             
             let url = `/api/admin/sites?q=${encodeURIComponent(q)}&sort_by=${sortBy}`;
+            if (track) url += `&track=${encodeURIComponent(track)}`;
             if (classification) url += `&classification=${encodeURIComponent(classification)}`;
             if (country) url += `&country=${encodeURIComponent(country)}`;
             if (prov) url += `&province_state=${encodeURIComponent(prov)}`;
@@ -1067,21 +1069,23 @@
                 tr.className = "hover:bg-surface-container cursor-pointer transition-colors duration-200 border-b border-outline-variant/10";
                 tr.setAttribute("data-country", site.country || "");
                 tr.setAttribute("data-state", site.province_state || "");
-                
-                // Click to view modal
                 tr.onclick = () => openSiteDetail(site.id);
                 
-                // Color classification
+                const isMicroNode = site.assessment_track === "micronode";
+                const trackBadge = isMicroNode
+                    ? `<span class="inline-block px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider bg-primary text-white">Track A • MicroNode</span>`
+                    : `<span class="inline-block px-2 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider bg-[#283439] text-white">Track B • Industrial</span>`;
+
+                const cl = site.classification || "Pending";
                 let classBadge = "text-on-surface-variant font-semibold";
-                if (site.classification === "Promising") {
+                if (cl.includes("Ready for Pilot") || cl.includes("Fast-Track") || cl === "Promising") {
                     classBadge = "text-emerald-700 font-bold";
-                } else if (site.classification === "Conditional") {
-                    classBadge = "text-amber-600 font-semibold";
-                } else if (site.classification === "Unlikely Based on Current Information") {
+                } else if (cl.includes("Outside") || cl.includes("Unlikely")) {
                     classBadge = "text-red-700 font-semibold";
+                } else {
+                    classBadge = "text-amber-600 font-semibold";
                 }
 
-                // Lead status colors
                 let statusBadgeColor = "bg-surface-container-high text-on-surface-variant";
                 if (site.lead_status === "New") statusBadgeColor = "bg-primary/10 text-primary border border-primary/20";
                 else if (site.lead_status === "Qualified" || site.lead_status === "Due Diligence") statusBadgeColor = "bg-emerald-100 text-emerald-800";
@@ -1091,24 +1095,28 @@
                 const dateStr = site.created_at ? new Date(site.created_at).toLocaleDateString() : "-";
                 const isConf = site.is_confidential === 1 ? `<span class="bg-red-100 text-red-800 text-[8px] font-bold px-1.5 py-0.5 rounded-none ml-2 uppercase">CONF</span>` : "";
 
+                const powerCol = isMicroNode
+                    ? `<span class="text-[11px] text-on-surface-variant">${escapeHtml(site.power_type || "On-Premise")}</span>`
+                    : `<span class="font-semibold">${site.firm_power_available_mw !== null ? `${site.firm_power_available_mw} MW` : "Unknown"}</span>`;
+
                 tr.innerHTML = `
-                    <td class="py-4 px-6 font-semibold">${site.id}</td>
-                    <td class="py-4 px-6 font-bold flex items-center">${site.name || "Unnamed"}${isConf}</td>
-                    <td class="py-4 px-6 text-on-surface-variant">${site.city || "-"}, ${site.province_state || "-"}, ${site.country || "-"}</td>
-                    <td class="py-4 px-6"><span class="${classBadge}">${site.classification || "Pending"}</span></td>
-                    <td class="py-4 px-6 text-center font-bold text-on-background">${site.calculated_score || "0"}</td>
-                    <td class="py-4 px-6 text-center">${site.firm_power_available_mw !== null ? site.firm_power_available_mw : "Unknown"}</td>
-                    <td class="py-4 px-6 text-center">${site.max_potential_capacity_mw !== null ? site.max_potential_capacity_mw : "Unknown"}</td>
-                    <td class="py-4 px-6">
-                        <div class="font-semibold">${site.contact_name || "-"}</div>
-                        <div class="text-[10px] text-on-surface-variant">${site.contact_company || "-"}</div>
+                    <td class="py-4 px-5 font-semibold">${site.id}</td>
+                    <td class="py-4 px-5">${trackBadge}</td>
+                    <td class="py-4 px-5 font-bold flex items-center">${escapeHtml(site.name || "Unnamed")}${isConf}</td>
+                    <td class="py-4 px-5 text-on-surface-variant">${escapeHtml(site.city || "-")}, ${escapeHtml(site.province_state || "-")}</td>
+                    <td class="py-4 px-5"><span class="${classBadge}">${escapeHtml(cl)}</span></td>
+                    <td class="py-4 px-5 text-center font-bold text-on-background">${site.calculated_score || "0"}</td>
+                    <td class="py-4 px-5 text-center">${powerCol}</td>
+                    <td class="py-4 px-5">
+                        <div class="font-semibold">${escapeHtml(site.contact_name || "-")}</div>
+                        <div class="text-[10px] text-on-surface-variant">${escapeHtml(site.contact_company || "-")}</div>
                     </td>
-                    <td class="py-4 px-6">
+                    <td class="py-4 px-5">
                         <span class="inline-block px-2.5 py-1 text-[9px] font-label font-bold uppercase tracking-wider ${statusBadgeColor}">
-                            ${site.lead_status || "New"}
+                            ${escapeHtml(site.lead_status || "New")}
                         </span>
                     </td>
-                    <td class="py-4 px-6 text-on-surface-variant">${dateStr}</td>
+                    <td class="py-4 px-5 text-on-surface-variant">${dateStr}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1131,12 +1139,19 @@
         }
 
         function populateModal(s) {
-            // Title & ID
             document.getElementById("modal-site-id").innerText = `Site ID: #${s.id}`;
             document.getElementById("modal-title").innerText = s.name || "Unnamed Property";
             document.getElementById("modal-location").innerText = `${s.city || "-"}, ${s.province_state || "-"}, ${s.country || "-"}`;
+
+            const trackBadge = document.getElementById("modal-track-badge");
+            if (s.assessment_track === "micronode") {
+                trackBadge.innerText = "Track A: MicroNode On-Premise";
+                trackBadge.className = "bg-primary text-white px-2.5 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider";
+            } else {
+                trackBadge.innerText = "Track B: Industrial Power / Brownfield";
+                trackBadge.className = "bg-white/15 text-white border border-white/30 px-2.5 py-0.5 text-[9px] font-label font-bold uppercase tracking-wider";
+            }
             
-            // Confidential badge
             const confBadge = document.getElementById("modal-confidential-badge");
             if (s.is_confidential === 1) {
                 confBadge.classList.remove("hidden");
@@ -1144,12 +1159,10 @@
                 confBadge.classList.add("hidden");
             }
             
-            // Edit status & Notes
             document.getElementById("modal-status-select").value = s.lead_status || "New";
             document.getElementById("modal-confidential-check").checked = s.is_confidential === 1;
             document.getElementById("modal-notes-area").value = s.internal_notes || "";
 
-            // Contact details
             document.getElementById("detail-contact-name").innerText = s.contact_name || "-";
             document.getElementById("detail-contact-company").innerText = s.contact_company || "-";
             
@@ -1165,26 +1178,23 @@
             document.getElementById("detail-contact-method").innerText = s.preferred_contact_method || "-";
             document.getElementById("detail-contact-comments").innerText = s.contact_comments || "None";
 
-            // Calculations
-            document.getElementById("detail-result-class").innerText = s.classification || "-";
-            
+            const cl = s.classification || "-";
             const dClass = document.getElementById("detail-result-class");
+            dClass.innerText = cl;
             dClass.className = "font-headline font-extrabold text-lg";
-            if (s.classification === "Promising") dClass.classList.add("text-emerald-700");
-            else if (s.classification === "Conditional") dClass.classList.add("text-amber-600");
-            else if (s.classification === "Unlikely Based on Current Information") dClass.classList.add("text-red-700");
+            if (cl.includes("Ready for Pilot") || cl.includes("Fast-Track") || cl === "Promising") dClass.classList.add("text-emerald-700");
+            else if (cl.includes("Outside") || cl.includes("Unlikely")) dClass.classList.add("text-red-700");
+            else dClass.classList.add("text-amber-600");
 
             document.getElementById("detail-result-score").innerText = `${s.calculated_score || "0"} / 100`;
             document.getElementById("detail-result-confidence").innerText = `${s.confidence_level || "-"} Confidence`;
 
-            // Specs
             document.getElementById("detail-prop-acreage").innerText = s.acreage !== null ? `${s.acreage} acres` : "-";
             document.getElementById("detail-prop-use").innerText = s.current_use || "-";
             document.getElementById("detail-prop-address").innerText = s.address || "-";
             document.getElementById("detail-prop-structures").innerText = s.existing_infra || "None";
             document.getElementById("detail-prop-electrical").innerText = s.existing_electrical_infra || "None";
 
-            // Power
             document.getElementById("detail-power-existing").innerText = s.existing_capacity_mw !== null ? `${s.existing_capacity_mw} MW` : "-";
             document.getElementById("detail-power-firm").innerText = s.firm_power_available_mw !== null ? `${s.firm_power_available_mw} MW` : "Unknown";
             document.getElementById("detail-power-add").innerText = s.additional_power_mw !== null ? `${s.additional_power_mw} MW` : "Unknown";
@@ -1204,7 +1214,6 @@
             document.getElementById("detail-power-restrictions").innerText = s.demand_restrictions || "None";
             document.getElementById("detail-power-constraints").innerText = s.other_constraints || "None";
 
-            // Fibre
             document.getElementById("detail-fibre-avail").innerText = s.fibre_available || "-";
             document.getElementById("detail-fibre-routes").innerText = s.diverse_routes || "-";
             document.getElementById("detail-fibre-distance").innerText = s.distance_to_fibre || "-";
@@ -1212,7 +1221,6 @@
             document.getElementById("detail-fibre-providers").innerText = s.fibre_providers || "-";
             document.getElementById("detail-fibre-telecom").innerText = s.telecom_infra || "None";
 
-            // Zoning
             document.getElementById("detail-zone-class").innerText = s.zoning || "-";
             document.getElementById("detail-zone-permitted").innerText = s.data_centre_permitted || "-";
             document.getElementById("detail-zone-complexity").innerText = s.permitting_complexity || "-";
@@ -1226,7 +1234,6 @@
             document.getElementById("detail-zone-ports").innerText = s.proximity_airport_port || "-";
             document.getElementById("detail-zone-construction").innerText = s.construction_logistics_constraints || "None";
 
-            // Water
             document.getElementById("detail-water-avail").innerText = s.water_availability || "-";
             document.getElementById("detail-water-air").innerText = s.air_cooled_compatible || "-";
             document.getElementById("detail-water-municipal").innerText = s.municipal_water || "-";
@@ -1236,7 +1243,6 @@
             document.getElementById("detail-water-gas-dist").innerText = s.distance_to_gas_pipeline || "-";
             document.getElementById("detail-water-services").innerText = s.existing_industrial_services || "None";
 
-            // Community
             document.getElementById("detail-comm-attitude").innerText = s.community_attitude || "-";
             document.getElementById("detail-comm-indigenous-req").innerText = s.indigenous_engagement_req || "-";
             document.getElementById("detail-comm-protests").innerText = s.history_protests || "-";
@@ -1246,10 +1252,9 @@
             document.getElementById("detail-comm-indigenous-rel").innerText = s.indigenous_relationships || "-";
             document.getElementById("detail-comm-concerns").innerText = s.other_stakeholder_concerns || "None";
 
-            // Goals
             document.getElementById("detail-goal-objective").innerText = s.opportunity_type || "-";
             document.getElementById("detail-goal-mw").innerText = s.target_size_mw !== null ? `${s.target_size_mw} MW` : "-";
-            document.getElementById("detail-goal-types").innerText = s.project_types ? s.project_types.join(", ") : "-";
+            document.getElementById("detail-goal-types").innerText = Array.isArray(s.project_types) ? s.project_types.join(", ") : (s.project_types || "-");
         }
 
         async function saveSiteDetails() {
@@ -1273,7 +1278,7 @@
                 if (data.success) {
                     alert("Site details successfully updated.");
                     closeModal();
-                    fetchSites(); // refresh table
+                    fetchSites();
                 } else {
                     alert("Failed to update site details: " + data.message);
                 }
@@ -1290,6 +1295,7 @@
 
         function exportCSV() {
             const q = document.getElementById("filter-search").value;
+            const track = document.getElementById("filter-track") ? document.getElementById("filter-track").value : "";
             const sortBy = document.getElementById("filter-sort-by").value;
             const classification = document.getElementById("filter-classification").value;
             const country = document.getElementById("filter-country") ? document.getElementById("filter-country").value : "";
@@ -1298,13 +1304,13 @@
             const minFirm = document.getElementById("filter-min-firm").value;
             
             let url = `/api/admin/sites?export=csv&q=${encodeURIComponent(q)}&sort_by=${sortBy}`;
+            if (track) url += `&track=${encodeURIComponent(track)}`;
             if (classification) url += `&classification=${encodeURIComponent(classification)}`;
             if (country) url += `&country=${encodeURIComponent(country)}`;
             if (prov) url += `&province_state=${encodeURIComponent(prov)}`;
             if (opp) url += `&opportunity_type=${encodeURIComponent(opp)}`;
             if (minFirm) url += `&min_firm_mw=${encodeURIComponent(minFirm)}&min_potential_mw=${encodeURIComponent(minFirm)}`;
 
-            // Force download
             window.location.href = url;
         }
 
@@ -1584,7 +1590,6 @@
                 .replace(/"/g, "&quot;");
         }
 
-        // Run Auth Check on start
         checkAuth();
     </script>
 </body>

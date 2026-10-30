@@ -28,7 +28,8 @@ export async function ensureSchema(db) {
         created_at TEXT,
         internal_notes TEXT DEFAULT '',
         lead_status TEXT DEFAULT 'New',
-        is_confidential INTEGER DEFAULT 0
+        is_confidential INTEGER DEFAULT 0,
+        assessment_track TEXT DEFAULT 'industrial'
       )`,
 
       `CREATE TABLE IF NOT EXISTS power_info (
@@ -135,6 +136,18 @@ export async function ensureSchema(db) {
         throw err;
       }
     }
+  } else {
+    // Ensure assessment_track column exists on existing sites table
+    try {
+      await db.prepare("SELECT assessment_track FROM sites LIMIT 1").first();
+    } catch (e) {
+      try {
+        await db.prepare("ALTER TABLE sites ADD COLUMN assessment_track TEXT DEFAULT 'industrial'").run();
+        console.log("Added assessment_track column to sites table.");
+      } catch (alterErr) {
+        console.error("Could not add assessment_track column:", alterErr);
+      }
+    }
   }
 
   // 2. Ensure datacentres table exists
@@ -196,6 +209,22 @@ export async function ensureSchema(db) {
     }
   } catch (err) {
     console.error("Auto-seed check error:", err);
+  }
+
+  // 4. Ensure newsletter_subscribers table exists
+  try {
+    await db.prepare(`
+      CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        name TEXT DEFAULT '',
+        source TEXT DEFAULT 'website',
+        buttondown_status TEXT DEFAULT 'pending',
+        created_at TEXT
+      )
+    `).run();
+  } catch (err) {
+    console.error("Newsletter table init error:", err);
   }
 
   console.log("Database schema successfully verified and initialized.");

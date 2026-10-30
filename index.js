@@ -1,6 +1,8 @@
 import { ensureSchema } from "./functions/api/_schema.js";
 import { onRequestPost as assessmentsPost } from "./functions/api/assessments.js";
 import { onRequestPost as leadPost } from "./functions/api/lead.js";
+import { onRequestPost as contactPost } from "./functions/api/contact.js";
+import { onRequestPost as newsletterPost } from "./functions/api/newsletter.js";
 import { onRequestPost as loginPost, onRequestGet as loginGet } from "./functions/api/admin/login.js";
 import { onRequestGet as sitesGet, onRequestPost as sitesPost } from "./functions/api/admin/sites.js";
 import { onRequestGet as mapDatacentresGet } from "./functions/api/map/datacentres.js";
@@ -40,6 +42,12 @@ export default {
     }
     if (pathname === "/api/lead" && request.method === "POST") {
       return leadPost(context);
+    }
+    if (pathname === "/api/contact" && request.method === "POST") {
+      return contactPost(context);
+    }
+    if (pathname === "/api/newsletter" && request.method === "POST") {
+      return newsletterPost(context);
     }
     if (pathname === "/api/admin/login") {
       if (request.method === "POST") return loginPost(context);

@@ -788,6 +788,62 @@
             </div>
         </section>
 
+        <!-- Newsletter Subscription Section -->
+        <section id="newsletter" class="pb-24 px-12 bg-surface">
+            <div class="bg-on-background text-surface p-12 md:p-20 border border-outline-variant/20 relative overflow-hidden">
+                <div class="grid grid-cols-12 gap-12 items-center relative z-10">
+                    <div class="col-span-12 lg:col-span-6 space-y-5">
+                        <div class="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 px-3 py-1">
+                            <span class="material-symbols-outlined text-xs text-primary-container">newspaper</span>
+                            <span class="font-label text-[10px] font-bold uppercase tracking-widest text-surface">Ocean Falls Intelligence Dispatches</span>
+                        </div>
+                        <h3 class="font-headline font-bold text-3xl md:text-4xl text-surface tracking-tight leading-tight">
+                            Subscribe to Technical Briefings &amp; Infrastructure Articles
+                        </h3>
+                        <p class="font-body text-surface/80 text-base leading-relaxed max-w-xl">
+                            Receive regular articles and field dispatches covering sovereign AI infrastructure, sub-10 MW brownfield power siting, BC regulatory compliance, and distributed inference economics.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-6 pt-1 text-xs font-label uppercase tracking-widest text-surface/65">
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Power &amp; Siting Analysis</span>
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Sovereign AI Briefings</span>
+                            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary-container">check</span> Unsubscribe Anytime</span>
+                        </div>
+                    </div>
+                    <div class="col-span-12 lg:col-span-6">
+                        <form id="newsletter-form" class="bg-surface text-on-surface p-8 md:p-10 border border-outline-variant/20 shadow-lg space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="newsletter-name" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                        First Name <span class="text-on-surface-variant/60 font-normal">(Optional)</span>
+                                    </label>
+                                    <input type="text" id="newsletter-name" name="name"
+                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                        placeholder="Alex" />
+                                </div>
+                                <div>
+                                    <label for="newsletter-email" class="block font-label font-semibold text-xs uppercase tracking-widest text-primary mb-2">
+                                        Email Address <span class="text-error">*</span>
+                                    </label>
+                                    <input type="email" id="newsletter-email" name="email" required
+                                        class="w-full bg-surface-container-low border border-outline-variant/30 px-4 py-3 font-body text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary rounded-none transition-colors"
+                                        placeholder="name@company.com" />
+                                </div>
+                            </div>
+                            <button type="submit" id="newsletter-submit-btn"
+                                class="w-full bg-primary text-on-primary py-4 px-6 font-label font-semibold uppercase tracking-widest text-xs hover:bg-on-background transition-colors duration-300 shadow-sm flex items-center justify-center gap-2">
+                                <span>Subscribe to Dispatches</span>
+                                <span class="material-symbols-outlined text-sm">mail</span>
+                            </button>
+                            <div id="newsletter-feedback" class="hidden pt-2 text-xs font-body leading-relaxed"></div>
+                            <p class="font-body text-[11px] text-on-surface-variant/75 leading-relaxed">
+                                Delivered via Buttondown. We respect your inbox and never share subscriber addresses.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact" class="pb-40 px-12 bg-surface">
             <div class="bg-surface-container-low p-16 md:p-24 grid grid-cols-12 gap-12 items-start">
@@ -954,6 +1010,8 @@
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="privacy-policy.html">Privacy Policy</a>
                 <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
+                    href="#newsletter">Newsletter</a>
+                <a class="font-body text-xs leading-relaxed tracking-wide uppercase text-on-background hover:text-primary transition-colors hover:underline"
                     href="#contact">Contact</a>
             </div>
         </div>
@@ -1088,6 +1146,67 @@
             if (btnCaptiveExploration) {
                 btnCaptiveExploration.addEventListener('click', () => {
                     preselectInterestAndFocus('captive-access');
+                });
+            }
+
+            // Newsletter Subscription Form Handling (Buttondown)
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('newsletter-submit-btn');
+                    const feedbackEl = document.getElementById('newsletter-feedback');
+                    const nameVal = document.getElementById('newsletter-name')?.value?.trim() || '';
+                    const emailVal = document.getElementById('newsletter-email')?.value?.trim() || '';
+
+                    if (!emailVal) return;
+
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span>Subscribing...</span>';
+                    }
+                    if (feedbackEl) {
+                        feedbackEl.className = 'hidden pt-2 text-xs font-body leading-relaxed';
+                        feedbackEl.textContent = '';
+                    }
+
+                    try {
+                        const res = await fetch('/api/newsletter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name: nameVal,
+                                email: emailVal,
+                                source: 'homepage-newsletter'
+                            })
+                        });
+                        const data = await res.json();
+
+                        if (!res.ok || !data.success) {
+                            throw new Error(data.error || 'Could not complete your subscription. Please try again.');
+                        }
+
+                        newsletterForm.innerHTML = `
+                            <div class="py-6 px-4 text-center space-y-3">
+                                <span class="material-symbols-outlined text-4xl text-primary">mark_email_read</span>
+                                <h4 class="font-headline font-bold text-xl text-on-background">
+                                    ${data.already_subscribed ? "You're Already Subscribed" : "Subscription Confirmed"}
+                                </h4>
+                                <p class="font-body text-sm text-on-surface-variant max-w-md mx-auto leading-relaxed">
+                                    ${data.message || "Thank you for subscribing to Ocean Falls Intelligence Dispatches. Please check your inbox to confirm your email address."}
+                                </p>
+                            </div>
+                        `;
+                    } catch (err) {
+                        if (feedbackEl) {
+                            feedbackEl.className = 'pt-2 text-xs font-body leading-relaxed text-error font-semibold';
+                            feedbackEl.textContent = err.message || 'Unable to subscribe right now. Please try again shortly.';
+                        }
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<span>Subscribe to Dispatches</span><span class="material-symbols-outlined text-sm">mail</span>';
+                        }
+                    }
                 });
             }
 
