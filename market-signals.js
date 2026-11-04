@@ -175,7 +175,8 @@
                                 (data.already_subscribed ? "You're Already Subscribed" : "Subscription Confirmed") +
                             '</h4>' +
                             '<p class="font-body text-sm text-on-surface-variant max-w-md mx-auto leading-relaxed">' +
-                                escapeHtml(data.message || 'Thank you for subscribing to Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription.') +
+                                escapeHtml(data.message || 'Thank you for subscribing to Megawatt Weekly ? Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription.') +
+                            ' <a href="https://megawattweekly.com" target="_blank" rel="noopener noreferrer" class="text-primary font-semibold underline">Visit MegawattWeekly.com</a>' +
                             '</p>' +
                         '</div>';
                 } catch (err) {
@@ -185,7 +186,7 @@
                     }
                     if (submitBtn) {
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<span>Subscribe to Updates</span><span class="material-symbols-outlined text-sm">mail</span>';
+                        submitBtn.innerHTML = '<span>Subscribe to Megawatt Weekly</span><span class="material-symbols-outlined text-sm">mail</span>';
                     }
                 }
             });

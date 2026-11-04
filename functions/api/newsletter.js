@@ -139,8 +139,8 @@ export async function onRequestPost(context) {
       success: true,
       already_subscribed: alreadySubscribed,
       message: alreadySubscribed
-        ? "You are already subscribed to Ocean Falls Market Signals & Investor Communications."
-        : "Thank you for subscribing to Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription."
+        ? "You are already subscribed to Megawatt Weekly (Ocean Falls Market Signals & Investor Communications)."
+        : "Thank you for subscribing to Megawatt Weekly ? Ocean Falls Market Signals & Investor Communications. Check your inbox to confirm your subscription."
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
