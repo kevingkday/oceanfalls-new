@@ -14,9 +14,6 @@
     <!-- MapLibre GL CSS -->
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
 
-    <!-- Embedded Canadian Datacentres Catalog (Offline & Static Fallback) -->
-    <script src="seed-datacentres.js"></script>
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -194,14 +191,7 @@
                     <button onclick="setFilter('100mw')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="100mw">100+ MW</button>
                     <button onclick="setFilter('construction')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="construction">In Construction</button>
                     <button onclick="setFilter('operational')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="operational">Operational</button>
-                </div>
-
-                <!-- Local File / Offline Notice -->
-                <div id="local-file-notice" class="hidden p-2.5 bg-blue-50/90 border border-blue-200/80 text-[11px] text-blue-900 leading-tight">
-                    <div class="font-bold flex items-center gap-1 mb-0.5">
-                        <span class="material-symbols-outlined text-xs">info</span> Local Catalog Mode
-                    </div>
-                    Loaded 75 pre-indexed facilities. For live database management and edits, access via your local dev server (<a href="http://localhost:8788/map.html" class="underline font-semibold text-primary">localhost:8788/map</a>).
+                    <button onclick="setFilter('micronode')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="micronode">MicroNode</button>
                 </div>
             </div>
 
@@ -236,6 +226,14 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
                 <span class="font-semibold text-on-background">Impact Radius:</span>
                 <span class="text-on-surface-variant">Estimated acoustic / power footprint (m)</span>
+            </div>
+
+            <div class="absolute top-[3.25rem] left-4 z-10 hidden sm:flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 border border-outline-variant/30 shadow-sm text-xs font-label">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input id="micronode-layer-toggle" type="checkbox" checked onchange="toggleMicroNodeLayer(this.checked)" class="rounded-none border-outline-variant/50 text-[#c2410c] focus:ring-[#c2410c]" />
+                    <span class="w-3 h-3 rounded-full border-2 border-[#c2410c] bg-[#c2410c]/20 inline-block" aria-hidden="true"></span>
+                    <span class="font-semibold text-on-background">MicroNode-ready</span>
+                </label>
             </div>
 
             <!-- Map Pin Drop Mode Notification -->
@@ -292,6 +290,22 @@
                         <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
                             <span class="text-on-surface-variant font-medium">Coordinates:</span>
                             <span id="detail-coords" class="font-mono text-[11px] text-right">-</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Utility:</span>
+                            <span id="detail-utility" class="font-semibold text-right">—</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Interconnection:</span>
+                            <span id="detail-interconnect" class="font-semibold text-right">—</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">MicroNode-ready:</span>
+                            <span id="detail-micronode" class="font-semibold text-right">—</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-outline-variant/10">
+                            <span class="text-on-surface-variant font-medium">Last verified:</span>
+                            <span id="detail-verified" class="font-semibold text-right">—</span>
                         </div>
                     </div>
 
@@ -507,6 +521,8 @@
         let isAdminLoggedIn = false;
         let isPickingLocation = false;
         let tempMarker = null;
+        let facilityPopup = null;
+        let microNodeLayerVisible = true;
 
         // Colors
         const PIN_COLOR = '#465f88';
@@ -635,6 +651,28 @@
                 cluster: false
             });
 
+            // Distinct ring for MicroNode-ready sites (sub-10 MW brownfield). Drawn under the pins.
+            map.addLayer({
+                id: 'facility-micronode-layer',
+                type: 'circle',
+                source: 'facility-points',
+                filter: ['==', ['get', 'micronode_ready'], 1],
+                layout: {
+                    visibility: microNodeLayerVisible ? 'visible' : 'none'
+                },
+                paint: {
+                    'circle-radius': [
+                        'interpolate', ['linear'], ['zoom'],
+                        3, 9,
+                        6, 12,
+                        10, 14
+                    ],
+                    'circle-color': 'rgba(194, 65, 12, 0.16)',
+                    'circle-stroke-color': '#c2410c',
+                    'circle-stroke-width': 2
+                }
+            });
+
             // Outer ring / halo for selected facility
             map.addLayer({
                 id: 'facility-selected-halo',
@@ -681,67 +719,63 @@
                 }
             });
 
-            // Interactivity: Click any dot to view facility details
-            map.on('click', 'facility-points-layer', (e) => {
-                const feature = e.features[0];
+            // Interactivity: Click any dot or MicroNode ring to view facility details
+            const openFacilityFromMap = (e) => {
+                if (isPickingLocation) return;
+                const feature = e.features && e.features[0];
                 if (!feature) return;
-                const id = feature.properties.id;
-                const facility = allDatacentres.find(d => d.id === id);
-                if (facility) {
-                    selectFacility(facility, { fly: true });
-                }
-            });
+                const facility = allDatacentres.find(d => d.id === feature.properties.id);
+                if (facility) selectFacility(facility, { fly: true });
+            };
+            map.on('click', 'facility-points-layer', openFacilityFromMap);
+            map.on('click', 'facility-micronode-layer', openFacilityFromMap);
 
-            map.on('mouseenter', 'facility-points-layer', () => { map.getCanvas().style.cursor = 'pointer'; });
-            map.on('mouseleave', 'facility-points-layer', () => { map.getCanvas().style.cursor = ''; });
+            const setPointer = () => { map.getCanvas().style.cursor = 'pointer'; };
+            const clearPointer = () => { map.getCanvas().style.cursor = ''; };
+            map.on('mouseenter', 'facility-points-layer', setPointer);
+            map.on('mouseleave', 'facility-points-layer', clearPointer);
+            map.on('mouseenter', 'facility-micronode-layer', setPointer);
+            map.on('mouseleave', 'facility-micronode-layer', clearPointer);
         }
 
-        // Fetch Datacentres from API (with embedded fallback for local file:/// inspection)
+        function isMicroNodeReady(facility) {
+            return facility.micronode_ready === true || facility.micronode_ready === 1;
+        }
+
+        function displayOrDash(value) {
+            if (value == null || value === '') return '—';
+            return String(value);
+        }
+
+        // Public map catalog. Staff database endpoints are not the display source.
         async function fetchDatacentres() {
             try {
-                // If running over HTTP/HTTPS, fetch live data from Cloudflare Worker API
-                if (window.location.protocol.startsWith('http')) {
-                    const endpoint = isAdminLoggedIn ? '/api/admin/datacentres' : '/api/map/datacentres';
-                    const res = await fetch(endpoint);
-                    const data = await res.json();
-
-                    if (data.success && Array.isArray(data.datacentres)) {
-                        // Merge live database records with baseline catalog so newly added facilities (like QScale) don't replace the baseline feed
-                        const siteMap = new Map();
-                        if (window.EMBEDDED_DATACENTRES && Array.isArray(window.EMBEDDED_DATACENTRES)) {
-                            window.EMBEDDED_DATACENTRES.forEach(d => siteMap.set(d.id, d));
-                        }
-                        // Live database records take priority (adds new facilities and applies edits)
-                        data.datacentres.forEach(d => siteMap.set(d.id, d));
-
-                        allDatacentres = Array.from(siteMap.values());
-                        applyFiltersAndRender();
-                        updateGlobalStats();
-                        return;
-                    }
+                const res = await fetch('/datacentres.json');
+                if (!res.ok) throw new Error('Catalog request failed (' + res.status + ')');
+                const data = await res.json();
+                if (!data || !Array.isArray(data.facilities)) {
+                    throw new Error('Catalog is missing a facilities array.');
                 }
-            } catch (err) {
-                console.warn('API fetch unavailable, checking embedded catalog:', err);
-            }
-
-            // Fallback for file:/// local file viewing or offline browsing
-            if (window.EMBEDDED_DATACENTRES && Array.isArray(window.EMBEDDED_DATACENTRES) && window.EMBEDDED_DATACENTRES.length > 0) {
-                allDatacentres = window.EMBEDDED_DATACENTRES;
+                allDatacentres = data.facilities;
                 applyFiltersAndRender();
                 updateGlobalStats();
-
-                // Show local file notice if in file:// mode
-                const notice = document.getElementById('local-file-notice');
-                if (notice && (window.location.protocol === 'file:' || !window.location.protocol.startsWith('http'))) {
-                    notice.classList.remove('hidden');
-                }
-            } else {
+            } catch (err) {
+                console.error('Failed to load /datacentres.json:', err);
                 document.getElementById('facilities-list').innerHTML = `
                     <div class="p-6 text-center text-red-600 text-xs">
-                        Failed to load datacentres. For live database management, access via your local dev server (<a href="http://localhost:8788/map.html" class="underline font-bold text-primary">localhost:8788/map</a>).
+                        Failed to load the datacentre catalog (<span class="font-mono">/datacentres.json</span>).
                     </div>
                 `;
             }
+        }
+
+        function upsertLoadedFacility(facility) {
+            if (!facility || !facility.id) return;
+            const idx = allDatacentres.findIndex(d => d.id === facility.id);
+            if (idx >= 0) allDatacentres[idx] = { ...allDatacentres[idx], ...facility };
+            else allDatacentres.push(facility);
+            applyFiltersAndRender();
+            updateGlobalStats();
         }
 
         async function autoSeedIfEmpty() {
@@ -781,7 +815,9 @@
                     (d.city && d.city.toLowerCase().includes(q)) ||
                     (d.developer && d.developer.toLowerCase().includes(q)) ||
                     (d.province_state && d.province_state.toLowerCase().includes(q)) ||
-                    (d.address && d.address.toLowerCase().includes(q))
+                    (d.address && d.address.toLowerCase().includes(q)) ||
+                    (d.utility && d.utility.toLowerCase().includes(q)) ||
+                    (d.interconnect_status && String(d.interconnect_status).toLowerCase().includes(q))
                 );
             }
 
@@ -794,6 +830,8 @@
                 list = list.filter(d => d.proposal_status === 'under_construction');
             } else if (activeFilter === 'operational') {
                 list = list.filter(d => d.proposal_status === 'operational');
+            } else if (activeFilter === 'micronode') {
+                list = list.filter(d => isMicroNodeReady(d));
             }
 
             // Sorting
@@ -806,6 +844,20 @@
             }
 
             filteredDatacentres = list;
+
+            if (currentSelectedId && !list.some(d => d.id === currentSelectedId)) {
+                currentSelectedId = null;
+                document.getElementById('detail-drawer')?.classList.add('hidden');
+                if (facilityPopup) {
+                    facilityPopup.remove();
+                    facilityPopup = null;
+                }
+                const url = new URL(window.location);
+                if (url.searchParams.has('facility')) {
+                    url.searchParams.delete('facility');
+                    window.history.replaceState({}, '', url);
+                }
+            }
 
             renderSidebarList();
             syncMapData();
@@ -829,7 +881,12 @@
                 const isSelected = d.id === currentSelectedId;
                 const capacity = d.capacity_display || (d.capacity_mw ? `${d.capacity_mw} MW` : 'Undisclosed');
                 const isAi = d.ai_tag === 1 || d.site_type === 'ai_datacentre';
+                const micro = isMicroNodeReady(d);
                 const statusName = (d.proposal_status || 'proposed').replace('_', ' ');
+                const metaBits = [];
+                if (d.utility) metaBits.push(escapeHtml(d.utility));
+                if (d.interconnect_status) metaBits.push(escapeHtml(String(d.interconnect_status).replace(/_/g, ' ')));
+                if (d.last_verified) metaBits.push('Verified ' + escapeHtml(d.last_verified));
 
                 return `
                     <div 
@@ -848,8 +905,10 @@
                         <div class="flex items-center gap-2 mt-2">
                             <span class="text-[9px] font-label uppercase px-1.5 py-0.5 border ${statusBadgeClass(d.proposal_status)}">${statusName}</span>
                             ${isAi ? '<span class="text-[9px] font-label uppercase px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200">AI</span>' : ''}
+                            ${micro ? '<span class="text-[9px] font-label uppercase px-1.5 py-0.5 bg-orange-50 text-orange-800 border border-orange-300">MicroNode</span>' : ''}
                             ${d.developer ? `<span class="text-[10px] text-on-surface-variant truncate max-w-[150px]">${escapeHtml(d.developer)}</span>` : ''}
                         </div>
+                        ${metaBits.length ? `<p class="font-body text-[10px] text-on-surface-variant mt-1.5 truncate">${metaBits.join(' · ')}</p>` : ''}
                     </div>
                 `;
             }).join('');
@@ -883,6 +942,7 @@
                         city: d.city,
                         capacity_mw: d.capacity_mw,
                         site_type: d.site_type,
+                        micronode_ready: isMicroNodeReady(d) ? 1 : 0,
                         is_selected: d.id === currentSelectedId ? 1 : 0
                     }
                 }))
@@ -994,7 +1054,16 @@
             document.getElementById('detail-developer').textContent = facility.developer || 'Not Disclosed';
             document.getElementById('detail-type').textContent = (facility.site_type || 'datacentre').replace('_', ' ');
             document.getElementById('detail-coords').textContent = `${Number(facility.lat).toFixed(4)}, ${Number(facility.lng).toFixed(4)}`;
+            document.getElementById('detail-utility').textContent = displayOrDash(facility.utility);
+            document.getElementById('detail-interconnect').textContent = facility.interconnect_status
+                ? String(facility.interconnect_status).replace(/_/g, ' ')
+                : '—';
+            document.getElementById('detail-micronode').textContent = isMicroNodeReady(facility)
+                ? 'Yes'
+                : (facility.micronode_ready === false ? 'No' : '—');
+            document.getElementById('detail-verified').textContent = displayOrDash(facility.last_verified);
             document.getElementById('detail-notes').textContent = facility.notes || 'No detailed project notes recorded for this site.';
+            showFacilityPopup(facility);
 
             const sourceLink = document.getElementById('detail-source-link');
             const sourceContainer = document.getElementById('detail-source-container');
@@ -1024,6 +1093,10 @@
 
         function closeDetailDrawer() {
             document.getElementById('detail-drawer').classList.add('hidden');
+            if (facilityPopup) {
+                facilityPopup.remove();
+                facilityPopup = null;
+            }
             currentSelectedId = null;
             const url = new URL(window.location);
             url.searchParams.delete('facility');
@@ -1076,6 +1149,49 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('map-sidebar');
             sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function toggleMicroNodeLayer(visible) {
+            microNodeLayerVisible = Boolean(visible);
+            if (map && map.getLayer('facility-micronode-layer')) {
+                map.setLayoutProperty('facility-micronode-layer', 'visibility', microNodeLayerVisible ? 'visible' : 'none');
+            }
+        }
+
+        function showFacilityPopup(facility) {
+            if (!map || !facility) return;
+            if (facilityPopup) facilityPopup.remove();
+
+            const capacity = facility.capacity_display || (facility.capacity_mw ? `${facility.capacity_mw} MW` : 'Undisclosed');
+            const interconnect = facility.interconnect_status
+                ? String(facility.interconnect_status).replace(/_/g, ' ')
+                : '—';
+            const micronode = isMicroNodeReady(facility)
+                ? 'Yes'
+                : (facility.micronode_ready === false ? 'No' : '—');
+            const source = facility.source_url
+                ? `<a href="${escapeHtml(facility.source_url)}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex text-primary font-semibold">Source</a>`
+                : '';
+
+            const html = `
+                <div class="font-body text-on-surface text-[11px] leading-snug">
+                    <div class="font-headline font-bold text-xs text-on-background">${escapeHtml(facility.name)}</div>
+                    <div class="text-on-surface-variant mt-0.5">${escapeHtml(facility.city)}, ${escapeHtml(facility.province_state || 'Canada')}</div>
+                    <div class="mt-2 space-y-0.5">
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Capacity</span><span class="font-semibold">${escapeHtml(capacity)}</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Utility</span><span class="font-semibold text-right">${escapeHtml(displayOrDash(facility.utility))}</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Interconnection</span><span class="font-semibold text-right">${escapeHtml(interconnect)}</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">MicroNode-ready</span><span class="font-semibold">${escapeHtml(micronode)}</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Last verified</span><span class="font-semibold">${escapeHtml(displayOrDash(facility.last_verified))}</span></div>
+                    </div>
+                    ${source}
+                </div>
+            `;
+
+            facilityPopup = new maplibregl.Popup({ closeButton: true, maxWidth: '260px', offset: 16, anchor: 'right' })
+                .setLngLat([parseFloat(facility.lng), parseFloat(facility.lat)])
+                .setHTML(html)
+                .addTo(map);
         }
 
         // Admin Modal Workflows (Add / Edit)
@@ -1197,12 +1313,12 @@
                 }
 
                 closeFacilityModal();
-                await fetchDatacentres();
+                const savedFacility = data.datacentre || { ...payload, id: id || undefined };
+                if (savedFacility && savedFacility.id) upsertLoadedFacility(savedFacility);
 
-                // Select the updated/created facility
-                const savedFacility = allDatacentres.find(d => d.id === (data.datacentre?.id || id));
-                if (savedFacility) {
-                    selectFacility(savedFacility, { fly: true });
+                const shown = allDatacentres.find(d => d.id === (data.datacentre?.id || savedFacility.id || id));
+                if (shown) {
+                    selectFacility(shown, { fly: true });
                 }
 
             } catch (err) {
@@ -1251,8 +1367,10 @@
                 });
                 const data = await res.json();
                 if (data.success) {
+                    allDatacentres = allDatacentres.filter(d => d.id !== facility.id);
                     closeDetailDrawer();
-                    await fetchDatacentres();
+                    applyFiltersAndRender();
+                    updateGlobalStats();
                 } else {
                     alert('Error deleting: ' + data.message);
                 }
