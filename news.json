@@ -1,6 +1,46 @@
 {
-  "lastUpdated": "2026-11-01",
+  "lastUpdated": "2026-11-08",
   "signals": [
+    {
+      "theme": "Utility Interconnect Bottlenecks",
+      "date": "2026-11-03",
+      "dateDisplay": "November 2026",
+      "outlet": "The Circuit",
+      "headline": "Alberta Data Centres Have Asked for 26,849 MW, More Than Double the Province’s Record Peak",
+      "theFact": "Data centre developers had asked to connect 26,849 MW of new load to Alberta’s grid by October, more than double the province’s all-time peak demand of 12,785 MW, and AESO’s entire 1,200 MW interim limit went to just two projects. The Circuit’s four-province comparison finds Alberta, Quebec, Ontario and B.C. all now rationing or repricing data centre power, with B.C. capping new data centre supply at 400 MW over two years and no public list yet of who won it.",
+      "oceanFallsAngle": "Ocean Falls targets sub-10 MW brownfield sites that stay outside B.C.’s ≥10 MW competitive call and connect through BC Hydro’s standard process, instead of joining a multi-gigawatt queue for rationed power.",
+      "url": "https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/"
+    },
+    {
+      "theme": "Community & Environmental Backlash",
+      "date": "2026-11-04",
+      "dateDisplay": "November 2026",
+      "outlet": "CBC News",
+      "headline": "Sherbrooke Delays a Data Centre Freeze as 12,000 Sign Against a 96 MW Campus",
+      "theFact": "Sherbrooke Mayor Marie-Claude Bibeau kept a proposed data centre moratorium off Tuesday’s council agenda, saying the city needs more time to weigh its legal and technical impacts. Residents are fighting a 96 MW project by U.S.-backed Keel Infrastructure on land the city conditionally sold in August, with a petition against the sale topping 12,000 signatures and two more crypto-to-AI conversions in the works.",
+      "oceanFallsAngle": "Ocean Falls keeps each site under 10 MW on already-zoned brownfield industrial land, a footprint small enough to avoid the scale that turns a municipal land sale into a 12,000-signature fight.",
+      "url": "https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805"
+    },
+    {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-11-07",
+      "dateDisplay": "November 2026",
+      "outlet": "DataCentre.ca",
+      "headline": "Budget 2026 Promises Canadian AI Firms 500 MW of Sovereign Compute, With No Sites or Timeline Yet",
+      "theFact": "Budget 2026 commits Ottawa to help Canadian AI companies access 500 MW of sovereign computing capacity through backstops and offtake agreements, after finding that large tech firms are locking up new Canadian capacity with long-term contracts. DataCentre.ca notes the measure does not identify participating facilities, a delivery schedule, or the value of the financial support.",
+      "oceanFallsAngle": "Canadian organizations that need sovereign inference now don’t have to wait for program rules: Ocean Falls’ MicroNode puts Canadian-controlled AI compute directly behind their own firewall in British Columbia.",
+      "url": "https://datacentre.ca/2026/11/07/budget-2026-targets-sovereign-ai-compute/"
+    },
+    {
+      "theme": "Digital Infrastructure Risk & Insurance",
+      "date": "2026-11-02",
+      "dateDisplay": "November 2026",
+      "outlet": "(Re)in Asia",
+      "headline": "SCOR’s CEO: Insurers Can Assemble About US$15B per Risk, but AI Campuses Now Carry up to US$50B",
+      "theFact": "SCOR group CEO Thierry Léger told the Singapore International Reinsurance Conference on November 2 that the industry can assemble only around US$15 billion of capacity per risk, while a Howden report estimates single hyperscale AI campuses can carry insurable values of up to US$50 billion. He warned that AI and data centre exposures are growing faster than reinsurers can build the capability to price them.",
+      "oceanFallsAngle": "Ocean Falls’ distributed sub-10 MW sites stay well inside what the market can absorb, and its AI Infrastructure Captive Program covers the AI infrastructure risks traditional insurers won’t take.",
+      "url": "https://reinasia.com/ai-and-data-centre-exposure-outpacing-industry-pricing-capability-says-scor-chief/"
+    },
     {
       "theme": "Utility Interconnect Bottlenecks",
       "date": "2026-10-28",
@@ -20,46 +60,6 @@
       "theFact": "Memphis City Council denied a 12-month moratorium on new data centres on a 6–6 vote, at a meeting that drew more residents than the 407 allowed inside the chambers. The council instead passed an ordinance for large-scale data centres that prohibits routine evaporative and once-through cooling, requires closed-loop water circulation, and bars major withdrawals of local water for cooling.",
       "oceanFallsAngle": "Ocean Falls places closed-loop or air-cooled sub-10 MW MicroClusters on already-zoned brownfield industrial land, the small, low-water footprint that rules like these are pushing the industry toward.",
       "url": "https://www.wsmv.com/2026/10/21/memphis-city-council-declines-pass-data-center-moratorium/"
-    },
-    {
-      "theme": "Enterprise Edge & Sovereign AI",
-      "date": "2026-10-30",
-      "dateDisplay": "October 2026",
-      "outlet": "Signal49 Research",
-      "headline": "Ottawa’s $890M Sovereign AI Supercomputer Is Still Unawarded as Budget 2026 Nears",
-      "theFact": "Five months after applications closed on June 1, the federal program funding Canada’s $890 million public AI supercomputer still hasn’t announced an award, and Signal49 Research notes that seven of the eight cloud vendors approved for federal use are American. The AI Compute Access Fund currently covers 67 cents on the dollar for Canadian compute versus 50 cents for foreign compute, with Budget 2026 due November 5.",
-      "oceanFallsAngle": "Canadian organizations that need sovereign inference now don’t have to wait on a national megaproject: Ocean Falls’ MicroNode puts Canadian-controlled AI compute directly behind their own firewall in British Columbia.",
-      "url": "https://www.signal49.ca/insights/ai-on-the-horizon-october-2026/"
-    },
-    {
-      "theme": "Digital Infrastructure Risk & Insurance",
-      "date": "2026-10-07",
-      "dateDisplay": "October 2026",
-      "outlet": "Business Insurance",
-      "headline": "Aon Sees $100B+ in New Data Centre Premiums, but Risk Accumulation Is the Real Struggle",
-      "theFact": "Aon’s global head of property, Ryan Barber, said data centres could generate more than $100 billion in new insurance premiums over the next five to 10 years, and that placements above $10 billion are now likely possible after an $8.5 billion placement over a year ago. He said the biggest struggle for insurers and reinsurers is tracking the accumulation of builders risk, operational property, equipment and power exposures at the same phased campuses.",
-      "oceanFallsAngle": "Ocean Falls’ distributed sub-10 MW sites avoid single-campus accumulation, and its AI Infrastructure Captive Program covers the AI infrastructure risks traditional insurers won’t take.",
-      "url": "https://www.businessinsurance.com/data-center-boom-brings-premium-growth-aggregation-risks/"
-    },
-    {
-      "theme": "Utility Interconnect Bottlenecks",
-      "date": "2026-09-15",
-      "dateDisplay": "September 2026",
-      "outlet": "BC Hydro / CBC News",
-      "headline": "BC Hydro’s 2026 AI Power Intake Closes Nearly 2x Oversubscribed as ≥10 MW Projects Hit Election Delay",
-      "theFact": "Under British Columbia’s Industrial Electricity Allocation Framework, all AI and data centre projects requesting 10 MW or more were forced into BC Hydro’s competitive 2026 Call for Demand, which attracted 15 applications requesting nearly 800 MW against a two-year cap of just 400 MW (300 MW for AI and 100 MW for conventional data centres). While projects under 10 MW remain eligible for BC Hydro’s standard interconnection process, large-load applicants now face rationed grid capacity and an extended decision timeline pushed past the provincial transition.",
-      "oceanFallsAngle": "By targeting sub-10 MW brownfield industrial sites and behind-the-meter enterprise MicroNodes, Ocean Falls bypasses BC Hydro’s oversubscribed ≥10 MW competitive auction entirely and connects through the standard utility pathway.",
-      "url": "https://www.cbc.ca/news/canada/british-columbia/data-centre-approval-bc-9.7343321"
-    },
-    {
-      "theme": "Community & Environmental Backlash",
-      "date": "2026-10-08",
-      "dateDisplay": "October 2026",
-      "outlet": "Quinte News",
-      "headline": "Quinte West Rejects Data Centre Pause After Packed Council Meeting",
-      "theFact": "Quinte West Council defeated, on an 8–5 recorded vote, an Interim Control By-Law that would have paused new data centres for up to one year, after one of the most-attended meetings in municipal history. First Block pledged no city water for cooling and Ontario noise limits at the former Sonoco paper mill, while True North Sustainable Infrastructure said Canadian designs use closed-loop cooling and that the former Saputo site would meet strict noise limits.",
-      "oceanFallsAngle": "Ocean Falls uses sub-10 MW brownfield siting, placing closed-loop or air-cooled MicroClusters on already-zoned industrial land without drawing municipal water for cooling.",
-      "url": "https://www.quintenews.com/2026/10/08/quinte-west-cancels-data-centre-pause/"
     }
   ]
 }

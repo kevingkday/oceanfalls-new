@@ -1034,7 +1034,7 @@
       "id": "national:community:report-2",
       "name": "Keel Infrastructure (formerly Bitfarms)",
       "city": "Sherbrooke",
-      "province_state": "ON",
+      "province_state": "QC",
       "address": "290 Rue Léger — Keel HPC/AI campus",
       "lat": 45.3981896,
       "lng": -71.9711744,
@@ -1044,10 +1044,11 @@
       "site_type": "ai_datacentre",
       "developer": "Keel Infrastructure (formerly Bitfarms)",
       "noise_radius_m": 1239,
-      "notes": "Proposed ~96 MW HPC/AI campus at 290 Rue Léger — consolidates existing electricity from three Keel (formerly Bitfarms) crypto-mining sites rather than requesting new Hydro capacity. ~16,400 m² wooded industrial site near Orford substation; conditional municipal land sale approved (~$2.2M); Quebec electricity transfer under review. Closed-loop cooling proposed. Residential areas within ~1 km. Community opposition: sherbrookerefuse.ca.",
+      "notes": "Proposed ~96 MW HPC/AI campus at 290 Rue Léger — consolidates existing electricity from three Keel (formerly Bitfarms) crypto-mining sites rather than requesting new Hydro capacity. ~16,400 m² wooded industrial site near Orford substation; conditional municipal land sale approved (~$2.2M); Quebec electricity transfer under review. Closed-loop cooling proposed. Residential areas within ~1 km. Community opposition: sherbrookerefuse.ca. Nov 4, 2026: Sherbrooke's mayor deferred a proposed data centre moratorium; a petition opposing the land sale has passed 12,000 signatures (https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805).",
       "source_url": "https://fairandfurious.substack.com/p/sherbrookes-mega-data-centre-what",
       "ai_tag": 1,
-      "is_visible": 1
+      "is_visible": 1,
+      "last_verified": "2026-11-08"
     },
     {
       "id": "strathroy-ontario:site-1",
@@ -1101,16 +1102,18 @@
       "site_type": "ai_datacentre",
       "developer": "Meta",
       "noise_radius_m": 4000,
-      "notes": "Meta Sturgeon Data Centre — Meta's first Canadian data centre, announced 8 July 2026. Pin placed in Alberta's Industrial Heartland near the co-located Greenlight generation project; exact campus footprint not yet public.",
+      "notes": "Meta Sturgeon Data Centre — Meta's first Canadian data centre, announced 8 July 2026. Pin placed in Alberta's Industrial Heartland near the co-located Greenlight generation project; exact campus footprint not yet public. Nov 2026: AESO's Phase 1 Large Load Integration allocated 970 MW to the GLDC project, which The Circuit reports matches Meta's Sturgeon County allocation; grid connection approved, with the campus up to 1,800 MW at full build-out (https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/; https://www.aeso.ca/grid/connecting-to-the-grid/large-load-projects/).",
       "source_url": "https://www.cbc.ca/news/canada/edmonton/meta-data-centre-sturgeon-county-alberta-9.7263271",
       "ai_tag": 1,
-      "is_visible": 1
+      "is_visible": 1,
+      "interconnect_status": "Grid connection approved; 970 MW AESO Phase 1 large-load allocation (listed by AESO as P2936 GLDC Load)",
+      "last_verified": "2026-11-08"
     },
     {
       "id": "national:watchlist:adcw:beacon-heartland",
       "name": "Beacon Data Centers / Heartland Power Generation LP",
       "city": "Sturgeon County",
-      "province_state": "ON",
+      "province_state": "AB",
       "address": "NW and SW 15-56-22-W4M, approximately 7 km east of Gibbons",
       "lat": 53.84032,
       "lng": -113.192246,
@@ -1120,10 +1123,11 @@
       "site_type": "ai_datacentre",
       "developer": "Beacon Data Centers / Heartland Power Generation LP",
       "noise_radius_m": 3578,
-      "notes": "A proposed four-building, 800 MW AI and high-performance-computing campus east of Gibbons, paired with a 920 MW natural-gas power plant now awaiting an AUC decision.",
+      "notes": "A proposed four-building, 800 MW AI and high-performance-computing campus east of Gibbons, paired with a 920 MW natural-gas power plant which the Alberta Utilities Commission approved on Oct. 23, 2026 (https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/).",
       "source_url": "https://albertadatacentrewatch.ca/projects/beacon-heartland-data-center-hub/",
       "ai_tag": 1,
-      "is_visible": 1
+      "is_visible": 1,
+      "last_verified": "2026-11-08"
     },
     {
       "id": "national:watchlist:adcw:teton-black-bear",
