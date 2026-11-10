@@ -715,7 +715,7 @@
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 border border-outline-variant/20 bg-surface">
                     <a href="map.html"
                         class="flex items-center justify-between gap-6 p-8 md:p-10 border-b md:border-b-0 md:border-r border-outline-variant/20 hover:bg-surface-container-low transition-colors">
-                        <span class="font-body text-sm md:text-base leading-relaxed text-on-background">Track 40+ proposed and operational Canadian facilities on our National Datacentre Intelligence Map <span class="text-primary" aria-hidden="true">→</span></span>
+                        <span class="font-body text-sm md:text-base leading-relaxed text-on-background">Browse publicly reported Canadian datacentre projects on the map <span class="text-primary" aria-hidden="true">→</span></span>
                     </a>
                     <a href="site-assessment.html"
                         class="flex items-center justify-between gap-6 p-8 md:p-10 hover:bg-surface-container-low transition-colors">
@@ -1168,6 +1168,7 @@
                                     <option value="site-evaluation">Site Evaluation &amp; Power Assessment</option>
                                     <option value="insurance-placement">Specialized Insurance Placement</option>
                                     <option value="captive-access">Captive Program Early Access / Waitlist</option>
+                                    <option value="listing-update">Map listing update</option>
                                 </select>
                             </div>
                         </div>
@@ -1396,6 +1397,21 @@
                 btnCaptiveExploration.addEventListener('click', () => {
                     preselectInterestAndFocus('captive-access');
                 });
+            }
+
+            const listingParams = new URLSearchParams(window.location.search);
+            if (listingParams.get('intent') === 'listing-update') {
+                const facilityName = listingParams.get('facility');
+                const city = listingParams.get('city');
+                const province = listingParams.get('province');
+                const where = [facilityName, city, province].filter(Boolean).join(', ');
+                const messageEl = document.getElementById('contact-message');
+                if (messageEl && !messageEl.value) {
+                    messageEl.value = where
+                        ? `Listing update: ${where}.\n\n`
+                        : 'Listing update for a Canadian datacentre project.\n\n';
+                }
+                preselectInterestAndFocus('listing-update');
             }
 
             // Newsletter Subscription Form Handling (Buttondown)

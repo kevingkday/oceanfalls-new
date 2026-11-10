@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>National Datacentre Intelligence Map — Ocean Falls Technology Corp</title>
-    <meta name="description" content="Interactive map of active AI and hyperscale datacentre proposals, operational facilities, and grid-load requests across Canada." />
+    <title>Canadian Datacentre Map — Ocean Falls Technology Corp</title>
+    <meta name="description" content="A public map of reported Canadian datacentre projects, drawn from filings, municipal records, and published reporting. Large campuses appear as market context alongside smaller sites." />
     <link rel="canonical" href="https://oceanfalls.com/map" />
 
     <!-- Google Fonts & Material Symbols -->
@@ -149,6 +149,22 @@
         <div class="bg-surface-dim h-[1px] w-full"></div>
     </nav>
 
+    <section class="flex-shrink-0 bg-surface-container-low border-b border-outline-variant/15 px-6 xl:px-10 py-3.5" aria-labelledby="map-page-title">
+        <div class="flex flex-col gap-2 lg:flex-row lg:items-start lg:gap-10">
+            <div class="lg:w-72 shrink-0">
+                <h1 id="map-page-title" class="font-headline font-bold text-sm text-on-background uppercase tracking-wider">Canadian Datacentre Map</h1>
+                <p class="font-body text-[11px] leading-relaxed text-on-surface-variant mt-1">Entries come from public filings, municipal records, and published reporting.</p>
+            </div>
+            <p class="font-body text-[11px] leading-relaxed text-on-surface lg:flex-1 lg:pt-0.5">
+                Ocean Falls builds sub-10 MW brownfield sites and on-premise MicroNodes in British Columbia. It does not compete with hyperscale training campuses. Large campuses are shown as market context. Smaller and lower-impact sites that rarely make headlines belong on the record too.
+            </p>
+            <p class="font-body text-[11px] leading-relaxed text-on-surface-variant lg:w-64 shrink-0">
+                <a href="/?intent=listing-update#contact" class="font-label font-semibold text-primary hover:underline">Update or correct a listing</a>
+                — cooling, water, noise mitigation, or what the site is for.
+            </p>
+        </div>
+    </section>
+
     <!-- Main Workspace (Map + Sidebar) -->
     <div class="flex-grow flex relative overflow-hidden">
 
@@ -158,10 +174,10 @@
             <!-- Sidebar Header & Search Box -->
             <div class="p-4 border-b border-outline-variant/15 bg-surface-container-low space-y-3">
                 <div class="flex items-center justify-between">
-                    <h1 class="font-headline font-bold text-sm text-on-background uppercase tracking-wider flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-base text-primary">analytics</span>
-                        Canadian Datacentre Grid
-                    </h1>
+                    <h2 class="font-headline font-bold text-sm text-on-background uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base text-primary">map</span>
+                        Reported facilities
+                    </h2>
                     <div class="flex items-center gap-2 text-[11px] font-label text-on-surface-variant font-medium">
                         <span><strong class="text-on-background font-bold" id="stat-total-sites">-</strong> Sites</span>
                         <span class="text-outline-variant">•</span>
@@ -188,6 +204,7 @@
                 <div class="flex flex-wrap gap-1.5 pt-1 text-[11px] font-label font-medium">
                     <button onclick="setFilter('all')" class="filter-pill active px-2.5 py-1 bg-primary text-white border border-primary transition-colors" data-filter="all">All</button>
                     <button onclick="setFilter('ai')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="ai">AI Specialized</button>
+                    <button onclick="setFilter('under10')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="under10">Under 10 MW</button>
                     <button onclick="setFilter('100mw')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="100mw">100+ MW</button>
                     <button onclick="setFilter('construction')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="construction">In Construction</button>
                     <button onclick="setFilter('operational')" class="filter-pill px-2.5 py-1 bg-surface border border-outline-variant/30 text-on-surface-variant hover:border-primary transition-colors" data-filter="operational">Operational</button>
@@ -212,8 +229,13 @@
             <div id="facilities-list" class="flex-grow overflow-y-auto scrollbar-slim divide-y divide-outline-variant/10">
                 <div class="p-8 text-center text-on-surface-variant text-xs font-body">
                     <div class="inline-block animate-spin w-5 h-5 border-2 border-primary border-t-transparent mb-2"></div>
-                    <p>Loading Canadian datacentre intelligence...</p>
+                    <p>Loading reported Canadian datacentres...</p>
                 </div>
+            </div>
+
+            <div class="px-4 py-2.5 border-t border-outline-variant/15 bg-surface-container-low text-[11px] leading-snug text-on-surface-variant">
+                <a href="/?intent=listing-update#contact" class="font-label font-semibold text-primary hover:underline">Update or correct a listing</a>
+                — cooling, water, noise mitigation, or what the site is for.
             </div>
         </aside>
 
@@ -222,18 +244,24 @@
             <div id="map-canvas" class="w-full h-full"></div>
 
             <!-- Map Controls / Overlays -->
-            <div class="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 border border-outline-variant/30 shadow-sm text-xs font-label">
-                <span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
-                <span class="font-semibold text-on-background">Impact Radius:</span>
-                <span class="text-on-surface-variant">Estimated acoustic / power footprint (m)</span>
-            </div>
+            <div class="absolute top-4 left-4 z-10 hidden sm:flex flex-col items-start gap-2 max-w-[16.5rem]">
+                <div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-2 border border-outline-variant/30 shadow-sm text-xs font-label">
+                    <div class="flex items-start gap-2">
+                        <span class="mt-0.5 w-2.5 h-2.5 rounded-full bg-primary/25 border border-primary inline-block shrink-0" aria-hidden="true"></span>
+                        <div>
+                            <span class="font-semibold text-on-background">Scale reference</span>
+                            <p class="text-on-surface-variant mt-0.5 leading-snug">Capacity-based circle for the selected site. Not a measured sound study.</p>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="absolute top-[3.25rem] left-4 z-10 hidden sm:flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 border border-outline-variant/30 shadow-sm text-xs font-label">
-                <label class="flex items-center gap-2 cursor-pointer select-none">
-                    <input id="micronode-layer-toggle" type="checkbox" checked onchange="toggleMicroNodeLayer(this.checked)" class="rounded-none border-outline-variant/50 text-[#c2410c] focus:ring-[#c2410c]" />
-                    <span class="w-3 h-3 rounded-full border-2 border-[#c2410c] bg-[#c2410c]/20 inline-block" aria-hidden="true"></span>
-                    <span class="font-semibold text-on-background">MicroNode-ready</span>
-                </label>
+                <div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 border border-outline-variant/30 shadow-sm text-xs font-label">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input id="micronode-layer-toggle" type="checkbox" checked onchange="toggleMicroNodeLayer(this.checked)" class="rounded-none border-outline-variant/50 text-[#c2410c] focus:ring-[#c2410c]" />
+                        <span class="w-3 h-3 rounded-full border-2 border-[#c2410c] bg-[#c2410c]/20 inline-block" aria-hidden="true"></span>
+                        <span class="font-semibold text-on-background">MicroNode-ready</span>
+                    </label>
+                </div>
             </div>
 
             <!-- Map Pin Drop Mode Notification -->
@@ -266,15 +294,18 @@
                 <div class="flex-grow overflow-y-auto p-6 space-y-6 font-body text-xs text-on-surface scrollbar-slim">
                     
                     <!-- Quick Specs Grid -->
-                    <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-4 border border-outline-variant/15 text-center">
-                        <div class="border-r border-outline-variant/15 pr-2">
-                            <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Reported Capacity</span>
-                            <span id="detail-capacity" class="font-headline font-extrabold text-lg text-primary">- MW</span>
+                    <div class="bg-surface-container-low border border-outline-variant/15">
+                        <div class="grid grid-cols-2 gap-3 p-4 text-center">
+                            <div class="border-r border-outline-variant/15 pr-2">
+                                <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Reported Capacity</span>
+                                <span id="detail-capacity" class="font-headline font-extrabold text-lg text-primary">- MW</span>
+                            </div>
+                            <div class="pl-2">
+                                <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Scale reference</span>
+                                <span id="detail-radius" class="font-headline font-bold text-base text-on-background">- m</span>
+                            </div>
                         </div>
-                        <div class="pl-2">
-                            <span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant block mb-0.5">Est. Impact Radius</span>
-                            <span id="detail-radius" class="font-headline font-bold text-base text-on-background">- m</span>
-                        </div>
+                        <p class="px-4 pb-3 text-[10px] leading-snug text-on-surface-variant text-center">Capacity-based scale for the selected site. Not a measured sound study.</p>
                     </div>
 
                     <!-- Developer & Type -->
@@ -313,7 +344,7 @@
                     <div class="space-y-2">
                         <h3 class="font-headline font-bold text-xs uppercase tracking-wider text-primary flex items-center gap-1">
                             <span class="material-symbols-outlined text-sm">info</span>
-                            Intelligence &amp; Regulatory Notes
+                            Public record
                         </h3>
                         <div id="detail-notes" class="p-3.5 bg-surface border border-outline-variant/20 rounded-none leading-relaxed text-on-surface whitespace-pre-line text-xs">
                             No additional notes.
@@ -326,6 +357,14 @@
                             <span>View Source Filing / Reference</span>
                             <span class="material-symbols-outlined text-sm">open_in_new</span>
                         </a>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <a id="detail-update-link" href="/?intent=listing-update#contact" class="w-full bg-surface hover:bg-primary/10 text-primary border border-primary/40 p-2.5 font-label font-semibold text-xs flex items-center justify-center gap-2 transition-colors">
+                            <span>Update or correct this listing</span>
+                            <span class="material-symbols-outlined text-sm">edit_note</span>
+                        </a>
+                        <p class="text-[10px] leading-relaxed text-on-surface-variant text-center">Cooling, water, noise mitigation, or what the site is for.</p>
                     </div>
 
                     <!-- Staff Edit Actions (Only when logged in) -->
@@ -454,15 +493,16 @@
                     </div>
                 </div>
 
-                <!-- Developer & Impact Radius -->
+                <!-- Developer & capacity scale reference -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label for="form-developer" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Developer / Proponent</label>
                         <input type="text" id="form-developer" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="e.g. Crusoe Energy / Beacon Data Centers" />
                     </div>
                     <div>
-                        <label for="form-radius" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Noise / Impact Radius (m)</label>
+                        <label for="form-radius" class="block font-label font-bold text-[10px] uppercase tracking-wider text-primary mb-1">Capacity scale reference (m)</label>
                         <input type="number" id="form-radius" class="w-full bg-surface border border-outline-variant/30 px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors" placeholder="1500" />
+                        <p class="text-[10px] text-on-surface-variant mt-1 leading-snug">Visual scale from reported capacity. Not a measured sound study.</p>
                     </div>
                 </div>
 
@@ -527,8 +567,6 @@
         // Colors
         const PIN_COLOR = '#465f88';
         const PIN_STROKE = '#1c2630';
-        const RADIUS_FILL = 'rgba(70, 95, 136, 0.12)';
-        const RADIUS_STROKE = 'rgba(70, 95, 136, 0.55)';
 
         // Initial Map Setup
         document.addEventListener('DOMContentLoaded', async () => {
@@ -628,8 +666,8 @@
                 type: 'fill',
                 source: 'facility-radii',
                 paint: {
-                    'fill-color': RADIUS_FILL,
-                    'fill-opacity': ['get', 'fill_opacity']
+                    'fill-color': '#465f88',
+                    'fill-opacity': 0.14
                 }
             });
 
@@ -638,9 +676,9 @@
                 type: 'line',
                 source: 'facility-radii',
                 paint: {
-                    'line-color': RADIUS_STROKE,
-                    'line-width': ['get', 'line_width'],
-                    'line-opacity': ['get', 'line_opacity']
+                    'line-color': '#465f88',
+                    'line-width': 2,
+                    'line-opacity': 0.8
                 }
             });
 
@@ -824,6 +862,12 @@
             // Category filter
             if (activeFilter === 'ai') {
                 list = list.filter(d => d.ai_tag === 1 || d.site_type === 'ai_datacentre');
+            } else if (activeFilter === 'under10') {
+                list = list.filter(d => {
+                    if (d.capacity_mw == null || d.capacity_mw === '') return false;
+                    const mw = Number(d.capacity_mw);
+                    return Number.isFinite(mw) && mw < 10;
+                });
             } else if (activeFilter === '100mw') {
                 list = list.filter(d => Number(d.capacity_mw) >= 100);
             } else if (activeFilter === 'construction') {
@@ -951,21 +995,17 @@
             const pointSource = map.getSource('facility-points');
             if (pointSource) pointSource.setData(pointsGeoJson);
 
-            // 2. Radii GeoJSON
+            // Scale-reference circle for the selected facility only.
             const radiiFeatures = [];
-            filteredDatacentres.forEach(d => {
-                const radiusMeters = Number(d.noise_radius_m) || calculateRadiusFromMw(d.capacity_mw);
-                const isSelected = d.id === currentSelectedId;
-                const polygon = createCirclePolygon(parseFloat(d.lat), parseFloat(d.lng), radiusMeters);
-
-                polygon.properties = {
-                    id: d.id,
-                    fill_opacity: isSelected ? 0.22 : 0.08,
-                    line_width: isSelected ? 2.5 : 1,
-                    line_opacity: isSelected ? 0.85 : 0.35
-                };
+            const selectedFacility = currentSelectedId
+                ? filteredDatacentres.find(d => d.id === currentSelectedId)
+                : null;
+            if (selectedFacility && Number.isFinite(parseFloat(selectedFacility.lat)) && Number.isFinite(parseFloat(selectedFacility.lng))) {
+                const radiusMeters = scaleReferenceMeters(selectedFacility);
+                const polygon = createCirclePolygon(parseFloat(selectedFacility.lat), parseFloat(selectedFacility.lng), radiusMeters);
+                polygon.properties = { id: selectedFacility.id };
                 radiiFeatures.push(polygon);
-            });
+            }
 
             const radiiSource = map.getSource('facility-radii');
             if (radiiSource) radiiSource.setData({ type: 'FeatureCollection', features: radiiFeatures });
@@ -973,8 +1013,25 @@
 
         function calculateRadiusFromMw(mw) {
             if (!mw) return 1500;
-            // Scale estimated acoustic / impact radius with sqrt of MW
+            // Capacity-based scale when noise_radius_m is absent. Not a sound measurement.
             return Math.min(5000, Math.max(500, Math.round(Math.sqrt(mw) * 120)));
+        }
+
+        function scaleReferenceMeters(facility) {
+            const stored = Number(facility && facility.noise_radius_m);
+            if (Number.isFinite(stored) && stored > 0) return stored;
+            return calculateRadiusFromMw(facility && facility.capacity_mw);
+        }
+
+        function listingUpdateUrl(facility) {
+            const params = new URLSearchParams();
+            params.set('intent', 'listing-update');
+            if (facility) {
+                if (facility.name) params.set('facility', facility.name);
+                if (facility.city) params.set('city', facility.city);
+                if (facility.province_state) params.set('province', facility.province_state);
+            }
+            return '/?' + params.toString() + '#contact';
         }
 
         function createCirclePolygon(lat, lng, radiusMeters, points = 48) {
@@ -1050,7 +1107,9 @@
             }
 
             document.getElementById('detail-capacity').textContent = facility.capacity_display || (facility.capacity_mw ? `${facility.capacity_mw} MW` : 'Undisclosed');
-            document.getElementById('detail-radius').textContent = `${Number(facility.noise_radius_m) || calculateRadiusFromMw(facility.capacity_mw)} m`;
+            document.getElementById('detail-radius').textContent = `${Number(scaleReferenceMeters(facility)).toLocaleString()} m`;
+            const updateLink = document.getElementById('detail-update-link');
+            if (updateLink) updateLink.href = listingUpdateUrl(facility);
             document.getElementById('detail-developer').textContent = facility.developer || 'Not Disclosed';
             document.getElementById('detail-type').textContent = (facility.site_type || 'datacentre').replace('_', ' ');
             document.getElementById('detail-coords').textContent = `${Number(facility.lat).toFixed(4)}, ${Number(facility.lng).toFixed(4)}`;
@@ -1163,6 +1222,7 @@
             if (facilityPopup) facilityPopup.remove();
 
             const capacity = facility.capacity_display || (facility.capacity_mw ? `${facility.capacity_mw} MW` : 'Undisclosed');
+            const scaleMetres = Number(scaleReferenceMeters(facility)).toLocaleString();
             const interconnect = facility.interconnect_status
                 ? String(facility.interconnect_status).replace(/_/g, ' ')
                 : '—';
@@ -1179,6 +1239,7 @@
                     <div class="text-on-surface-variant mt-0.5">${escapeHtml(facility.city)}, ${escapeHtml(facility.province_state || 'Canada')}</div>
                     <div class="mt-2 space-y-0.5">
                         <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Capacity</span><span class="font-semibold">${escapeHtml(capacity)}</span></div>
+                        <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Scale reference</span><span class="font-semibold text-right">${escapeHtml(scaleMetres)} m</span></div>
                         <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Utility</span><span class="font-semibold text-right">${escapeHtml(displayOrDash(facility.utility))}</span></div>
                         <div class="flex justify-between gap-3"><span class="text-on-surface-variant">Interconnection</span><span class="font-semibold text-right">${escapeHtml(interconnect)}</span></div>
                         <div class="flex justify-between gap-3"><span class="text-on-surface-variant">MicroNode-ready</span><span class="font-semibold">${escapeHtml(micronode)}</span></div>
