@@ -162,11 +162,68 @@
                     href="index.html#contact">Contact</a>
             </div>
             <a href="index.html#contact"
-                class="bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
+                class="hidden min-[1380px]:inline-block bg-primary text-on-primary px-4 xl:px-6 py-2 font-label font-semibold tracking-tight uppercase text-xs xl:text-sm hover:opacity-90 transition-opacity whitespace-nowrap shrink-0">
                 Corporate Inquiries
             </a>
+            <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu" aria-expanded="false"
+                class="min-[1380px]:hidden flex items-center justify-center p-2 -mr-2 text-on-background hover:text-primary transition-colors focus:outline-none">
+                <span id="mobile-menu-icon" class="material-symbols-outlined text-2xl">menu</span>
+            </button>
         </div>
         <div class="bg-surface-dim h-[1px] w-full"></div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden min-[1380px]:hidden bg-surface/95 backdrop-blur-lg border-b border-surface-dim shadow-lg max-h-[calc(100vh-73px)] overflow-y-auto">
+            <div class="flex flex-col px-6 py-3 divide-y divide-outline-variant/15">
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#micronode">MicroNode</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#about">About</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#focus">Capabilities</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="site-assessment.html">Site Assessment</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="map.html">Datacentres Map</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#risks">Risks</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-primary transition-colors"
+                    href="market-signals.html">Market Signals</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#strategy">Approach</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="investors.html">Investors</a>
+                <a onclick="closeMobileMenu()" class="py-3 font-label font-semibold tracking-tight uppercase text-xs text-on-background hover:text-primary transition-colors"
+                    href="index.html#contact">Contact</a>
+            </div>
+        </div>
+        <script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobile-menu');
+                const icon = document.getElementById('mobile-menu-icon');
+                const btn = document.getElementById('mobile-menu-btn');
+                if (!menu) return;
+                const isHidden = menu.classList.contains('hidden');
+                if (isHidden) {
+                    menu.classList.remove('hidden');
+                    if (icon) icon.textContent = 'close';
+                    if (btn) btn.setAttribute('aria-expanded', 'true');
+                } else {
+                    menu.classList.add('hidden');
+                    if (icon) icon.textContent = 'menu';
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+            function closeMobileMenu() {
+                const menu = document.getElementById('mobile-menu');
+                const icon = document.getElementById('mobile-menu-icon');
+                const btn = document.getElementById('mobile-menu-btn');
+                if (menu && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    if (icon) icon.textContent = 'menu';
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+        </script>
     </nav>
 
     <main class="pt-[73px]">
