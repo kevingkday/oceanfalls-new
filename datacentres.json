@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-08",
+  "lastUpdated": "2026-11-15",
   "facilities": [
     {
       "id": "national:ieso:3019",
@@ -133,6 +133,26 @@
       "source_url": "https://albertadatacentrewatch.ca/projects/beacon-indus-data-center-hub/",
       "ai_tag": 1,
       "is_visible": 1
+    },
+    {
+      "id": "national:news:calgary-ne-stantec",
+      "name": "Northeast Calgary data centre (Stantec land-use application)",
+      "city": "Calgary",
+      "province_state": "AB",
+      "address": "Northeast Calgary near the Redstone neighbourhood (Ward 5); land-use redesignation application under city review",
+      "lat": 51.172,
+      "lng": -113.953,
+      "capacity_mw": null,
+      "capacity_display": "Unknown",
+      "proposal_status": "rezoning",
+      "site_type": "datacentre",
+      "developer": "Undisclosed (applicant: Stantec Consulting)",
+      "noise_radius_m": 4000,
+      "notes": "Land-use redesignation application filed by Stantec Consulting for a proposed large-scale data centre near Redstone in northeast Calgary; the developer has not been publicly named and capacity has not been disclosed. The formal commenting period ends Nov. 17, 2026 (CityNews Calgary). On Nov. 4, 2026, Calgary's executive committee voted 10–3 to send council a motion for a temporary moratorium on new large-scale data centre land-use redesignations; this application continues through review.",
+      "source_url": "https://www.cbc.ca/news/canada/calgary/data-centre-freeze-9.7409078",
+      "ai_tag": 0,
+      "is_visible": 1,
+      "last_verified": "2026-11-15"
     },
     {
       "id": "cambridge-ontario:site-1",
@@ -1044,11 +1064,11 @@
       "site_type": "ai_datacentre",
       "developer": "Keel Infrastructure (formerly Bitfarms)",
       "noise_radius_m": 1239,
-      "notes": "Proposed ~96 MW HPC/AI campus at 290 Rue Léger — consolidates existing electricity from three Keel (formerly Bitfarms) crypto-mining sites rather than requesting new Hydro capacity. ~16,400 m² wooded industrial site near Orford substation; conditional municipal land sale approved (~$2.2M); Quebec electricity transfer under review. Closed-loop cooling proposed. Residential areas within ~1 km. Community opposition: sherbrookerefuse.ca. Nov 4, 2026: Sherbrooke's mayor deferred a proposed data centre moratorium; a petition opposing the land sale has passed 12,000 signatures (https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805).",
+      "notes": "Proposed ~96 MW HPC/AI campus at 290 Rue Léger — consolidates existing electricity from three Keel (formerly Bitfarms) crypto-mining sites rather than requesting new Hydro capacity. ~16,400 m² wooded industrial site near Orford substation; conditional municipal land sale approved (~$2.2M); Quebec electricity transfer under review. Closed-loop cooling proposed. Residential areas within ~1 km. Community opposition: sherbrookerefuse.ca. Nov 4, 2026: Sherbrooke's mayor deferred a proposed data centre moratorium; a petition opposing the land sale has passed 12,000 signatures (https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805). Nov. 10, 2026: the petition demanding an environmental impact study and public consultation has reached 12,270 signatures, and Keel's planned open house was postponed to Nov. 25 (https://www.cbc.ca/news/canada/montreal/data-centres-quebec-calls-for-moratorium-9.7412675).",
       "source_url": "https://fairandfurious.substack.com/p/sherbrookes-mega-data-centre-what",
       "ai_tag": 1,
       "is_visible": 1,
-      "last_verified": "2026-11-08"
+      "last_verified": "2026-11-15"
     },
     {
       "id": "strathroy-ontario:site-1",

@@ -1,6 +1,46 @@
 {
-  "lastUpdated": "2026-11-08",
+  "lastUpdated": "2026-11-15",
   "signals": [
+    {
+      "theme": "Utility Interconnect Bottlenecks",
+      "date": "2026-11-10",
+      "dateDisplay": "November 2026",
+      "outlet": "Mission Critical Research / IESO",
+      "headline": "Ontario Is Writing Data Centre Grid Rules Into Its Market Rules, for Every Load Above 10 MW",
+      "theFact": "Ontario’s IESO is moving its technical requirements for large computational loads into the province’s Market Rules, with the proposed amendments going to a webinar on November 19 and the rule change targeted for Q2 2027. The requirements cover connection, reactive power, oscillation, ramp rates and ride-through, and apply to every transmission-connected computational load and to distribution-connected loads above 10 MW.",
+      "oceanFallsAngle": "Ocean Falls’ sub-10 MW brownfield siting stays under the size where grid operators from B.C. to Ontario are adding competitive calls and new technical obligations for data centres.",
+      "url": "https://research.missioncriticalengineers.com/article-ieso"
+    },
+    {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-11-05",
+      "dateDisplay": "November 2026",
+      "outlet": "Fortinet / Equinix",
+      "headline": "Equinix and Fortinet: “AI Isn’t Centralized,” So Security Moves to Where the Data Lives",
+      "theFact": "Fortinet made its FortiAIGate guardrails available on the Equinix Distributed AI Hub on November 5, a validated reference architecture for AI workloads that span clouds, data centres and edge environments. The companies say it keeps control, management and inspection within customer infrastructure, with no data leaving the environment, to support data residency and sovereignty requirements.",
+      "oceanFallsAngle": "When the largest interconnection players design for distributed, data-resident AI, an on-premise MicroNode behind an organization’s own firewall in B.C. is the most direct version of that architecture.",
+      "url": "https://www.fortinet.com/corporate/about-us/newsroom/press-releases/2026/fortinet-and-equinix-secure-distributed-ai-at-scale"
+    },
+    {
+      "theme": "Community & Environmental Backlash",
+      "date": "2026-11-04",
+      "dateDisplay": "November 2026",
+      "outlet": "CBC News",
+      "headline": "Calgary Moves a Step Closer to a Data Centre Freeze Over Water and Power",
+      "theFact": "Calgary’s executive committee voted 10–3 to send council a motion for a temporary moratorium on new land-use redesignation applications for large-scale data centres, with a staff report on bylaw changes due by March. Mayor Jeromy Farkas backs the pause, citing residents’ worries about electricity bills and the city’s strained water infrastructure, while a Stantec application for a data centre near northeast Calgary’s Redstone neighbourhood continues through review.",
+      "oceanFallsAngle": "Ocean Falls keeps each site under 10 MW on already-zoned brownfield industrial land, so it doesn’t depend on the large-scale land-use redesignations Calgary is moving to pause.",
+      "url": "https://www.cbc.ca/news/canada/calgary/data-centre-freeze-9.7409078"
+    },
+    {
+      "theme": "Digital Infrastructure Risk & Insurance",
+      "date": "2026-11-04",
+      "dateDisplay": "November 2026",
+      "outlet": "(Re)in Asia",
+      "headline": "Swiss Re: Hyperscale Data Centres Can’t Place the Insurance Limits Their Lenders Require",
+      "theFact": "Swiss Re P&C reinsurance chief underwriting officer Gianfranco Lot told the Singapore International Reinsurance Conference on November 4 that there isn’t enough capacity for data centres, leaving owners unable to place the limits required under their debt financing. With tens of billions in values on single sites and 90–95% of that risk passed on to reinsurers, Swiss Re is talking to alternative capital providers to cover peak data centre losses.",
+      "oceanFallsAngle": "Ocean Falls’ distributed sub-10 MW sites spread value across many small locations instead of one accumulation point, and its AI Infrastructure Captive Program gives owners a structure for the risks conventional capacity won’t absorb.",
+      "url": "https://reinasia.com/swiss-re-turning-to-alternative-capital-as-data-center-accumulation-outrun-reinsurance-capacity/"
+    },
     {
       "theme": "Utility Interconnect Bottlenecks",
       "date": "2026-11-03",
@@ -20,46 +60,6 @@
       "theFact": "Sherbrooke Mayor Marie-Claude Bibeau kept a proposed data centre moratorium off Tuesday’s council agenda, saying the city needs more time to weigh its legal and technical impacts. Residents are fighting a 96 MW project by U.S.-backed Keel Infrastructure on land the city conditionally sold in August, with a petition against the sale topping 12,000 signatures and two more crypto-to-AI conversions in the works.",
       "oceanFallsAngle": "Ocean Falls keeps each site under 10 MW on already-zoned brownfield industrial land, a footprint small enough to avoid the scale that turns a municipal land sale into a 12,000-signature fight.",
       "url": "https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805"
-    },
-    {
-      "theme": "Enterprise Edge & Sovereign AI",
-      "date": "2026-11-07",
-      "dateDisplay": "November 2026",
-      "outlet": "DataCentre.ca",
-      "headline": "Budget 2026 Promises Canadian AI Firms 500 MW of Sovereign Compute, With No Sites or Timeline Yet",
-      "theFact": "Budget 2026 commits Ottawa to help Canadian AI companies access 500 MW of sovereign computing capacity through backstops and offtake agreements, after finding that large tech firms are locking up new Canadian capacity with long-term contracts. DataCentre.ca notes the measure does not identify participating facilities, a delivery schedule, or the value of the financial support.",
-      "oceanFallsAngle": "Canadian organizations that need sovereign inference now don’t have to wait for program rules: Ocean Falls’ MicroNode puts Canadian-controlled AI compute directly behind their own firewall in British Columbia.",
-      "url": "https://datacentre.ca/2026/11/07/budget-2026-targets-sovereign-ai-compute/"
-    },
-    {
-      "theme": "Digital Infrastructure Risk & Insurance",
-      "date": "2026-11-02",
-      "dateDisplay": "November 2026",
-      "outlet": "(Re)in Asia",
-      "headline": "SCOR’s CEO: Insurers Can Assemble About US$15B per Risk, but AI Campuses Now Carry up to US$50B",
-      "theFact": "SCOR group CEO Thierry Léger told the Singapore International Reinsurance Conference on November 2 that the industry can assemble only around US$15 billion of capacity per risk, while a Howden report estimates single hyperscale AI campuses can carry insurable values of up to US$50 billion. He warned that AI and data centre exposures are growing faster than reinsurers can build the capability to price them.",
-      "oceanFallsAngle": "Ocean Falls’ distributed sub-10 MW sites stay well inside what the market can absorb, and its AI Infrastructure Captive Program covers the AI infrastructure risks traditional insurers won’t take.",
-      "url": "https://reinasia.com/ai-and-data-centre-exposure-outpacing-industry-pricing-capability-says-scor-chief/"
-    },
-    {
-      "theme": "Utility Interconnect Bottlenecks",
-      "date": "2026-10-28",
-      "dateDisplay": "October 2026",
-      "outlet": "iNFOnews.ca",
-      "headline": "BC Hydro’s Data Centre Power Picks Are Still Pending, and the Okanagan Is Shut Out",
-      "theFact": "BC Hydro has still not announced which of the nearly 800 MW of data centre applications will share its 400 MW allocation, after results expected in September were postponed by the provincial election. iNFOnews reports the call excludes FortisBC service areas, which cover much of the Okanagan and are already nearing power capacity, and that the province has restricted BC Hydro from supplying extra power to wholesalers like FortisBC for new data centres.",
-      "oceanFallsAngle": "Ocean Falls targets sub-10 MW brownfield sites that sit outside the ≥10 MW competitive call, so projects can move through BC Hydro’s standard interconnection process instead of waiting on a rationed, delayed allocation.",
-      "url": "https://infonews.ca/news/7965937/bc-hydro-to-announce-new-ai-data-centres-dont-expect-any-in-the-okanagan/"
-    },
-    {
-      "theme": "Community & Environmental Backlash",
-      "date": "2026-10-20",
-      "dateDisplay": "October 2026",
-      "outlet": "WSMV News",
-      "headline": "Memphis Splits 6–6 on a Data Centre Moratorium, Then Bans Evaporative Cooling",
-      "theFact": "Memphis City Council denied a 12-month moratorium on new data centres on a 6–6 vote, at a meeting that drew more residents than the 407 allowed inside the chambers. The council instead passed an ordinance for large-scale data centres that prohibits routine evaporative and once-through cooling, requires closed-loop water circulation, and bars major withdrawals of local water for cooling.",
-      "oceanFallsAngle": "Ocean Falls places closed-loop or air-cooled sub-10 MW MicroClusters on already-zoned brownfield industrial land, the small, low-water footprint that rules like these are pushing the industry toward.",
-      "url": "https://www.wsmv.com/2026/10/21/memphis-city-council-declines-pass-data-center-moratorium/"
     }
   ]
 }
