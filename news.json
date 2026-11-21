@@ -1,6 +1,17 @@
 {
-  "lastUpdated": "2026-11-15",
+  "lastUpdated": "2026-11-21",
   "signals": [
+    {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-11-20",
+      "dateDisplay": "November 2026",
+      "outlet": "CBC News",
+      "headline": "Ottawa Promises 500 MW of Sovereign AI Compute as Large AI Firms Crowd Out Canadian Startups",
+      "theFact": "The federal government is promising 500 megawatts of sovereign AI compute, using backstops and offtake agreements to encourage private investment, but Innovation, Science and Economic Development Canada has not set a timeline, pricing or access rules for that capacity. Sean Mullin of the Munk School, who helped launch the strategy, says firms such as Meta, Google and OpenAI are “desperate for compute” and can lock up data-centre output for five to ten years, leaving Canadian startups to buy capacity outside the country.",
+      "oceanFallsAngle": "Ocean Falls builds local, on-prem inference in B.C. so organizations that need data to stay under Canadian law don’t have to wait for a share of a 500 MW national pledge that still has no timeline or access rules.",
+      "url": "https://www.cbc.ca/news/business/compute-canada-sovereignty-ai-9.7428523",
+      "pinned": true
+    },
     {
       "theme": "Utility Interconnect Bottlenecks",
       "date": "2026-11-10",
