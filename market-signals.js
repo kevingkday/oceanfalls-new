@@ -2,6 +2,8 @@
  * Market Signals renderer & unified newsletter form handler.
  * A weekly updater may write either `signals` or `articles`, and may use
  * the briefing fields or common article fields (title, summary, source, link).
+ * Items with `pinned: true` always render first (with a Pinned label) and
+ * are not counted as part of the rolling, newest-first list.
  */
 (function (root) {
     function escapeHtml(value) {
@@ -58,7 +60,9 @@
             headline: headline,
             theFact: theFact,
             oceanFallsAngle: oceanFallsAngle,
-            url: safeUrl(firstText(item.url, item.link, item.href))
+            url: safeUrl(firstText(item.url, item.link, item.href)),
+            sortDate: firstText(item.date, item.published),
+            pinned: item.pinned === true
         };
     }
 
@@ -102,6 +106,7 @@
             '<article class="bg-surface-container-lowest border border-outline-variant/20 p-8 flex flex-col h-full">' +
                 '<div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">' +
                     '<span class="inline-block bg-primary/10 text-primary border border-primary/20 px-3 py-1 font-label font-semibold text-[10px] uppercase tracking-wider">' + escapeHtml(signal.theme) + '</span>' +
+                    (signal.pinned ? '<span class="inline-block font-label font-semibold text-[10px] uppercase tracking-widest text-secondary border border-outline-variant/30 px-2 py-1">Pinned</span>' : '') +
                     (meta ? '<span class="font-label text-[11px] uppercase tracking-wide text-secondary">' + meta + '</span>' : '') +
                 '</div>' +
                 '<h4 class="font-headline font-bold text-xl tracking-tight text-on-background mb-5 leading-snug">' + headlineHtml + '</h4>' +
@@ -110,6 +115,21 @@
                 verify +
             '</article>'
         );
+    }
+
+    // Pinned items always show first (newest first among themselves).
+    // The remaining items follow, also newest first, as the rolling list.
+    function compareNewestFirst(a, b) {
+        const da = a.sortDate || '';
+        const db = b.sortDate || '';
+        if (db !== da) return db.localeCompare(da);
+        return 0;
+    }
+
+    function orderSignals(items) {
+        const pinned = items.filter(function (item) { return item.pinned; }).sort(compareNewestFirst);
+        const rolling = items.filter(function (item) { return !item.pinned; }).sort(compareNewestFirst);
+        return pinned.concat(rolling);
     }
 
     function renderInto(grid, items, failed) {
@@ -209,7 +229,7 @@
             failed = true;
         }
 
-        const items = failed ? [] : extractItems(payload).map(normalizeSignal).filter(Boolean);
+        const items = failed ? [] : orderSignals(extractItems(payload).map(normalizeSignal).filter(Boolean));
         const updated = updatedLabel(payload);
 
         grids.forEach(function (grid) {
@@ -228,6 +248,7 @@
         normalizeSignal: normalizeSignal,
         updatedLabel: updatedLabel,
         renderSignalCard: renderSignalCard,
+        orderSignals: orderSignals,
         bindNewsletterForms: bindNewsletterForms
     };
 
