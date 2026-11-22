@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-15",
+  "lastUpdated": "2026-11-22",
   "facilities": [
     {
       "id": "national:ieso:3019",
@@ -486,16 +486,18 @@
       "address": "1458 Bunker Rd",
       "lat": 50.677122,
       "lng": -120.377509,
-      "capacity_mw": null,
-      "capacity_display": "Unknown",
+      "capacity_mw": 20,
+      "capacity_display": "Expanding to 20 MW by 2028 (Telus)",
       "proposal_status": "design_development",
       "site_type": "ai_datacentre",
       "developer": "Telus",
       "noise_radius_m": 200,
-      "notes": "Telus AI Data Centre - Kamloops",
-      "source_url": "",
+      "notes": "Telus AI Data Centre - Kamloops Telus's Kamloops facility is the B.C. site of its federal sovereign AI initiative, and the 'new AI data centre in B.C.' referenced by CBC is the Kamloops expansion. After Telus withdrew from the two Vancouver Westbank sites (Nov 15–17, 2026), it said the Kamloops expansion to 20 MW by 2028 will proceed. Telus's May 11, 2026 release said the Kamloops AI Factory would come online later in 2026, using part of an initial 85 MW secured from BC Hydro for the B.C. cluster. Telus's Rimouski AI Factory is in Quebec (opened September 2025) and is a separate facility.",
+      "source_url": "https://theprovince.com/technology/telus-drops-its-involvement-in-two-planned-ai-data-centres-in-vancouver",
       "ai_tag": 1,
-      "is_visible": 1
+      "is_visible": 1,
+      "utility": "BC Hydro",
+      "last_verified": "2026-11-22"
     },
     {
       "id": "national:watchlist:adcw:clive-data-centre",
@@ -721,11 +723,13 @@
       "site_type": "datacentre",
       "developer": "2779022 Ontario Ltd. (maplecolo)",
       "noise_radius_m": 632,
-      "notes": "Nanaimo data centre — two-storey ~18,000 m² (194k sq ft) facility in 10 modular phases on I3 High Tech Industrial land west of Nanaimo Parkway. Townsite Planning filed for owner 2779022 Ontario Ltd. (maplecolo); site rezoned for data-centre use in 2023. City development permit DP001376 issued 3 Mar 2026 with title covenant capping water use (~25M L/yr). Operator reportedly committed to BC Hydro not to run crypto mining.",
+      "notes": "Nanaimo data centre — two-storey ~18,000 m² (194k sq ft) facility in 10 modular phases on I3 High Tech Industrial land west of Nanaimo Parkway. Townsite Planning filed for owner 2779022 Ontario Ltd. (maplecolo); site rezoned for data-centre use in 2023. City development permit DP001376 issued 3 Mar 2026 with title covenant capping water use (~25M L/yr). Operator reportedly committed to BC Hydro not to run crypto mining. Nov 2026: the City of Nanaimo says the proposal at 2086 and 2090 East Wellington Rd still needs approval from the province and/or BC Hydro; projected peak water use is 55,000–69,000 L/day (https://nanaimobulletin.com/2026/11/18/city-of-nanaimo-says-data-centre-concerns-should-now-be-directed-at-province-b-c-hydro/).",
       "source_url": "https://www.datacenterdynamics.com/en/news/data-center-proposed-for-vancouver-island-canada/",
       "ai_tag": 1,
       "is_visible": 1,
-      "utility": "BC Hydro"
+      "utility": "BC Hydro",
+      "interconnect_status": "City approvals complete; the city says remaining approvals rest with the province and/or BC Hydro (Nanaimo News Bulletin, Nov 18, 2026)",
+      "last_verified": "2026-11-22"
     },
     {
       "id": "napanee-ontario:site-1",
@@ -1122,12 +1126,12 @@
       "site_type": "ai_datacentre",
       "developer": "Meta",
       "noise_radius_m": 4000,
-      "notes": "Meta Sturgeon Data Centre — Meta's first Canadian data centre, announced 8 July 2026. Pin placed in Alberta's Industrial Heartland near the co-located Greenlight generation project; exact campus footprint not yet public. Nov 2026: AESO's Phase 1 Large Load Integration allocated 970 MW to the GLDC project, which The Circuit reports matches Meta's Sturgeon County allocation; grid connection approved, with the campus up to 1,800 MW at full build-out (https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/; https://www.aeso.ca/grid/connecting-to-the-grid/large-load-projects/).",
+      "notes": "Meta Sturgeon Data Centre — Meta's first Canadian data centre, announced 8 July 2026. Pin placed in Alberta's Industrial Heartland near the co-located Greenlight generation project; exact campus footprint not yet public. Nov 2026: AESO's Phase 1 Large Load Integration allocated 970 MW to the GLDC project, which The Circuit reports matches Meta's Sturgeon County allocation; grid connection approved, with the campus up to 1,800 MW at full build-out (https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/; https://www.aeso.ca/grid/connecting-to-the-grid/large-load-projects/). CBC (Nov 18, 2026): Meta announced the $13-billion data centre complex in July. It is expected online in two to three years and will be powered by the Greenlight Electricity Centre on the Sturgeon County site. The project is already approved, so Alberta's proposed Bill 42 setbacks would not apply. The pinned CBC article (Nov 20) describes it as a 1 GW project northeast of Edmonton and the first hyperscale data centre in Alberta.",
       "source_url": "https://www.cbc.ca/news/canada/edmonton/meta-data-centre-sturgeon-county-alberta-9.7263271",
       "ai_tag": 1,
       "is_visible": 1,
       "interconnect_status": "Grid connection approved; 970 MW AESO Phase 1 large-load allocation (listed by AESO as P2936 GLDC Load)",
-      "last_verified": "2026-11-08"
+      "last_verified": "2026-11-22"
     },
     {
       "id": "national:watchlist:adcw:beacon-heartland",
@@ -1471,6 +1475,67 @@
       "source_url": "https://www.qscale.com/q01-campus",
       "ai_tag": 0,
       "is_visible": 1
+    },
+    {
+      "id": "national:news:anthropic-everwind-ns-2026",
+      "name": "EverWind Point Tupper Data Centre Campus (Anthropic lease)",
+      "city": "Point Tupper",
+      "province_state": "NS",
+      "address": "Point Tupper",
+      "lat": 45.61,
+      "lng": -61.35,
+      "capacity_mw": 95,
+      "capacity_display": "95 MW phase 1 (late 2027); 420 MW at full build-out (325 MW phase 2 targeted 2028)",
+      "proposal_status": "announced",
+      "site_type": "ai_datacentre",
+      "developer": "EverWind Fuels",
+      "noise_radius_m": null,
+      "notes": "At EverWind's existing Point Tupper industrial site, just outside Port Hawkesbury, Richmond County, Cape Breton. Anthropic has leased phase 1 for at least 20 years to power Claude models. Pre-construction: land clearing is under way, with foundations planned before winter (CBC, Oct 16, 2026). EverWind is raising about $8B for the campus plus $2B for four onshore wind farms. Grid supply comes first from existing provincial generation, and EverWind and Anthropic will pay for required grid upgrades. Closed-loop cooling uses about 100,000 L/day in phase 1, drawn from Landrie Lake.",
+      "source_url": "https://www.cbc.ca/news/canada/nova-scotia/nova-scotia-to-host-massive-data-centre-to-power-anthropic-s-ai-assistant-claude-9.7383129",
+      "ai_tag": 1,
+      "is_visible": 1,
+      "interconnect_status": "Subject to provincial system studies and approvals before grid connection. EverWind says it has been assured there is capacity for phase 1, and EverWind and Anthropic will pay for any required upgrades.",
+      "last_verified": "2026-11-22"
+    },
+    {
+      "id": "national:news:westbank-m3-vancouver-2026",
+      "name": "Westbank M3 AI data centre (former Hootsuite HQ, Mount Pleasant)",
+      "city": "Vancouver",
+      "province_state": "BC",
+      "address": "111 East 5th Avenue, Vancouver, BC",
+      "lat": 49.2668,
+      "lng": -123.1025,
+      "capacity_mw": null,
+      "capacity_display": "Unknown",
+      "proposal_status": "proposed",
+      "site_type": "ai_datacentre",
+      "developer": "Westbank",
+      "noise_radius_m": null,
+      "notes": "Telus withdrew as co-developer (Nov 2026). Westbank says it is proceeding with a new partner to be announced. The site still needs rezoning from industrial to comprehensive development to allow Bulk Data Storage, and a city Q&A period runs Dec 2–15, 2026. On Nov 18 Vancouver council passed a motion requiring third-party impact assessments for bulk data storage.",
+      "source_url": "https://thinkpol.ca/2026/11/17/telus-quits-vancouver-ai-data-centres-as-b-c-holds-off-on-deciding-who-gets-the-power/",
+      "ai_tag": 1,
+      "is_visible": 1,
+      "last_verified": "2026-11-22"
+    },
+    {
+      "id": "national:news:westbank-150-west-georgia-2026",
+      "name": "Westbank 150 West Georgia AI data centre",
+      "city": "Vancouver",
+      "province_state": "BC",
+      "address": "150 West Georgia Street, Vancouver, BC",
+      "lat": 49.2793,
+      "lng": -123.1108,
+      "capacity_mw": null,
+      "capacity_display": "Unknown",
+      "proposal_status": "announced",
+      "site_type": "ai_datacentre",
+      "developer": "Westbank",
+      "noise_radius_m": null,
+      "notes": "Planned new 400,000 sq ft facility beside B.C. Place, originally slated for 2029 with Telus. Telus withdrew in Nov 2026, and Westbank says it will proceed with a new partner.",
+      "source_url": "https://thinkpol.ca/2026/11/17/telus-quits-vancouver-ai-data-centres-as-b-c-holds-off-on-deciding-who-gets-the-power/",
+      "ai_tag": 1,
+      "is_visible": 1,
+      "last_verified": "2026-11-22"
     }
   ]
 }

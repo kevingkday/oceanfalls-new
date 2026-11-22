@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-21",
+  "lastUpdated": "2026-11-22",
   "signals": [
     {
       "theme": "Enterprise Edge & Sovereign AI",
@@ -13,6 +13,56 @@
       "pinned": true
     },
     {
+      "theme": "Enterprise Edge & Sovereign AI",
+      "date": "2026-11-20",
+      "dateDisplay": "November 2026",
+      "outlet": "TechTarget",
+      "headline": "Dell and Microsoft move Nvidia B300 inference on-prem as sovereignty drives buyers",
+      "theFact": "Dell and Microsoft are expanding their Azure Local partnership to run enterprise AI inference on Nvidia HGX B300 systems in customer-controlled environments, after Microsoft said at Ignite on Nov. 17 that Foundry Local is generally available on Azure Local. In IDC's June 2026 survey, 85 per cent of enterprises said their AI workloads need both on-premises and public cloud, and sovereignty and latency each influenced 51 per cent of respondents, ahead of cost at 42 per cent.",
+      "oceanFallsAngle": "The big vendors are now packaging on-prem sovereign inference for regulated buyers, and an Ocean Falls MicroNode puts that capability inside B.C. so the data never leaves the customer's custody.",
+      "url": "https://www.techtarget.com/news/dell-microsoft-target-enterprise-ai-inference-with-nvidia-hgx-b300/875421/"
+    },
+    {
+      "theme": "Community & Environmental Backlash",
+      "date": "2026-11-18",
+      "dateDisplay": "November 2026",
+      "outlet": "CBC News",
+      "headline": "Alberta proposes 600-metre setbacks for big data centres, with brownfield sites exempt",
+      "theFact": "Alberta's Bill 42 would bar data centres that draw 10 MW or more from being built within 600 metres of the nearest home or on the province's highest-quality farmland, and the province said about 30 per cent of current proposals would likely be affected. Technology Minister Nate Glubish said existing brownfield sites and designated industrial zones could be exempt from the setbacks, and the bill would also make data centres pay for their own power infrastructure and use close to zero water for cooling.",
+      "oceanFallsAngle": "Alberta is writing brownfield exemptions and sub-10 MW thresholds into law, and those are the two things Ocean Falls already builds its site selection around.",
+      "url": "https://www.cbc.ca/news/canada/edmonton/alberta-proposed-restrictions-data-centres-9.7427099"
+    },
+    {
+      "theme": "Digital Infrastructure Risk & Insurance",
+      "date": "2026-11-18",
+      "dateDisplay": "November 2026",
+      "outlet": "Insurance Business",
+      "headline": "Hyperscale campuses are worth up to $45B, but insurers top out at $5–10B",
+      "theFact": "A new LGT Capital Partners paper says AI hyperscale campuses carry $30 billion to $45 billion or more in insurable value, while the conventional property market's effective limit for a single risk generally tops out at $5 billion to $10 billion. LGT cites market estimates that one-third to half of data-centre value is currently uninsured, and Moody's analysts noted in March 2026 that investors including Blackstone reportedly passed on data-centre debt because coverage was insufficient.",
+      "oceanFallsAngle": "A sub-10 MW site keeps each insured value small enough for ordinary property capacity, and it is the kind of risk a captive program can write, while hyperscale campuses go partly uninsured.",
+      "url": "https://www.insurancebusinessmag.com/us/news/technology/data-center-values-outstrip-insurance-capacity-as-ai-buildout-accelerates-597876.aspx"
+    },
+    {
+      "theme": "Community & Environmental Backlash",
+      "date": "2026-11-18",
+      "dateDisplay": "November 2026",
+      "outlet": "Sitka Media",
+      "headline": "Vancouver council votes unanimously for third-party impact checks on AI data centres",
+      "theFact": "Vancouver city council unanimously passed Coun. Lucy Maloney's motion directing staff to urgently develop a Bulk Data Storage Public Impact Requirement. Before any rezoning or permitting, applicants would have to commission a third-party assessment of water, greenhouse gas emissions, air contaminants, noise and heat, mitigation including heat recovery, and employment impacts.",
+      "oceanFallsAngle": "As Vancouver adds third-party impact studies for big urban data centres, small brownfield sites and on-prem MicroNodes with a light local footprint become the easier way to get compute built in B.C.",
+      "url": "https://www.sitkamedia.ca/watch-vancouver-city-council-votes-unanimously-to-address-the-risks-of-ai-data-centres/"
+    },
+    {
+      "theme": "Utility Interconnect Bottlenecks",
+      "date": "2026-11-17",
+      "dateDisplay": "November 2026",
+      "outlet": "ThinkPol",
+      "headline": "B.C. has 800 MW of data-centre asks, a 400 MW target, and no decision yet",
+      "theFact": "BC Hydro's 2026 Call for Demand drew 15 applications totalling close to 800 megawatts, about twice the province's two-year allocation target of up to 400 MW, and the September 2026 notification date has slipped until after the provincial government transition. The delay lands as Telus pulls out of two Vancouver AI data centres and says it will focus on expanding its existing Kamloops site.",
+      "oceanFallsAngle": "Sites that ask for less than 10 MW stay out of B.C.'s competitive call and use the ordinary connection process, so Ocean Falls' sub-10 MW brownfield sites skip the queue that has stalled 800 MW of requests.",
+      "url": "https://thinkpol.ca/2026/11/17/telus-quits-vancouver-ai-data-centres-as-b-c-holds-off-on-deciding-who-gets-the-power/"
+    },
+    {
       "theme": "Utility Interconnect Bottlenecks",
       "date": "2026-11-10",
       "dateDisplay": "November 2026",
@@ -21,56 +71,6 @@
       "theFact": "Ontario’s IESO is moving its technical requirements for large computational loads into the province’s Market Rules, with the proposed amendments going to a webinar on November 19 and the rule change targeted for Q2 2027. The requirements cover connection, reactive power, oscillation, ramp rates and ride-through, and apply to every transmission-connected computational load and to distribution-connected loads above 10 MW.",
       "oceanFallsAngle": "Ocean Falls’ sub-10 MW brownfield siting stays under the size where grid operators from B.C. to Ontario are adding competitive calls and new technical obligations for data centres.",
       "url": "https://research.missioncriticalengineers.com/article-ieso"
-    },
-    {
-      "theme": "Enterprise Edge & Sovereign AI",
-      "date": "2026-11-05",
-      "dateDisplay": "November 2026",
-      "outlet": "Fortinet / Equinix",
-      "headline": "Equinix and Fortinet: “AI Isn’t Centralized,” So Security Moves to Where the Data Lives",
-      "theFact": "Fortinet made its FortiAIGate guardrails available on the Equinix Distributed AI Hub on November 5, a validated reference architecture for AI workloads that span clouds, data centres and edge environments. The companies say it keeps control, management and inspection within customer infrastructure, with no data leaving the environment, to support data residency and sovereignty requirements.",
-      "oceanFallsAngle": "When the largest interconnection players design for distributed, data-resident AI, an on-premise MicroNode behind an organization’s own firewall in B.C. is the most direct version of that architecture.",
-      "url": "https://www.fortinet.com/corporate/about-us/newsroom/press-releases/2026/fortinet-and-equinix-secure-distributed-ai-at-scale"
-    },
-    {
-      "theme": "Community & Environmental Backlash",
-      "date": "2026-11-04",
-      "dateDisplay": "November 2026",
-      "outlet": "CBC News",
-      "headline": "Calgary Moves a Step Closer to a Data Centre Freeze Over Water and Power",
-      "theFact": "Calgary’s executive committee voted 10–3 to send council a motion for a temporary moratorium on new land-use redesignation applications for large-scale data centres, with a staff report on bylaw changes due by March. Mayor Jeromy Farkas backs the pause, citing residents’ worries about electricity bills and the city’s strained water infrastructure, while a Stantec application for a data centre near northeast Calgary’s Redstone neighbourhood continues through review.",
-      "oceanFallsAngle": "Ocean Falls keeps each site under 10 MW on already-zoned brownfield industrial land, so it doesn’t depend on the large-scale land-use redesignations Calgary is moving to pause.",
-      "url": "https://www.cbc.ca/news/canada/calgary/data-centre-freeze-9.7409078"
-    },
-    {
-      "theme": "Digital Infrastructure Risk & Insurance",
-      "date": "2026-11-04",
-      "dateDisplay": "November 2026",
-      "outlet": "(Re)in Asia",
-      "headline": "Swiss Re: Hyperscale Data Centres Can’t Place the Insurance Limits Their Lenders Require",
-      "theFact": "Swiss Re P&C reinsurance chief underwriting officer Gianfranco Lot told the Singapore International Reinsurance Conference on November 4 that there isn’t enough capacity for data centres, leaving owners unable to place the limits required under their debt financing. With tens of billions in values on single sites and 90–95% of that risk passed on to reinsurers, Swiss Re is talking to alternative capital providers to cover peak data centre losses.",
-      "oceanFallsAngle": "Ocean Falls’ distributed sub-10 MW sites spread value across many small locations instead of one accumulation point, and its AI Infrastructure Captive Program gives owners a structure for the risks conventional capacity won’t absorb.",
-      "url": "https://reinasia.com/swiss-re-turning-to-alternative-capital-as-data-center-accumulation-outrun-reinsurance-capacity/"
-    },
-    {
-      "theme": "Utility Interconnect Bottlenecks",
-      "date": "2026-11-03",
-      "dateDisplay": "November 2026",
-      "outlet": "The Circuit",
-      "headline": "Alberta Data Centres Have Asked for 26,849 MW, More Than Double the Province’s Record Peak",
-      "theFact": "Data centre developers had asked to connect 26,849 MW of new load to Alberta’s grid by October, more than double the province’s all-time peak demand of 12,785 MW, and AESO’s entire 1,200 MW interim limit went to just two projects. The Circuit’s four-province comparison finds Alberta, Quebec, Ontario and B.C. all now rationing or repricing data centre power, with B.C. capping new data centre supply at 400 MW over two years and no public list yet of who won it.",
-      "oceanFallsAngle": "Ocean Falls targets sub-10 MW brownfield sites that stay outside B.C.’s ≥10 MW competitive call and connect through BC Hydro’s standard process, instead of joining a multi-gigawatt queue for rationed power.",
-      "url": "https://thecircuit.ca/posts/2026-11-03-ai-data-centres-who-pays-power/"
-    },
-    {
-      "theme": "Community & Environmental Backlash",
-      "date": "2026-11-04",
-      "dateDisplay": "November 2026",
-      "outlet": "CBC News",
-      "headline": "Sherbrooke Delays a Data Centre Freeze as 12,000 Sign Against a 96 MW Campus",
-      "theFact": "Sherbrooke Mayor Marie-Claude Bibeau kept a proposed data centre moratorium off Tuesday’s council agenda, saying the city needs more time to weigh its legal and technical impacts. Residents are fighting a 96 MW project by U.S.-backed Keel Infrastructure on land the city conditionally sold in August, with a petition against the sale topping 12,000 signatures and two more crypto-to-AI conversions in the works.",
-      "oceanFallsAngle": "Ocean Falls keeps each site under 10 MW on already-zoned brownfield industrial land, a footprint small enough to avoid the scale that turns a municipal land sale into a 12,000-signature fight.",
-      "url": "https://www.cbc.ca/news/canada/montreal/data-centre-moratorium-sherbrooke-que-9.7408805"
     }
   ]
 }
