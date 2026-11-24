@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sovereign Edge AI: Security, Model Governance &amp; Risk Architecture | Ocean Falls Technology Corp.</title>
+    <meta name="description" content="Private, On-Premise &amp; Pocket-to-Pod AI Infrastructure for Regulated Organizations. Sovereign Edge AI Architecture Brief by Ocean Falls Technology Corp." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0F172A;
+            --slate-800: #1E293B;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748B;
+            --slate-300: #CBD5E1;
+            --slate-200: #E2E8F0;
+            --slate-100: #F1F5F9;
+            --slate-50: #F8FAFC;
+            --cyan-700: #0369A1;
+            --cyan-600: #0284C7;
+            --cyan-50: #F0F9FF;
+            --teal-700: #0F766E;
+            --teal-600: #0D9488;
+            --teal-50: #F0FDFA;
+            --rose-700: #BE123C;
+            --rose-50: #FFF1F2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--slate-800);
+            background-color: var(--slate-100);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.42;
+        }
+
+        /* Screen-only action bar */
+        .screen-toolbar {
+            max-width: 8.5in;
+            margin: 18px auto 12px;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate-600);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .back-link:hover {
+            color: var(--slate-900);
+        }
+
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--slate-900);
+            color: #FFFFFF;
+            border: 1px solid var(--slate-900);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+            transition: background-color 0.15s ease, transform 0.1s ease;
+        }
+
+        .print-btn:hover {
+            background-color: var(--cyan-600);
+            border-color: var(--cyan-600);
+        }
+
+        .print-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Sheet container sized to US Letter (8.5in x 11in) with 0.5in padding on screen */
+        .brief-sheet {
+            width: 8.5in;
+            min-height: 11in;
+            margin: 0 auto 32px;
+            padding: 0.48in 0.5in;
+            background-color: #FFFFFF;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1), 0 1px 4px rgba(15, 23, 42, 0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Compact Header Bar */
+        .header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--slate-900);
+            margin-bottom: 12px;
+        }
+
+        .brand-mark {
+            font-size: 9.5pt;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--slate-900);
+            text-transform: uppercase;
+        }
+
+        .doc-type {
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--cyan-600);
+            text-transform: uppercase;
+        }
+
+        /* Title & Subtitle */
+        .title-block {
+            margin-bottom: 12px;
+        }
+
+        .title-block h1 {
+            font-size: 18pt;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--slate-900);
+            margin-bottom: 4px;
+        }
+
+        .title-block .subtitle {
+            font-size: 10.2pt;
+            font-weight: 500;
+            color: var(--teal-600);
+            letter-spacing: -0.005em;
+        }
+
+        /* Two-Column Challenge vs Solution */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .callout-box {
+            border-radius: 6px;
+            padding: 10px 12px;
+            border: 1px solid var(--slate-200);
+        }
+
+        .callout-box.challenge {
+            background-color: var(--slate-50);
+            border-left: 3.5px solid var(--slate-700);
+        }
+
+        .callout-box.solution {
+            background-color: var(--cyan-50);
+            border-color: #BAE6FD;
+            border-left: 3.5px solid var(--cyan-600);
+        }
+
+        .callout-label {
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 3px;
+        }
+
+        .callout-box.challenge .callout-label {
+            color: var(--slate-600);
+        }
+
+        .callout-box.solution .callout-label {
+            color: var(--cyan-700);
+        }
+
+        .callout-box h2 {
+            font-size: 10pt;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 4px;
+            line-height: 1.25;
+        }
+
+        .callout-box p {
+            font-size: 8.6pt;
+            line-height: 1.4;
+            color: var(--slate-700);
+        }
+
+        /* Section Headings */
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 7px;
+        }
+
+        .section-heading h3 {
+            font-size: 9pt;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--slate-900);
+            white-space: nowrap;
+        }
+
+        .section-heading .rule {
+            height: 1px;
+            background-color: var(--slate-200);
+            flex: 1;
+        }
+
+        /* 3-Tier Architecture Table */
+        .arch-section {
+            margin-bottom: 12px;
+        }
+
+        table.arch-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--slate-200);
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 8.5pt;
+        }
+
+        table.arch-table thead th {
+            background-color: var(--slate-900);
+            color: #FFFFFF;
+            text-align: left;
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 7px 10px;
+        }
+
+        table.arch-table tbody td {
+            padding: 7.5px 10px;
+            vertical-align: top;
+            border-top: 1px solid var(--slate-200);
+            line-height: 1.38;
+            color: var(--slate-700);
+        }
+
+        table.arch-table tbody tr:nth-child(even) {
+            background-color: var(--slate-50);
+        }
+
+        .tier-col {
+            width: 24%;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .how-col {
+            width: 38%;
+        }
+
+        .sec-col {
+            width: 38%;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            color: var(--cyan-600);
+            font-weight: 800;
+        }
+
+        .sec-lead {
+            color: var(--teal-700);
+            font-weight: 700;
+        }
+
+        /* 2x2 Trust Grid */
+        .trust-section {
+            margin-bottom: 12px;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px 12px;
+        }
+
+        .trust-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--slate-200);
+            border-top: 2.5px solid var(--teal-600);
+            border-radius: 5px;
+            padding: 8px 10px;
+        }
+
+        .trust-card h4 {
+            font-size: 9pt;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 3px;
+            line-height: 1.25;
+        }
+
+        .trust-card p {
+            font-size: 8.3pt;
+            line-height: 1.38;
+            color: var(--slate-700);
+        }
+
+        /* Bottom Callout Footer */
+        .bottom-footer {
+            margin-top: auto;
+        }
+
+        .pilot-banner {
+            background-color: var(--slate-900);
+            color: #FFFFFF;
+            border-radius: 6px;
+            padding: 9px 12px;
+            border-left: 4px solid var(--cyan-600);
+            margin-bottom: 8px;
+        }
+
+        .pilot-banner p {
+            font-size: 8.6pt;
+            line-height: 1.38;
+            color: #E2E8F0;
+        }
+
+        .pilot-banner strong {
+            color: #FFFFFF;
+        }
+
+        .contact-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 6px;
+            border-top: 1px solid var(--slate-200);
+            font-size: 8.3pt;
+            font-weight: 600;
+            color: var(--slate-600);
+            letter-spacing: 0.01em;
+        }
+
+        .contact-bar a {
+            color: var(--cyan-700);
+            text-decoration: none;
+        }
+
+        /* Responsive screen adjustments for narrow viewports */
+        @media screen and (max-width: 860px) {
+            .brief-sheet {
+                width: auto;
+                min-height: auto;
+                margin: 0 12px 24px;
+                padding: 20px;
+            }
+            .screen-toolbar {
+                margin: 12px;
+            }
+            .two-col,
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Strict US Letter 1-Page Print Rules */
+        @page {
+            size: letter portrait;
+            margin: 0.5in;
+        }
+
+        @media print {
+            html, body {
+                background-color: #FFFFFF !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .screen-toolbar {
+                display: none !important;
+            }
+
+            .brief-sheet {
+                width: 100% !important;
+                min-height: 10in !important;
+                height: 10in !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            .callout-box,
+            .trust-card,
+            .pilot-banner,
+            table.arch-table tr {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            a {
+                color: inherit !important;
+                text-decoration: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen-only Top Toolbar -->
+    <div class="screen-toolbar">
+        <a href="index.html#pocket-to-pod" class="back-link">
+            <span aria-hidden="true">&larr;</span>
+            <span>Back to Ocean Falls</span>
+        </a>
+        <button type="button" class="print-btn" onclick="window.print()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Download / Print PDF</span>
+        </button>
+    </div>
+
+    <!-- Single-Page US Letter Executive Brief -->
+    <main class="brief-sheet">
+        <div>
+            <!-- Compact Header Bar -->
+            <header class="header-bar">
+                <div class="brand-mark">OCEAN FALLS TECHNOLOGY CORP.</div>
+                <div class="doc-type">SOVEREIGN EDGE AI ARCHITECTURE BRIEF</div>
+            </header>
+
+            <!-- Title & Subtitle -->
+            <section class="title-block">
+                <h1>Sovereign Edge AI: Security, Model Governance &amp; Risk Architecture</h1>
+                <p class="subtitle">Private, On-Premise &amp; Pocket-to-Pod AI Infrastructure for Regulated Organizations</p>
+            </section>
+
+            <!-- Two-Column Top Section: Challenge vs. Solution -->
+            <section class="two-col" aria-label="Challenge and Solution">
+                <div class="callout-box challenge">
+                    <div class="callout-label">The Challenge</div>
+                    <h2>Cloud AI Breaks Regulated Compliance</h2>
+                    <p>
+                        Public cloud AI tools route client files, municipal records, and voice notes to foreign hyperscale servers. For British Columbia public bodies, First Nations, and regulated brokerages, uploading sensitive documents to third-party chatbots creates immediate exposure under <strong>BC FIPPA, PIPEDA, OCAP&reg; principles, and the US CLOUD Act</strong>.
+                    </p>
+                </div>
+                <div class="callout-box solution">
+                    <div class="callout-label">The Solution</div>
+                    <h2>&ldquo;Pocket-to-Pod&rdquo; Sovereign AI</h2>
+                    <p>
+                        Ocean Falls deploys a managed, zero-egress AI architecture that runs locally on your staff&rsquo;s devices and your dedicated <strong>MicroNode</strong>&mdash;keeping 100% of your data inside your physical and jurisdictional boundary.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 3-Tier Architecture Table -->
+            <section class="arch-section" aria-label="3-Tier Sovereign Architecture">
+                <div class="section-heading">
+                    <h3>3-Tier Pocket-to-Pod Architecture</h3>
+                    <div class="rule"></div>
+                </div>
+                <table class="arch-table">
+                    <thead>
+                        <tr>
+                            <th>Architecture Layer</th>
+                            <th>How It Works</th>
+                            <th>Security &amp; Governance Control</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tier-col"><span class="tier-badge">1.</span> On-Device Edge<br /><span style="font-weight: 500; color: var(--slate-600); font-size: 8pt;">(The Pocket)</span></td>
+                            <td class="how-col">Field staff run quantized multimodal models (<strong>Gemma 4</strong>) directly on smartphones/tablets via local browser WebGPU.</td>
+                            <td class="sec-col"><span class="sec-lead">Zero-Transmission Capture:</span> Photos, gauges, and voice notes process 100% offline in Airplane Mode; zero bytes leave the device.</td>
+                        </tr>
+                        <tr>
+                            <td class="tier-col"><span class="tier-badge">2.</span> Sovereign Bridge<br /><span style="font-weight: 500; color: var(--slate-600); font-size: 8pt;">(The Bridge)</span></td>
+                            <td class="how-col">Encrypted Zero-Trust tunnels and hardware-aware routing connect field devices and office workstations to your MicroNode.</td>
+                            <td class="sec-col"><span class="sec-lead">Tenant &amp; Role Isolation:</span> Strict authentication, per-user/department access scoping, and automatic failover without public cloud APIs.</td>
+                        </tr>
+                        <tr>
+                            <td class="tier-col"><span class="tier-badge">3.</span> Local MicroNode<br /><span style="font-weight: 500; color: var(--slate-600); font-size: 8pt;">(The Pod)</span></td>
+                            <td class="how-col">Dedicated on-premise or BC-hosted GPU compute runs layout-aware visual document intelligence (RAG) and local fine-tuning.</td>
+                            <td class="sec-col"><span class="sec-lead">Air-Gapped Compute &amp; Auditability:</span> Customer data never trains external models; optional overnight compute sharing is physically/logically isolated.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 2x2 Grid: Why Regulated Buyers Trust Ocean Falls -->
+            <section class="trust-section" aria-label="Why Regulated Buyers Trust Ocean Falls">
+                <div class="section-heading">
+                    <h3>Why Regulated Buyers Trust Ocean Falls</h3>
+                    <div class="rule"></div>
+                </div>
+                <div class="trust-grid">
+                    <div class="trust-card">
+                        <h4>Verifiable Zero External Egress</h4>
+                        <p>All inference, vector search, and document extraction run strictly on local or BC-resident silicon&mdash;eliminating cross-border data discovery.</p>
+                    </div>
+                    <div class="trust-card">
+                        <h4>Audit-Ready Privacy Impact Support</h4>
+                        <p>Pre-structured technical documentation designed to clear municipal Privacy Impact Assessments (PIAs), OCAP&reg; data governance reviews, and client NDA audits.</p>
+                    </div>
+                    <div class="trust-card">
+                        <h4>Insurable Operational &amp; Cyber Risk Architecture</h4>
+                        <p>Backed by Ocean Falls&rsquo; commercial risk and insurance structuring expertise, aligning deployment controls with Tech E&amp;O, cyber liability, and parametric uptime guarantees.</p>
+                    </div>
+                    <div class="trust-card">
+                        <h4>No Internal AI Team Required</h4>
+                        <p>Ocean Falls manages model selection, quantization, security patching, and hardware telemetry remotely without accessing your underlying client payloads.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Bottom Callout Footer -->
+        <footer class="bottom-footer">
+            <div class="pilot-banner">
+                <p>
+                    <strong>Start With a Zero-Risk Pilot:</strong> Test on-device field capture immediately or validate your own redacted documents in an isolated BC Sovereign Enclave before committing to on-site hardware.
+                </p>
+            </div>
+            <div class="contact-bar">
+                <span>Kevin Day &nbsp;&bull;&nbsp; <a href="mailto:kevin@oceanfalls.com">kevin@oceanfalls.com</a> &nbsp;&bull;&nbsp; <a href="https://www.oceanfalls.com">www.oceanfalls.com</a> &nbsp;&bull;&nbsp; British Columbia, Canada</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>
