@@ -364,6 +364,7 @@
             font-weight: 600;
             color: var(--slate-600);
             letter-spacing: 0.01em;
+            white-space: nowrap;
         }
 
         .contact-bar a {
@@ -388,17 +389,25 @@
             }
         }
 
-        /* Strict US Letter 1-Page Print Rules */
+        /* Strict US Letter 1-Page Print Rules (margin: 0 suppresses browser headers/footers) */
         @page {
-            size: letter portrait;
-            margin: 0.5in;
+            size: letter;
+            margin: 0;
         }
 
         @media print {
-            html, body {
+            html {
                 background-color: #FFFFFF !important;
                 margin: 0 !important;
                 padding: 0 !important;
+            }
+
+            body {
+                background-color: #FFFFFF !important;
+                margin: 0 !important;
+                padding: 0.5in !important;
+                width: 8.5in !important;
+                height: 11in !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
